@@ -1,0 +1,221 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: 听泉.ღ
+subtitle: — 听泉小窝 —
+description: 夜如何其，夜未央，庭燎之光。
+keywords: Java, 大数据
+author: Alessa0
+language: zh-CN
+timezone: Asia/Shanghai
+
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: https://alessa0.cn
+root: /
+permalink: posts/:abbrlink/
+permalink_defaults:
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render: 
+  - README.md
+  - CNAME
+  - google7ed2ce0a8a7aeb25.html
+  - 404.html
+  - robots.txt
+  - baidu_verify_26s3KkvJ3K.html
+  - sw.js
+  - leancloud_memo.json
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: true
+  tab_replace:
+  
+# Home page setting
+# path: Root path for your blogs index page. (default = '')
+# per_page: Posts displayed per page. (0 = disable pagination)
+# order_by: Posts order. (Order by date descending by default)
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+  
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 10
+pagination_dir: page
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+plugins: hexo-generate-feed
+## Themes: https://hexo.io/themes/
+theme: next
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy: 
+- type: leancloud_counter_security_sync
+- type: git
+  repository: 
+    github: alessa0:xieqing0428/xieqing0428.github.io.git
+    coding: blog:alessa0/alessa0.git
+  branch: master
+
+# abbrlink config
+abbrlink:
+  alg: crc32
+  rep: hex
+
+sitemap: 
+  path: sitemap.xml
+baidusitemap:
+    path: baidusitemap.xml
+
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: false
+  total_time: false
+
+
+# hexo-tag-cloud
+tag_cloud:
+    textFont: Trebuchet MS, Helvetica
+    textColor: '#333'
+    textHeight: 25
+    outlineMethod: colour
+    outlineColor: '#FF0000'
+    maxSpeed: 0.1
+
+leancloud_counter_security:
+  enable_sync: true
+  app_id: spj45BlAacJErU9iVkUjBdMe-9Nh9j0Va
+  app_key: QxYREXarU2IotL8LwfVAPS0H
+  username: alessa0
+  password: Jolin123
+
+#部署腾讯云cos
+tencent_cos:
+  secretId: AKIDztHoCQsPr1a3xCLXaZcPsrxw5x0NJAau
+  secretKey: aNMDETp3OaGCVjsBUgghcFpdjCiO0UJ7
+  bucket: alessa0-music-1254236546
+  region: ap-shanghai
+  bucketPrefix: 
+  bucketDomainUrl: https://alessa0-music-1254236546.cos.ap-shanghai.myqcloud.com
+  sync: manual
+  resourceDirectory:
+    localDirectory: source/static
+
+popularPosts:
+  googleAnalyticsAPI:
+    clientId: analytics-api@tactile-petal-231503.iam.gserviceaccount.com
+    serviceEmail: analytics-api@tactile-petal-231503.iam.gserviceaccount.com
+    key: /google-services-private-key.pem
+    viewId: 181094059
+
+recommended_posts:
+  server: https://api.truelaurel.com
+  timeoutInMillis: 10000
+  internalLinks: 2
+  externalLinks: 2
+  fixedNumber: false
+  autoDisplay: true
+  titleHtml: <h1>推荐文章:</h1>
+
+filter_optimize:
+  enable: true
+  # remove static resource query string
+  #   - like `?v=1.0.0`
+  remove_query_string: true
+  # remove the surrounding comments in each of the bundled files
+  remove_comments: true
+  css:
+    enable: true
+    # bundle loaded css file into the one
+    bundle: true
+    # use a script block to load css elements dynamically
+    delivery: false
+    # make specific css content inline into the html page
+    #   - only support the full path
+    #   - default is ['css/main.css']
+    inlines:
+    excludes:
+  js:
+    # bundle loaded js file into the one
+    bundle: true
+    excludes:
+  # set the priority of this plugin,
+  # lower means it will be executed first, default is 10
+  priority: 12
+
+douban:
+  user: 87911930
+  builtin: true
+  book:
+    title: '豆瓣读书'
+    quote: 'Stay hungry, Stay foolish.'
+  timeout: 10000
+
+# hexo-neat
+# 博文压缩
+neat_enable: true
+# 压缩html
+neat_html:
+  enable: true
+  exclude:
+# 压缩css  
+neat_css:
+  enable: true
+  exclude:
+    - '**/jquery.fancybox.css'
+    - '**/jquery.fancybox.min.css'
+    - '**/*.min.css'
+# 压缩js
+neat_js:
+  enable: true
+  mangle: true
+  output:
+  compress:
+  exclude:
+    - '**/jquery.fancybox.pack.js'
+    - '**/jquery.fancybox.min.js'
+    - '**/minigrid.min.js'
+    - '**/*.min.js'
+    - '**/index.js'
+    - '**/photo.js'
+    - '**/phototool.js'
+    - '**/jquery.lazyload.js'
+    - '**/jquery.scrollstop.js'
