@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(十五)]]></title>
+    <url>%2Fposts%2F6cff886e%2F</url>
+    <content type="text"><![CDATA[Flink：Storm你该回家了…Flink 安装配置Flink安装Flinkcd /mnt/hgfs/Hadoopcp flink-1.8.0-bin-scala_2.11.tgz /usr/local/src/cd /usr/local/src/tar zxvf flink-1.8.0-bin-scala_2.11.tgzrm -rf flink-1.8.0-bin-scala_2.11.tgzFlink环境变量：vim ~/.bashrc1234# 添加如下信息# SET FLINK PATH export FLINK_HOME=/usr/local/src/flink-1.8.0 export PATH=$PATH:$FLINK_HOME/binsource ~/.bashrc修改Flink配置cd flink-1.8.0/confvim flink-conf.yaml12# 修改如下信息jobmanager.rpc.address: mastervim masters12# 修改如下信息master:8081vim slaves12slave1 slave2启动集群启动服务：start-cluster.sh关闭集群：stop-cluster.sh监控网页：Web：http://master:8081]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Flink</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Flink</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(十四)]]></title>
+    <url>%2Fposts%2F6a54df13%2F</url>
+    <content type="text"><![CDATA[Storm-on-Yarn：跟着老大哥有肉吃…Storm-on-Yarn 安装配置Storm on Yarn待续……]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Storm-on-Yarn</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Storm-on-Yarn</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(十三)]]></title>
+    <url>%2Fposts%2F9017301c%2F</url>
+    <content type="text"><![CDATA[Storm：我才是流处理！Storm 安装配置Storm安装Stormcd /mnt/hgfs/Hadoopcp apache-storm-1.2.2.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf apache-storm-1.2.2.tar.gzrm -rf apache-storm-1.2.2.tar.gzStorm环境变量：vim ~/.bashrc123# SET STORM PATH export STORM_HOME=/usr/local/src/apache-storm-1.2.2 export PATH=$PATH:$STORM_HOME/binsource ~/.bashrc修改Storm配置文件cd apache-storm-1.2.2创建日志文件/数据文件：mkdir datamkdir logs配置文件：cd confvim storm.yaml12345678910111213141516# 添加如下信息storm.zookeeper.servers: - "master" - "slave1" - "slave2" storm.zookeeper.port: 2181 storm.local.dir: "/usr/local/storm-1.2.2/data" ui.port: 8089 nimbus.seeds: ["master"] supervisor.slots.ports: - 6700 - 6701 - 6702 - 6703 - 6704 - 6705启动Storm集群主节点启动：storm nimbus &gt;&gt; /usr/local/src/apache-storm-1.2.2/logs/nimbus.out 2&gt;&amp;1 &amp;storm ui &gt;&gt; /usr/local/src/apache-storm-1.2.2/logs/ui.out 2&gt;&amp;1 &amp;从节点启动：storm supervisor &gt;&gt; /usr/local/src/apache-storm-1.2.2/logs/supervisor.out 2&gt;&amp;1 &amp;storm logviewer &gt;&gt; /usr/local/src/apache-storm-1.2.2/logs/logviewer.out 2&gt;&amp;1 &amp;主节点关闭：kill -9 `ps -ef | grep ui.core | awk ‘{print $2}’ | head -n 1`kill -9 `ps -ef | grep daemon.nimbus | awk ‘{print $2}’ | head -n 1`kill -9 `ps -ef | grep daemon.supervisor | awk ‘{print $2}’ | head -n 1`kill -9 `ps -ef | grep daemon.logviewer | awk ‘{print $2}’ | head -n 1`WEB监控页面：Web： http://master:8089/index.html]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Storm</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(十二)]]></title>
+    <url>%2Fposts%2Feee41037%2F</url>
+    <content type="text"><![CDATA[Kafka：我不是写小说那个…Kafka 安装配置Kafka安装Kafkacd /mnt/hgfs/Hadoopcp kafka_2.11-2.2.0.tgz /usr/local/src/cd /usr/local/src/tar zxvf kafka_2.11-2.2.0.tgzrm -rf kafka_2.11-2.2.0.tgzKafka环境变量：vim ~/.bashrc1234# 添加如下信息# SET KAFKA PATH export KAFKA_HOME=/usr/local/src/kafka_2.11-2.2.0 export PATH=$PATH:$KAFKA_HOME/binsource ~/.bashrc修改Kafka配置cd kafka_2.11-2.2.0创建日志文件：mkdir logs配置文件：cd configvim server.properties123# 添加如下信息log.dirs=/usr/local/src/kafka_2.11-2.2.0/logs zookeeper.connect=master:2181,slave1:2181,slave2:2181仅在Masterbroker.id=0仅在Slave1broker.id=1仅在Slave2broker.id=2启动Kafka集群普通启动：kafka-server-start.sh -daemon /usr/local/src/kafka_2.11-2.2.0/config/server.properties关闭集群：kafka-server-stop.sh]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Kafka</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Kafka</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(十一)]]></title>
+    <url>%2Fposts%2F41d58b55%2F</url>
+    <content type="text"><![CDATA[Flume：xx托我给您带个话…Flume 安装配置Flume安装Flumecd /mnt/hgfs/Hadoopcp apache-flume-1.9.0-bin.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf apache-flume-1.9.0-bin.tar.gzrm -rf apache-flume-1.9.0-bin.tar.gzHbase环境变量：vim ~/.bashrc1234# 添加如下信息# SET FLUME PATH export FLUME_HOME=/usr/local/src/apache-flume-1.9.0-bin export PATH=$PATH:$FLUME_HOME/binsource ~/.bashrc修改Flume配置cd apache-flume-1.9.0-bin/confcp flume-env.sh.template flume-env.shvim flume-env.sh12# 添加如下信息export JAVA_HOME=/usr/local/src/jdk1.8.0_212新增配置文件NetCat：vim flume-netcat.conf12345678910111213141516171819202122# 添加如下信息# Name the components on this agentagent.sources = r1agent.sinks = k1agent.channels = c1# Describe/configuration the sourceagent.sources.r1.type = netcatagent.sources.r1.bind = 127.0.0.1agent.sources.r1.port = 44444# Describe the sinkagent.sinks.k1.type = logger# Use a channel which buffers events in memoryagent.channels.c1.type = memoryagent.channels.c1.capacity = 1000agent.channels.c1.transactionCapacity = 100# Bind the source and sink to the channelagent.sources.r1.channels = c1agent.sinks.k1.channel = c1Exec：vim flume-exec.conf123456789101112131415161718192021# 添加如下信息# Name the components on this agentagent.sources = r1agent.sinks = k1agent.channels = c1# Describe/configuration the sourceagent.sources.r1.type = execagent.sources.r1.command = tail -f /data/hadoop/flume/test.txt# Describe the sinkagent.sinks.k1.type = logger# Use a channel which buffers events in memoryagent.channels.c1.type = memoryagent.channels.c1.capacity = 1000agent.channels.c1.transactionCapacity = 100# Bind the source and sink to the channelagent.sources.r1.channels = c1agent.sinks.k1.channel = c1Avro：vim flume-avro.conf123456789101112131415161718192021222324# 添加如下信息# Define a memory channel called c1 on agentagent.channels.c1.type = memory# Define an avro source alled r1 on agent and tell itagent.sources.r1.channels = c1agent.sources.r1.type = avroagent.sources.r1.bind = 127.0.0.1agent.sources.r1.port = 44444# Describe/configuration the sourceagent.sinks.k1.type = hdfsagent.sinks.k1.channel = c1agent.sinks.k1.hdfs.path = hdfs://master:9000/flume_data_poolagent.sinks.k1.hdfs.filePrefix = events-agent.sinks.k1.hdfs.fileType = DataStreamagent.sinks.k1.hdfs.writeFormat = Textagent.sinks.k1.hdfs.rollSize = 0agent.sinks.k1.hdfs.rollCount= 600000agent.sinks.k1.hdfs.rollInterval = 600agent.channels = c1agent.sources = r1agent.sinks = k1验证NetCat：# 服务端flume-ng agent –conf conf –conf-file conf/flume-netcat.conf –name=agent -Dflume.root.logger=INFO,console# 客户端flume-ng agent –conf conf –conf-file conf/flume-netcat.conf –name=agent -Dflume.root.logger=INFO,consoleExec：# 服务端flume-ng agent –conf conf –conf-file conf/flume-exec.conf –name=agent -Dflume.root.logger=INFO,console# 客户端Avro：# 服务端flume-ng agent –conf conf –conf-file conf/flume-netcat.conf –name=agent -Dflume.root.logger=DEBUG,console# 客户端telnet master 44444]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Flume</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Flume</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(十)]]></title>
+    <url>%2Fposts%2F34d202af%2F</url>
+    <content type="text"><![CDATA[Thrift：行李少的可以从我这儿走…Thrift 安装配置Thrift安装Thrift仅在Master安装依赖环境：yum -y install automake libtool flex bison pkgconfig gcc-c++ boost-devel libevent-devel zlib-devel python-devel ruby-devel openssl-develyum -y install boost-develyum -y install libevent-devel安装：cd /mnt/hgfs/Hadoopcp thrift-0.12.0.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf thrift-0.12.0.tar.gzrm -rf thrift-0.12.0.tar.gzc++三部曲：cd thrift-0.12.0./configure –with-cpp=no –with-ruby=nomakemake installHbase源码包cd /mnt/hgfs/Hadoopcp hbase-1.3.3-src.tar.gz /usr/local/src/tmpcd /usr/local/src/tmptar zxvf hbase-1.3.3-src.tar.gzmv hbase-1.3.3 hbase-1.3.3-srcrm -rf hbase-1.3.3-src.tar.gzmv hbase-1.3.3-src/ ../待续……]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Thrift</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Thrift</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(九)]]></title>
+    <url>%2Fposts%2F497b75db%2F</url>
+    <content type="text"><![CDATA[Hbase：我不认识Hive…Hbase 安装配置Hbase安装Hbasecd /mnt/hgfs/Hadoopcp hbase-1.3.3-bin.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf hbase-1.3.3-bin.tar.gzrm -rf hbase-1.3.3-bin.tar.gzHbase环境变量：vim ~/.bashrc123456# 添加如下信息# SET HBASE PATH export HBASE_HOME=/usr/local/src/hbase-1.3.3 export HBASE_CLASSPATH=$HBASE_HOME/conf export HBASE_LOG_DIR=$HBASE_HOME/logs export PATH=$PATH:$HBASE_HOME/binsource ~/.bashrc修改Hbase配置cd hbase-1.3.3创建临时目录和文件目录：mkdir logsmkdir tmp配置文件：cd confvim regionservers123# 添加如下信息slave1 slave2vim hbase-env.sh12345# 添加如下信息export JAVA_HOME=/usr/local/src/jdk1.8.0_212 export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib # 禁用Hbase自带独立Zookeeper集群export HBASE_MANAGES_ZK=falsevim hbase-site.xml12345678910111213141516171819202122232425262728# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;name&gt;hbase.tmp.dir&lt;/name&gt; &lt;value&gt;/usr/local/src/hbase-1.3.3/tmp&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hbase.rootdir&lt;/name&gt; &lt;value&gt;hdfs://master:9000/hbase&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hbase.cluster.distributed&lt;/name&gt; &lt;value&gt;true&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt; &lt;value&gt;master,slave1,slave2&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt; &lt;value&gt;/usr/local/src/zookeeper-3.4.14&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hbase.master.info.port&lt;/name&gt; &lt;value&gt;60010&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;启动集群仅在Master启动Hbase服务：start-hbase.sh关闭Hbase服务：stop-hbase.sh]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>HBase</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>HBase</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(八)]]></title>
+    <url>%2Fposts%2F55aa9f3f%2F</url>
+    <content type="text"><![CDATA[Spark：传说中的星二代Spark 安装配置Spark安装Sparkcd /mnt/hgfs/Hadoopcp spark-2.3.3-bin-hadoop2.7.tgz /usr/local/src/cd /usr/local/src/tar zxvf spark-2.3.3-bin-hadoop2.7.tgzrm -rf spark-2.3.3-bin-hadoop2.7.tgz配置Spark环境变量：vim ~/.bashrc1234# 添加如下信息# SET SPARK PATH export SPARK_HOME=/usr/local/src/spark-2.3.3-bin-hadoop2.7 export PATH=$PATH:$SPARK_HOME/binsource ~/.bashrc修改spark配置文件cd spark-2.3.3-bin-hadoop2.7/confcp spark-env.sh.template spark-env.shvim spark-env.sh123456789# 添加如下信息export SCALA_HOME=/usr/local/src/scala-2.11.12 export JAVA_HOME=/usr/local/src/jdk1.8.0_212 export HADOOP_HOME=/usr/local/src/hadoop-2.8.5 export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop export SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=master:2181,slave1:2181,slave2:2181" SPARK_MASTER_IP=master SPARK_LOCAL_DIRS=/usr/local/src/spark-2.3.3-bin-hadoop2.7 SPARK_DRIVER_MEMORY=1Gcp slaves.template slavesvim slaves123# 添加如下信息slave1slave2启动Standalone仅在Master启动集群：cd spark-2.3.3-bin-hadoop2.7/sbin./start-all.shWEB监控页面：Spark：http://master:8080验证cd spark-2.3.3-bin-hadoop2.7本地模式：./bin/run-example SparkPi 10 –master local[2]集群Standlone：./bin/spark-submit –class org.apache.spark.examples.SparkPi –master spark://master:7077 examples/jars/spark-examples_2.11-2.3.3.jar 10Spark on yarn：./bin/spark-submit –class org.apache.spark.examples.SparkPi –master yarn-cluster examples/jars/spark-examples_2.11-2.3.3.jar 10]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Spark</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Spark</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(七)]]></title>
+    <url>%2Fposts%2F9cf82033%2F</url>
+    <content type="text"><![CDATA[Hive：不要把我认成HbaseHive 安装配置Hive安装Hive仅在Master 仅在Clientcd /mnt/hgfs/Hadoopcp apache-hive-2.3.4-bin.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf apache-hive-2.3.4-bin.tar.gzrm -rf apache-hive-2.3.4-bin.tar.gz配置Hive环境变量：vim ~/.bashrc1234# 添加如下信息# SET Hive PATH export HIVE_HOME=/usr/local/src/apache-hive-2.3.4-bin export PATH=$PATH:$HIVE_HOME/binsource ~/.bashrc配置mysql驱动包仅在Mastercd /mnt/hgfs/Hadoopcp mysql-connector-java-5.1.47.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf mysql-connector-java-5.1.47.tar.gzrm -rf mysql-connector-java-5.1.47.tar.gzcp mysql-connector-java-5.1.47-bin.jar /usr/local/src/apache-hive-2.3.4-bin/lib/更换jline包（版本不一致）：cp apache-hive-2.3.4-bin/lib/jline-2.12.jar /usr/local/src/hadoop-2.8.5/share/hadoop/yarn/lib/配置hive仅在Master 仅在Clientcd apache-hive-2.3.4-bin创建临时目录/日志目录/数仓目录：mkdir -p data/hive/logmkdir -p data/hive/tmpmkdir -p data/hive/warehouse配置文件：cd confcp hive-env.sh.template hive-env.shvim hive-env.sh123456# 添加如下信息export JAVA_HOME=/usr/local/src/jdk1.8.0_212 export HADOOP_HOME=/usr/local/src/hadoop-2.8.5 export HIVE_HOME=/usr/local/src/apache-hive-2.3.4-bin export HIVE_CONF_DIR=/usr/local/src/apache-hive-2.3.4-bin/conf export HIVE_AUX_JARS=/usr/local/src/apache-hive-2.3.4-bin/libcp hive-default.xml.template hive-site.xmlvim hive-site.xml1234567891011121314151617181920212223242526272829303132# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt; &lt;value&gt;jdbc:mysql://master:3306/hive?createDatabaseIfNotExist=true&amp;amp;useSSL=false&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt; &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt; &lt;value&gt;alessa0&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt; &lt;value&gt;&#123;密码&#125;&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt; &lt;value&gt;/usr/local/src/apache-hive-2.3.4-bin/data/hive/warehouse&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.exec.scratchdir&lt;/name&gt; &lt;value&gt;/usr/local/src/apache-hive-2.3.4-bin/data/hive/tmp&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.querylog.location&lt;/name&gt; &lt;value&gt;/usr/local/src/apache-hive-2.3.4-bin/data/hive/log&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;把{system:java.io.tmpdir} 改成 /usr/local/src/apache-hive-2.3.4-bin/data/hive/tmp：1:%s/$&#123;system:java.io.tmpdir&#125;/\/usr\/local\/src\/apache-hive-2.3.4-bin\/data\/hive\/tmp/g把 {system:user.name} 改成 {user.name} ：1:%s/$&#123;system:user.name&#125;/alessa0/g初始化hive(MySQL版)schematool -dbType mysql -initSchema配置使用hiveserver2仅在Mastervim hive-site.xml12345678910111213141516171819202122232425262728293031323334# 添加如下信息 &lt;property&gt; &lt;name&gt;hive.server2.thrift.port&lt;/name&gt; &lt;value&gt;10000&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.server2.thrift.bind.host&lt;/name&gt; &lt;value&gt;master&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.server2.enable.doAs&lt;/name&gt; &lt;value&gt;false&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.metastore.uris&lt;/name&gt; &lt;value&gt;thrift://master:9083&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.support.concurrency&lt;/name&gt; &lt;value&gt;true&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.zookeeper.quorum&lt;/name&gt; &lt;value&gt;master:2181,slave1:2181,slave2:2181&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.server2.webui.host&lt;/name&gt; &lt;value&gt;master&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;hive.server2.webui.port&lt;/name&gt; &lt;value&gt;10002&lt;/value&gt; &lt;/property&gt;服务端启动仅在Master启动 metastore 服务 Shellnohup hive –service metastore &gt;&gt; /usr/local/src/apache-hive-2.3.4-bin/logs/hivelog.log 2&gt;&amp;1 &amp;启动 hiveserver2 服务 Shellnohup hiveserver2 1&gt;/usr/local/src/apache-hive-2.3.4-bin/logs/hiveserver.log 2&gt;/usr/local/src/apache-hive-2.3.4-bin/logs/hiveserver.err &amp;测试Web UI：http://master:10002/客户端连接仅在Client启动beeline ： Shellbeeline -u “jdbc:hive2://master:10000” alessa0 1008退出beeline ： Shell!q]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Hive</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Hive</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(六)]]></title>
+    <url>%2Fposts%2F3f038b9%2F</url>
+    <content type="text"><![CDATA[MySQL：我就是个工具人…MySQL 安装配置MySQL安装mysql仅在Master安装mariadb： 开源版MySQLyum -y install mariadb-server mariadbrpm -q mariadb mariadb-server设置开机启动：systemctl enable mariadbsystemctl daemon-reload开启mysql：systemctl start mariadb关闭mysql：systemctl stop mariadb重启mysql：systemctl restart mariadb查看mysql状态：systemctl status mariadb通过内置的安全脚本实现对数据库的安全保护mysql_secure_installation创建Hive账户登录root账户：mysql -uroot -p创建账户：CREATE USER ‘alessa0‘@’%’ IDENTIFIED BY ‘{密码}’;设置mysql远程登录：GRANT ALL ON . TO ‘alessa0‘@’%’;刷新权限：flush privileges;]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(五)]]></title>
+    <url>%2Fposts%2F9aff70cb%2F</url>
+    <content type="text"><![CDATA[Redis：就是这么快！Redis 安装配置Redis安装rediscd /mnt/hgfs/Hadoopcp redis-5.0.4.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf redis-5.0.4.tar.gzrm -rf redis-5.0.4.tar.gz待续……]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Redis</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Redis</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(四)]]></title>
+    <url>%2Fposts%2F9c5427b6%2F</url>
+    <content type="text"><![CDATA[ZooKeeper：你们都安分点…ZooKeeper 安装配置Zookeeper安装Zookeepercd /mnt/hgfs/Hadoopcp zookeeper-3.4.14.tar.gz /usr/local/src/cd /usr/local/srctar zxvf zookeeper-3.4.14.tar.gzrm -rf zookeeper-3.4.14.tar.gz配置Zookeeper环境变量：vim ~/.bashrc1234# 添加如下信息# SET ZOOKEEPER PATH export ZOOKEEPER_HOME=/usr/local/src/zookeeper-3.4.14 export PATH=$PATH:$ZOOKEEPER_HOME/binsource ~/.bashrc修改Zookeeper配置cd zookeeper-3.4.14创建临时目录/日志目录：mkdir datamkdir logs配置文件：cd confcp zoo_sample.cfg zoo.cfgvim zoo.cfg123456# 添加如下信息dataDir=/usr/local/src/zookeeper-3.4.14/data dataLogDir=/usr/local/src/zookeeper-3.4.14/logs server.1=master:2888:3888 server.2=slave1:2888:3888 server.3=slave2:2888:3888分别添加唯一标识ID：仅在Masterecho “1” &gt; /usr/local/src/zookeeper-3.4.14/data/myid\仅在Slava1echo “2” &gt; /usr/local/src/zookeeper-3.4.14/data/myid\仅在Slava2echo “3” &gt; /usr/local/src/zookeeper-3.4.14/data/myid启动Zookeeper启动服务：zkServer.sh start查看运行状态：zkServer.sh statusjps关闭服务：zkServer.sh stop]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Zookeeper</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Zookeeper</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(三)]]></title>
+    <url>%2Fposts%2F6617c8b9%2F</url>
+    <content type="text"><![CDATA[Hadoop：我好了你们再上Hadoop 安装配置HadoopPs：除非特别指出仅在Master，则在所有节点配置安装Hadoopcd /mnt/hgfs/Hadoopcp hadoop-2.8.5.tar.gz /usr/local/src/cd /usr/local/srctar zxvf hadoop-2.8.5.tar.gzrm -rf hadoop-2.8.5.tar.gz配置Hadoop环境变量：vim ~/.bashrc12345# 添加如下信息# SET HADOOP PATH export HADOOP_HOME=/usr/local/src/hadoop-2.8.5 export PATH=$PATH:$HADOOP_HOME/bin export PATH=$PATH:$HADOOP_HOME/sbinsource ~/.bashrcHadoop配置文件cd hadoop-2.8.5创建临时目录和文件目录：mkdir -p /usr/local/src/hadoop-2.8.5/dfs/namemkdir -p /usr/local/src/hadoop-2.8.5/dfs/datamkdir -p /usr/local/src/hadoop-2.8.5/tmp/dfscd etc/hadoop仅在Client配置(若无可跳过此步骤)：vim core-site.xml123456789# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;!-- 指定Hadoop所使用的文件系统Schema --&gt; &lt;name&gt;fs.defaultFS&lt;/name&gt; &lt;value&gt;hdfs://master:9000&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;mv mapred-site.xml.template mapred-site.xmlvim mapred-site.xml123456789# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;!-- 指定MapReduce程序运行在Yarn上 --&gt; &lt;name&gt;mapreduce.framework.name&lt;/name&gt; &lt;value&gt;yarn&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;vim yarn-site.xml123456789# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;!-- 指定ResourceManager地址 --&gt; &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt; &lt;value&gt;master&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;修改Hadoop配置文件：vim hadoop-env.sh12# 添加如下信息export JAVA_HOME=/usr/local/src/jdk1.8.0_212vim yarn-env.sh12# 添加如下信息export JAVA_HOME=/usr/local/src/jdk1.8.0_212vim slaves123# 添加如下信息slave1slave2vim core-site.xml1234567891011121314# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;!-- 指定Hadoop所使用的文件系统Schema --&gt; &lt;name&gt;fs.defaultFS&lt;/name&gt; &lt;value&gt;hdfs://master:9000&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;!-- 指定HDFS本地临时存放目录 --&gt; &lt;name&gt;hadoop.tmp.dir&lt;/name&gt; &lt;value&gt;/usr/local/src/hadoop-2.8.5/tmp&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;vim hdfs-site.xml123456789101112131415161718192021222324# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;!-- 指定SecondaryNamenode端口地址 --&gt; &lt;name&gt;dfs.namenode.secondary.http-address&lt;/name&gt; &lt;value&gt;master:9001&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;!-- 指定HDFS本地Namenode存放目录 --&gt; &lt;name&gt;dfs.namenode.name.dir&lt;/name&gt; &lt;value&gt;file:/usr/local/src/hadoop-2.8.5/dfs.name&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;!-- 指定HDFS本地Datanode存放目录 --&gt; &lt;name&gt;dfs.datanode.name.dir&lt;/name&gt; &lt;value&gt;file:/usr/local/src/hadoop-2.8.5/dfs.data&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;!-- HDFS副本数量(小于等于从节点的数量) --&gt; &lt;name&gt;dfs.replication&lt;/name&gt; &lt;value&gt;2&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;选项卡 1选项卡 2选项卡 3JavaAnaconda3Scalavim mapred-site.xml12345678910111213141516171819202122232425262728293031323334353637383940414243444546# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;!-- 指定MapReduce程序运行在Yarn上 --&gt; &lt;name&gt;mapreduce.framework.name&lt;/name&gt; &lt;value&gt;yarn&lt;/value&gt; &lt;/property&gt; &lt;!-- 配置JHS --&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt; &lt;value&gt;master:10020&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt; &lt;value&gt;master:19888&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;yarn.app.mapreduce.am.staging-dir&lt;/name&gt; &lt;value&gt;/usr/local/src/hadoop-2.8.5/tmp/hadoop-yarn/staging&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.intermediate-done-dir&lt;/name&gt; &lt;value&gt;$&#123;yarn.app.mapreduce.am.staging-dir&#125;/history/done_intermediate&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.done-dir&lt;/name&gt; &lt;value&gt;$&#123;yarn.app.mapreduce.am.staging-dir&#125;/history/done&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.cleaner.enable&lt;/name&gt; &lt;value&gt;true&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.cleaner.interval-ms&lt;/name&gt; &lt;value&gt;86400000&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.max-age-ms&lt;/name&gt; &lt;value&gt;604800000&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;mapreduce.jobhistory.move.interval-ms&lt;/name&gt; &lt;value&gt;180000&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;vim yarn-site.xml1234567891011121314151617181920212223242526272829303132333435# 添加如下信息&lt;configuration&gt; &lt;property&gt; &lt;!-- 指定reducer获取数据的方式--&gt; &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt; &lt;value&gt;mapreduce_shuffle&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;!-- 指定reducer获取数据所需的类--&gt; &lt;name&gt;yarn.nodemanager.aux-services.mapreduce.shuffle.class&lt;/name&gt; &lt;value&gt;org.apache.hadoop.mapred.ShuffleHandler&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;!-- 指定ResourceManager地址 --&gt; &lt;name&gt;yarn.resourcemanager.address&lt;/name&gt; &lt;value&gt;master:8032&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;yarn.resourcemanager.scheduler.address&lt;/name&gt; &lt;value&gt;master:8030&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;yarn.resourcemanager.resource-tracker.address&lt;/name&gt; &lt;value&gt;master:8035&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;yarn.resourcemanager.admin.address&lt;/name&gt; &lt;value&gt;master:8033&lt;/value&gt; &lt;/property&gt; &lt;property&gt; &lt;name&gt;yarn.resourcemanager.webapp.address&lt;/name&gt; &lt;value&gt;master:8088&lt;/value&gt; &lt;/property&gt; &lt;/configuration&gt;启动集群仅在Master初始化NameNode：hadoop namenode -format启动Hadoop集群：start-dfs.shstart-yarn.shWEB监控页面：HDFS：http://ip:50070YARN：http://ip:8088]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Hadoop</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(二)]]></title>
+    <url>%2Fposts%2F18e4e892%2F</url>
+    <content type="text"><![CDATA[Java, Python, Scala人生苦短Ps：安装包均存放于vmware共享文件夹Hadoop中JavaAnaconda3Scala安装JDKcd /mnt/hgfs/Hadoopcp jdk-8u212-linux-x64.tar.gz /usr/local/src/cd /usr/local/src/tar zxvf jdk-8u212-linux-x64.tar.gzrm -rf jdk-8u212-linux-x64.tar.gz配置JDK环境变量：vim ~/.bashrc12345# 添加如下信息# SET JAVA PATH export JAVA_HOME=/usr/local/src/jdk1.8.0_212 export CLASSPATH=.:$CLASSPATH:$JAVA_HOME/lib export PATH=$PATH:$JAVA_HOME/binsource ~/.bashrc安装anaconda3cd /mnt/hgfs/Hadoopcp Miniconda3-latest-Linux-x86_64.sh /usr/local/src/cd /usr/local/srcsudo yum -y install bzip2sh Miniconda3-latest-Linux-x86_64.shrm -rf Miniconda3-latest-Linux-x86_64.sh配置环境变量：source ~/.bashrc更新conda环境：conda update –all安装Scalacd /mnt/hgfs/Hadoopcp scala-2.11.12.tgz /usr/local/src/cd /usr/local/src/tar zxvf scala-2.11.12.tgzrm -rf scala-2.11.12.tgz配置Scala环境变量：vim ~/.bashrc1234# 添加如下信息# SET SCALA PATH export SCALA_HOME=/usr/local/src/scala-2.11.12 export PATH=$PATH:$SCALA_HOME/binsource ~/.bashrc]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>语言</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Java</tag>
+        <tag>Python</tag>
+        <tag>Scala</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Hadoop 集群搭建(一)]]></title>
+    <url>%2Fposts%2Fb7d573f0%2F</url>
+    <content type="text"><![CDATA[虚拟机节点配置Hello, BigData集群环境系统：CentOS-7-x86_64-Minimal-1810.isoMaster 192.168.69.101Slave1 192.168.69.102Slave2 192.168.69.103修改IP地址：vim /etc/sysconfig/network-scripts/ifcfg-ens33Master12345# 修改如下信息IPADDR=192.168.69.101 NETMASK=255.255.255.0 GATEWAY=192.168.69.2 DNS1=119.29.29.29仅在Slave112345# 修改如下信息IPADDR=192.168.69.102 NETMASK=255.255.255.0 GATEWAY=192.168.69.2 DNS1=119.29.29.29仅在Slave212345# 修改如下信息IPADDR=192.168.69.103 NETMASK=255.255.255.0 GATEWAY=192.168.69.2 DNS1=119.29.29.29关闭系统防火墙及内核防火墙永久关闭内核防火墙：yum -y install vimvim /etc/selinux/config12# 修改如下信息SELINUX=disabled停止firewall：systemctl stop firewalld.service禁止firewall开机启动：systemctl disable firewalld.service修改主机文件修改主机名：仅在Masterhostnamectl set-hostname master仅在Slave1hostnamectl set-hostname slave1仅在Slave2hostnamectl set-hostname slave2修改hosts文件：vim /etc/hosts123456# 添加如下信息192.168.69.101 master 192.168.69.102 slave1 192.168.69.103 slave2 # 本地(可不加)192.168.69.1 clientSSH互信配置生成密钥对（公钥和私钥）–三次回车生成密钥：ssh-keygen -t rsa -P ‘’追加：cat ~/.ssh/id_rsa.pub &gt; ~/.ssh/authorized_keyschmod g-w /home/alessa0chmod 700 /home/alessa0/.sshchmod 600 /home/alessa0/.ssh/authorized_keys追加密钥到Master：ssh [ 主机名 ] cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys复制密钥到从节点：scp ~/.ssh/authorized_keys [ 主机名 ]:~/.ssh/authorized_keys设置vmware共享文件夹cd /mnt/hgfs/ 发现没有文件，解决如下安装工具：yum -y install open-vm-toolsyum -y install gcc gcc-c++ automake make kernel-develyum -y install git终端中输入如下命令：git clone https://github.com/rasa/vmware-tools-patches.gitcd vmware-tools-patches./patched-open-vm-tools.sh查看分享目录：vmware-hgfsclientsu临时挂载分享目录：mount.vmhgfs .host:/ /mnt/hgfs/永久挂载分享目录：vmware-config-tools.pl -d –clobber-kernel-modules=vmhgfs#使用如下方法挂载有的会出错：vim /etc/fstab12# 末尾添加如下信息.host:/ /mnt/hgfs fuse.vmhgfs-fuse allow_other 0 0删除工具包cd ~rm -rf ~/vmware-tools-patchesreboot修改src权限cd /usr/localsudo chown -R alessa0:alessa0 srcsudo chown -R alessa0:alessa0 bin安装netstat：sudo yum -y install net-toolsHadoop集群组件列表组件masterslave1slave2jdk1.8.0_212√√√miniconda3√√√scala-2.11.12√√√hadoop-2.8.5√√√redis-5.0.4√zookeeper-3.4.14√√√spark-2.3.3-bin-hadoop2.7√√√mariadb/mariadb-server√apache-hive-2.3.4-bin√hbase-1.3.3√√√thrift-0.12.0√apache-flume-1.9.0-bin√√√kafka_2.11-2.2.0√√√apache-storm-1.2.2√√√Storm-on-Yarn√flink-1.8.0√√√]]></content>
+      <categories>
+        <category>技术</category>
+        <category>大数据</category>
+        <category>环境搭建</category>
+        <category>CentOS 7</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>Hadoop环境搭建</tag>
+        <tag>Vmware</tag>
+      </tags>
+  </entry>
+</search>
