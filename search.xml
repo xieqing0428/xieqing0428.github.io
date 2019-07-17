@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[BigData复习笔记01：HDFS1.0与MapReduce]]></title>
     <url>%2Fposts%2F34c278f3%2F</url>
-    <content type="text"><![CDATA[HDFS1.0与MapReduceblah blah blahtext##[title] [url] [link-text]12345[language] 是代码语言的名称，diff 用来设置代码块颜色高亮，非必须；-红+绿[title] 是顶部左边的说明，非必须；[url] 是顶部右边的超链接地址，非必须；[link text] 如它的字面意思，超链接的名称，非必须。代码#@ 前面的是label的名字，后面的是要显示的文字）：default1&#123;% label default@default %&#125;primary1&#123;% label primary@primary %&#125;success1&#123;% label success@success %&#125;info1&#123;% label info@info %&#125;warning1&#123;% label warning@warning %&#125;danger1&#123;% label danger@danger %&#125;1234567891011&#123;% tabs 选项卡, 1 %&#125;&lt;!-- tab --&gt;**这是选项卡 1** 呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈……&lt;!-- endtab --&gt;&lt;!-- tab --&gt;**这是选项卡 2**&lt;!-- endtab --&gt;&lt;!-- tab --&gt;**这是选项卡 3** 哇，你找到我了！φ(≧ω≦*)♪～&lt;!-- endtab --&gt;&#123;% endtabs %&#125;1&#123;% pdf /path/to/your/file.pdf %&#125;推荐文章:Hadoop 集群搭建(八)：SparkHadoop 集群搭建(十四)：Storm on Yarn《数据库系统概论》学习笔记之关系数据库《数据库系统概论》学习笔记之绪论]]></content>
+    <content type="text"><![CDATA[HDFS1.0与MapReduceblah blah blahtext##[title] [url] [link-text]12345[language] 是代码语言的名称，diff 用来设置代码块颜色高亮，非必须；-红+绿[title] 是顶部左边的说明，非必须；[url] 是顶部右边的超链接地址，非必须；[link text] 如它的字面意思，超链接的名称，非必须。代码#@ 前面的是label的名字，后面的是要显示的文字）：default1&#123;% label default@default %&#125;primary1&#123;% label primary@primary %&#125;success1&#123;% label success@success %&#125;info1&#123;% label info@info %&#125;warning1&#123;% label warning@warning %&#125;danger1&#123;% label danger@danger %&#125;1234567891011&#123;% tabs 选项卡, 1 %&#125;&lt;!-- tab --&gt;**这是选项卡 1** 呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈呵呵哈哈哈哈哈哈哈哈……&lt;!-- endtab --&gt;&lt;!-- tab --&gt;**这是选项卡 2**&lt;!-- endtab --&gt;&lt;!-- tab --&gt;**这是选项卡 3** 哇，你找到我了！φ(≧ω≦*)♪～&lt;!-- endtab --&gt;&#123;% endtabs %&#125;1&#123;% pdf /path/to/your/file.pdf %&#125;推荐文章:Hadoop 集群搭建(八)：SparkHadoop 集群搭建(十四)：Storm on Yarn]]></content>
       <categories>
         <category>技术</category>
         <category>大数据</category>
@@ -11,7 +11,6 @@
       </categories>
       <tags>
         <tag>BigData</tag>
-        <tag>复习笔记</tag>
         <tag>HDFS1.0</tag>
         <tag>MapReduce</tag>
       </tags>
