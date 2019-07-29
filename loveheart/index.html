@@ -1,0 +1,110 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>爱礼 | 听泉.ღ</title>
+
+	<style type="text/css">
+		@font-face {
+			font-family: digit;
+			src: url('https://image.alessa0.cn/css/digital-7_mono.ttf') format("truetype");
+		}
+	</style>
+	<link href="https://image.alessa0.cn/css/default.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="https://image.alessa0.cn/js/jquery.js"></script>
+	<script type="text/javascript" src="https://image.alessa0.cn/js/garden.js"></script>
+	<script type="text/javascript" src="https://image.alessa0.cn/js/functions.js"></script>
+
+</head>
+
+<body>
+
+	<audio src="https://image.alessa0.cn/music/周杰伦/周杰伦-告白气球.mp3" autoplay="true"> </audio>
+
+
+	<div id="mainDiv">
+		<div id="content">
+			<div id="code">
+				<span class="comments">有幸见到漂亮乐观善良温柔的你</span><br /><br />
+				<span class="comments">有过相聚时的快乐</span><br />
+				<span class="comments">也有过分离时的失落</span><br /><br />
+
+				<span class="comments">每天期待着与你下一次见面</span><br />
+				<span class="comments">每晚期待梦中与你相遇</span><br /><br />
+
+				<span class="comments">你带我走遍你生活的校园</span><br />
+				<span class="comments">我牵你走过我生活的城市</span><br />
+				<span class="comments">希望可以牵着你走一辈子</span><br /><br />
+
+				<span class="comments">我相信爱，能让我们战胜时间和距离，修成正果</span><br /><br />
+
+				<span class="keyword">唯有梦想与好姑娘</span><br />
+				<span class="keyword">不可辜负</span><br /><br />
+				<hr /><br />
+				<span class="keyword">小夕, Love u forever and ever..</span><br /><br />
+				<span class="space" /><span class="space" /><span class="space" /><span class="space" /><span
+					class="space" /><span class="space" /><span class="space" /><span class="space" /><span
+					class="space" /><span class="space" /><span class="space" /><span class="space" /><span
+					class="space" /><span class="space" /><span class="space" /><span class="space" /><span
+					class="space" /><span class="space" /><span class="space" /><span class="space" />-- Superman
+
+
+			</div>
+			<a href="https://alessa0.cn">
+				<div id="loveHeart">
+					<canvas id="garden"></canvas>
+					<div id="words">
+						<div id="messages">
+							相遇，相识，相恋...
+							<div id="elapseClock"></div>
+						</div>
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		var offsetX = $("#loveHeart").width() / 2;
+		var offsetY = $("#loveHeart").height() / 2 - 55;
+		var together = new Date();
+
+		together.setFullYear(2015, 7, 19);
+		together.setHours(11);
+		together.setMinutes(10);
+		together.setSeconds(0);
+		together.setMilliseconds(0);
+
+		if (!document.createElement('canvas').getContext) {
+			var msg = document.createElement("div");
+			msg.id = "errorMsg";
+			msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+";
+			document.body.appendChild(msg);
+			$("#code").css("display", "none")
+			$("#copyright").css("position", "absolute");
+			$("#copyright").css("bottom", "10px");
+			document.execCommand("stop");
+		} else {
+			setTimeout(function () {
+				startHeartAnimation();
+			}, 5000);
+
+			timeElapse(together);
+			setInterval(function () {
+				timeElapse(together);
+			}, 500);
+
+			adjustCodePosition();
+			$("#code").typewriter();
+		}
+	</script>
+	<div style="text-align:center;clear:both">
+		<p>Made for Lin Xi, made by <a href="https://github.com/xieqing0428" target="_blank">Xie Qing<a /></p>
+		<p>Copyright © 2015 - 2019 <a href="https://alessa0.cn/" target="_blank">Alessa0<a />. All Rights Reserved.
+				Designed by <a href="https://github.com/hackerzhou" target="_blank">zhou<a /> </p>
+	</div>
+</body>
+
+</html>
