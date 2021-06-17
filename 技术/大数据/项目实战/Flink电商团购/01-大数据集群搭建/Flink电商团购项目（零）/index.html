@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/heart.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"alessa0.cn","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Flink项目环境搭建 ![janko-ferlic-214224-unsplash](https:&#x2F;&#x2F;image.alessa0.cn&#x2F;045237.jpg)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink电商团购项目（零）：环境搭建">
+<meta property="og:url" content="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E9%9B%B6%EF%BC%89/">
+<meta property="og:site_name" content="听泉.ღ">
+<meta property="og:description" content="Flink项目环境搭建 ![janko-ferlic-214224-unsplash](https:&#x2F;&#x2F;image.alessa0.cn&#x2F;045237.jpg)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-17T08:20:10.000Z">
+<meta property="article:modified_time" content="2021-06-17T09:32:03.143Z">
+<meta property="article:author" content="XIE QING">
+<meta property="article:tag" content="BigData">
+<meta property="article:tag" content="Flink">
+<meta property="article:tag" content="项目">
+<meta property="article:tag" content="电商">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E9%9B%B6%EF%BC%89/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Flink电商团购项目（零）：环境搭建 | 听泉.ღ</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">听泉.ღ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">— 听泉小窝 —</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E9%9B%B6%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="XIE QING">
+      <meta itemprop="description" content="怜我世人, 焚我残躯。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="听泉.ღ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flink电商团购项目（零）：环境搭建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-17 16:20:10" itemprop="dateCreated datePublished" datetime="2019-05-17T16:20:10+08:00">2019-05-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 17:32:03" itemprop="dateModified" datetime="2021-06-17T17:32:03+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">项目实战</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/" itemprop="url" rel="index"><span itemprop="name">Flink电商团购</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" itemprop="url" rel="index"><span itemprop="name">01-大数据集群搭建</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p class="description">Flink项目环境搭建</p>
+![janko-ferlic-214224-unsplash](https://image.alessa0.cn/045237.jpg)
+
+<span id="more"></span>
+
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>第一章 大数据集群搭建 </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<div class="text-center"><a class="btn" target="_blank" rel="noopener" href="https://flink.apache.org/">
+            <i class="fa fa-home fa-lg fa-fw"></i>Flink
+          </a></div>
+# 集群组件安装
+
+<h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp jdk-8u212-linux-x64.tar.gz /usr/aboutyun</li>
+<li>cd /usr/aboutyun</li>
+<li>tar zxvf jdk-8u212-linux-x64.tar.gz</li>
+<li>rm -rf jdk-8u212-linux-x64.tar.gz</li>
+<li>mv jdk1.8.0_212 jdk</li>
+</ul>
+<p><strong>#配置JDK环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET JAVA PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/aboutyun/jdk </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.:$CLASSPATH:$JAVA_HOME/lib </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$JAVA_HOME/bin </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<h2 id="安装Scala"><a href="#安装Scala" class="headerlink" title="安装Scala"></a>安装Scala</h2><ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp scala-2.11.12.tgz /usr/aboutyun</li>
+<li>cd /usr/aboutyun</li>
+<li>tar zxvf scala-2.11.12.tgz</li>
+<li>rm -rf scala-2.11.12.tgz</li>
+<li>mv scala-2.11.12 scala</li>
+</ul>
+<p><strong>#配置Scala环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET SCALA PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">SCALA_HOME</span>=/usr/aboutyun/scala </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$SCALA_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<h2 id="安装miniconda3"><a href="#安装miniconda3" class="headerlink" title="安装miniconda3"></a>安装miniconda3</h2><ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp Miniconda3-latest-Linux-x86_64.sh /usr/local/src/</li>
+<li>cd /usr/local/src</li>
+<li>sudo yum -y install bzip2</li>
+<li>sh Miniconda3-latest-Linux-x86_64.sh</li>
+<li>rm -rf Miniconda3-latest-Linux-x86_64.sh</li>
+</ul>
+<p><strong>#配置环境变量：</strong></p>
+<ul>
+<li>source ~/.bashrc</li>
+</ul>
+<p><strong>#更新conda环境：</strong></p>
+<ul>
+<li>conda update –all</li>
+</ul>
+<h2 id="安装Zookeeper"><a href="#安装Zookeeper" class="headerlink" title="安装Zookeeper"></a>安装Zookeeper</h2><span class="label danger">仅在Slave节点</span>
+
+<ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp zookeeper-3.4.9.tar.gz /usr/aboutyun/</li>
+<li>cd /usr/aboutyun/</li>
+<li>tar zxvf zookeeper-3.4.9.tar.gz</li>
+<li>rm -rf zookeeper-3.4.9.tar.gz</li>
+<li>mv zookeeper-3.4.9 zookeeper</li>
+<li>cd zookeeper</li>
+</ul>
+<p><strong>#配置Zookeeper环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET ZOOKEEPER PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">ZOOKEEPER_HOME</span>=/usr/aboutyun/zookeeper </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$ZOOKEEPER_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<p><strong>#修改Zookeeper配置</strong> </p>
+<ul>
+<li>mkdir data</li>
+<li>mkdir logs</li>
+<li>cd conf</li>
+<li>cp zoo_sample.cfg zoo.cfg</li>
+<li>vim zoo.cfg</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">dataDir</span>=/usr/aboutyun/zookeeper/data </span><br><span class="line"><span class="attribute">dataLogDir</span>=/usr/aboutyun/zookeeper/logs </span><br><span class="line"><span class="attribute">server</span>.<span class="number">1</span>=flink-slave<span class="number">1</span>:<span class="number">2888</span>:<span class="number">3888</span> </span><br><span class="line"><span class="attribute">server</span>.<span class="number">2</span>=flink-slave<span class="number">2</span>:<span class="number">2888</span>:<span class="number">3888</span> </span><br><span class="line"><span class="attribute">server</span>.<span class="number">3</span>=flink-slave<span class="number">3</span>:<span class="number">2888</span>:<span class="number">3888</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>#分别添加ID</strong> </p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Slave1 </span></span><br><span class="line">echo <span class="string">&quot;1&quot;</span> &gt; <span class="regexp">/usr/</span>aboutyun<span class="regexp">/zookeeper/</span>data/myid </span><br><span class="line"><span class="comment">#Slave2 </span></span><br><span class="line">echo <span class="string">&quot;2&quot;</span> &gt; <span class="regexp">/usr/</span>aboutyun<span class="regexp">/zookeeper/</span>data/myid </span><br><span class="line"><span class="comment">#Slave3 </span></span><br><span class="line">echo <span class="string">&quot;3&quot;</span> &gt; <span class="regexp">/usr/</span>aboutyun<span class="regexp">/zookeeper/</span>data/myid</span><br></pre></td></tr></table></figure>
+
+<p><strong>#启动Zookeeper服务</strong> </p>
+<ul>
+<li>zkServer.sh start</li>
+</ul>
+<p><strong>#查看运行状态</strong> </p>
+<ul>
+<li><p>zkServer.sh status</p>
+</li>
+<li><p>jps</p>
+</li>
+</ul>
+<p><strong>#关闭Zookeeper服务</strong> </p>
+<ul>
+<li>zkServer.sh stop</li>
+</ul>
+<h2 id="安装Hadoop"><a href="#安装Hadoop" class="headerlink" title="安装Hadoop"></a>安装Hadoop</h2><ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp hadoop-2.7.0.tar.gz /usr/aboutyun/</li>
+<li>cd /usr/aboutyun/</li>
+<li>tar zxvf hadoop-2.7.0.tar.gz</li>
+<li>rm -rf hadoop-2.7.0.tar.gz</li>
+<li>mv hadoop-2.7.0 hadoop</li>
+<li>cd hadoop</li>
+</ul>
+<p><strong>#配置Hadoop环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET HADOOP PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HADOOP_HOME</span>=/usr/aboutyun/hadoop</span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$HADOOP_HOME/bin </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$HADOOP_HOME/sbin</span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HADOOP_CONF_DIR</span>=<span class="variable">$HADOOP_HOME</span>/etc/hadoop</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<p><strong>#创建临时目录和文件目录</strong> </p>
+<ul>
+<li>mkdir -p /usr/aboutyun/hadoop/dfs/name</li>
+<li>mkdir -p /usr/aboutyun/hadoop/dfs/data</li>
+<li>mkdir -p /usr/aboutyun/hadoop/tmp/dfs</li>
+<li>mkdir -p /usr/aboutyun/hadoop/journal</li>
+<li>mkdir -p /usr/aboutyun/hadoop/yarn/logs</li>
+</ul>
+<p><strong>#修改Hadoop配置文件</strong> </p>
+<ul>
+<li>cd etc/hadoop</li>
+<li>vim hadoop-env.sh</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/aboutyun/jdk</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vim yarn-env.sh</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/aboutyun/jdk</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vim slaves</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">flink</span>-slave<span class="number">1</span> </span><br><span class="line"><span class="attribute">flink</span>-slave<span class="number">2</span></span><br><span class="line"><span class="attribute">flink</span>-slave<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vim core-site.xml</li>
+</ul>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="params">&lt;configuration&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>fs.defaultFS<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>hdfs:<span class="comment">//mycluster&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>默认文件系统的名称。一个URI，其方案和权限决定了FileSystem的实现。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>ha.zookeeper.quorum<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>flink-slave1:<span class="number">2181</span>,flink-slave2:<span class="number">2181</span>,flink-slave3:<span class="number">2181</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>由逗号分隔的ZooKeeper服务器地址列表，由ZKFailoverController在自动故障转移中使用。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>hadoop.tmp.dir<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>aboutyun<span class="meta-keyword">/hadoop/</span>tmp<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>数据目录目录<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.ha.fencing.methods<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>sshfence</span><br><span class="line">shell(<span class="meta-keyword">/bin/</span>true)<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>用于服务防护的防护方法列表。可能包含内置方法（例如shell和sshfence）或用户定义的方法。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.ha.fencing.ssh.private-key-files<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/home/</span>aboutyun/.ssh/id_rsa<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>用于内置sshfence fencer的SSH私钥文件。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>io.file.buffer.size<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">131072</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>SequenceFiles中使用的读/写缓冲区的大小。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>ipc.client.connect.max.retries<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">100</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>客户端为建立服务器连接而重试的次数。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>ipc.client.connect.retry.interval<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">10000</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>客户端在重试建立服务器连接之前将等待的毫秒数。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line"><span class="params">&lt;/configuration&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vim hdfs-site.xml</li>
+</ul>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="params">&lt;configuration&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.nameservices<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>mycluster<span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.ha.namenodes.mycluster<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>flink-master1,flink-master2<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>给定名称服务的前缀包含给定名称服务的逗号分隔的名称节点列表。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.rpc-address.mycluster.flink-master1<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>flink-master1:<span class="number">8020</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.rpc-address.mycluster.flink-master2<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>flink-master2:<span class="number">8020</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.http-address.mycluster.flink-master1<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>flink-master1:<span class="number">50070</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.http-address.mycluster.flink-master2<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>flink-master2:<span class="number">50070</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.shared.edits.dir<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>qjournal:<span class="comment">//flink-slave1:8485;flink-slave2:8485;flink-slave3:8485/mycluster&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>HA群集中多个名称节点之间的共享存储上的目录。此目录将由活动写入并由备用数据库读取，以保持命名空间同步。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.client.failover.proxy.provider.mycluster<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>配置Java类的名称，DFS客户端将使用该名称来确定哪个NameNode是当前的Active，以及哪个NameNode当前正在为客户端请求提供服务。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.ha.automatic-failover.enabled<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>true<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>是否启用自动故障转移。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.replication<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">3</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.permissions.enabled<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>false<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>如果为“true”，则启用HDFS中的权限检查。如果为“false”，则关闭权限检查，但所有其他行为都保持不变。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.journalnode.edits.dir<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>aboutyun<span class="meta-keyword">/hadoop/</span>journal<span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>指定JournalNode在本地磁盘存放数据的位置<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.name.dir<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>file:<span class="comment">///usr/aboutyun/hadoop/dfs/name&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>设置namenode存放路径<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.datanode.data.dir<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span>file:<span class="comment">///usr/aboutyun/hadoop/dfs/data&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>设置datanode存放径路<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.blocksize<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">268435456</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>大型文件系统的HDFS块大小为<span class="number">256</span>MB。<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line">    <span class="params">&lt;property&gt;</span></span><br><span class="line">        <span class="params">&lt;name&gt;</span>dfs.namenode.handler.count<span class="params">&lt;/name&gt;</span></span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">100</span><span class="params">&lt;/value&gt;</span></span><br><span class="line">        <span class="params">&lt;description&gt;</span>namenode的服务器线程数<span class="params">&lt;/description&gt;</span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br><span class="line"><span class="params">&lt;/configuration&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>mv mapred-site.xml.template mapred-site.xml</li>
+<li>vim mapred-site.xml</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;指定mr框架为yarn方式&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt; </span><br><span class="line">        &lt;name&gt;mapreduce.map.memory.mb&lt;/name&gt; </span><br><span class="line">        &lt;value&gt;<span class="number">512</span>&lt;/value&gt; </span><br><span class="line">        &lt;description&gt;每个Map任务的物理内存限制&lt;/description&gt; </span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt; </span><br><span class="line">        &lt;name&gt;mapreduce.reduce.memory.mb&lt;/name&gt; </span><br><span class="line">        &lt;value&gt;<span class="number">512</span>&lt;/value&gt; </span><br><span class="line">        &lt;description&gt;每个Reduce任务的物理内存限制&lt;/description&gt; </span><br><span class="line">    &lt;/property&gt; </span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.jobhistory.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">10020</span>&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;MapReduce JobHistory服务器IPC主机：端口&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.jobhistory.webapp.address&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;<span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">19888</span>&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;MapReduce JobHistory服务器Web浏览时的主机：端口&lt;/description&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">        &lt;name&gt;mapreduce.application.classpath&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>etc/hadoop,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/</span>common/*,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/</span>common<span class="regexp">/lib/</span>*,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/</span>hdfs/*,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/</span>hdfs<span class="regexp">/lib/</span>*,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/m</span>apreduce/*,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/m</span>apreduce<span class="regexp">/lib/</span>*,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/y</span>arn/*,</span><br><span class="line">          <span class="regexp">/usr/</span>aboutyun<span class="regexp">/hadoop/</span>share<span class="regexp">/hadoop/y</span>arn<span class="regexp">/lib/</span>*        </span><br><span class="line">        &lt;/value&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vim yarn-site.xml</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Site specific YARN configuration properties--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.recovery.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>启动后启用RM以恢复状态。如果为true，则必须指定yarn.resourcemanager.store.class。<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.ha.automatic-failover.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.store.class<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>用作持久存储的类。<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.zk-address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>flink-slave1:2181,flink-slave2:2181,flink-slave3:2181<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>ZooKeeper服务的地址，多个地址使用逗号隔开<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.ha.enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>启用RM高可用性。启用时，（1）默认情况下，RM以待机模式启动，并在提示时转换为活动模式。（2）RM集合中的节点列在yarn.resourcemanager.ha.rm-ids中（3）如果明确指定了yarn.resourcemanager.ha.id，则每个RM的id来自yarn.resourcemanager.ha.id或者可以通过匹配yarn.resourcemanager.address。<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.ha.rm-ids<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>rm1,rm2<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>启用HA时群集中的RM节点列表。最少2个<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.webapp.address.rm1<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>flink-master1:8088<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.webapp.address.rm2<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>flink-master2:8088<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.cluster-id<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>mycluster-yarn-ha<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>集群HA的id，用于在ZooKeeper上创建节点，区分使用同一个ZooKeeper集群的不同Hadoop集群<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.hostname.rm1<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>flink-master1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>主机名<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.hostname.rm2<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>flink-master2<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>主机名<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>reducer取数据的方式是mapreduce_shuffle<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.resource.memory-mb<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>2048<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>每个节点可用内存,单位MB<span class="tag">&lt;/<span class="name">discription</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.resource.cpu-vcores<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>2<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>每个节点可用cpu<span class="tag">&lt;/<span class="name">discription</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.scheduler.minimum-allocation-mb<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>512<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>单个任务可申请最少内存，默认1024MB<span class="tag">&lt;/<span class="name">discription</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.scheduler.maximum-allocation-mb<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>1024<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>单个任务可申请最大内存，默认8192MB<span class="tag">&lt;/<span class="name">discription</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.scheduler.minimum-allocation-vcores<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>最小的cores 1 个，默认的就是一个<span class="tag">&lt;/<span class="name">discription</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.scheduler.minimum-allocation-vcores<span class="tag">&lt;/<span class="name">name</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>2<span class="tag">&lt;/<span class="name">value</span>&gt;</span>  </span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>最多可分配的cores 2 个<span class="tag">&lt;/<span class="name">discription</span>&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span> </span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.pmem-check-enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.vmem-check-enabled<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.log-aggregation-enable<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>是否开启聚合日志<span class="tag">&lt;/<span class="name">discription</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>-1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>定义NM唤醒上载日志文件的频率。默认值为-1。默认情况下，应用程序完成后将上载日志。通过设置此配置，可以在应用程序运行时定期上载日志。可设置的最小滚动间隔秒数为3600。<span class="tag">&lt;/<span class="name">discription</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.log.server.url<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>http://flink-master1:19888/jobhistory/logs<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span> 配置日志服务器的地址<span class="tag">&lt;/<span class="name">discription</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.log-aggregation.retain-seconds<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>-1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span> 在删除聚合日志之前保留多长时间。-1禁用。单位是秒<span class="tag">&lt;/<span class="name">discription</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.log-dirs<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/usr/aboutyun/hadoop/yarn/logs/<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>nodemanager存放container日志的本地路径<span class="tag">&lt;/<span class="name">discription</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.remote-app-log-dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/tmp/logs<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discription</span>&gt;</span>nodemanager存放container日志的本地路径<span class="tag">&lt;/<span class="name">discription</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.resourcemanager.am.max-attempts<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>4<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>The maximum number of application master execution attempts.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>cd /usr/aboutyun/hadoop/sbin</li>
+</ul>
+<p><strong>#编辑 start-dfs.sh，stop-dfs.sh 脚本</strong></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在开始处 #!/usr/bin/env bash 的下面，增加以下内容：</span></span><br><span class="line"><span class="attr">HDFS_DATANODE_USER</span>=root</span><br><span class="line"><span class="attr">HDFS_DATANODE_SECURE_USER</span>=hdfs</span><br><span class="line"><span class="attr">HDFS_ZKFC_USER</span>=root</span><br><span class="line"><span class="attr">HDFS_JOURNALNODE_USER</span>=root</span><br><span class="line"><span class="attr">HDFS_NAMENODE_USER</span>=root</span><br><span class="line"><span class="attr">HDFS_SECONDARYNAMENODE_USER</span>=root</span><br></pre></td></tr></table></figure>
+
+<p><strong>#编辑 start-yarn.sh，stop-yarn.sh 脚本</strong></p>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在开始处 #!/usr/bin/env bash 的下面，增加以下内容：</span></span><br><span class="line"><span class="attr">YARN_RESOURCEMANAGER_USER</span>=root</span><br><span class="line"><span class="attr">HADOOP_SECURE_DN_USER</span>=yarn </span><br><span class="line"><span class="attr">YARN_NODEMANAGER_USER</span>=root</span><br></pre></td></tr></table></figure>
+
+<p><strong>#启用JournalNode集群</strong></p>
+<ul>
+<li>hadoop-daemon.sh start journalnode</li>
+</ul>
+<p><strong>#初始化NameNode(仅master1)</strong></p>
+<ul>
+<li>hadoop namenode -format</li>
+</ul>
+<p><strong>#格式化Zookeeper(仅master1)</strong></p>
+<ul>
+<li>hdfs zkfc -formatZK</li>
+</ul>
+<p><strong>#启动NameNode(仅master1)</strong></p>
+<ul>
+<li>hadoop-daemon.sh start namenode</li>
+</ul>
+<p><strong>#将 NameNode 数据复制到备用 NameNode(仅master2)</strong></p>
+<ul>
+<li>hdfs namenode -bootstrapStandby</li>
+<li>hadoop-daemon.sh start namenode</li>
+</ul>
+<p><strong>#启动Hadoop集群</strong></p>
+<ul>
+<li>start-dfs.sh (仅master1)</li>
+<li>start-yarn.sh (仅master1)</li>
+<li>yarn-daemon.sh start resourcemanager(仅master2)</li>
+</ul>
+<p><strong>#监控页面</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://flink-master1:50070/">HDFS(master1)</a></li>
+<li><a target="_blank" rel="noopener" href="http://flink-master2:50070/">HDFS(master2)</a></li>
+<li><a target="_blank" rel="noopener" href="http://flink-master1:8088/">YARN(master1)</a></li>
+<li><a target="_blank" rel="noopener" href="http://flink-master1:8088/">YARN(master2)</a></li>
+</ul>
+<h2 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h2><span class="label danger">仅在Master节点</span>
+
+<p><strong>#安装mysql</strong> </p>
+<ul>
+<li>yum -y install mariadb-server mariadb</li>
+<li>rpm -q mariadb mariadb-server</li>
+</ul>
+<p><strong>#设置mysql开机启动</strong> </p>
+<ul>
+<li>systemctl enable mariadb</li>
+<li>systemctl daemon-reload</li>
+</ul>
+<p><strong>#开启mysql</strong> </p>
+<ul>
+<li>systemctl start mariadb</li>
+</ul>
+<p><strong>#关闭mysql</strong> </p>
+<ul>
+<li>systemctl stop mariadb</li>
+</ul>
+<p><strong>#重启mysql</strong> </p>
+<ul>
+<li>systemctl restart mariadb</li>
+</ul>
+<p><strong>#查看mysql状态</strong> </p>
+<ul>
+<li>systemctl status mariadb</li>
+</ul>
+<p><strong>#通过内置的安全脚本实现对数据库的安全保护</strong> </p>
+<ul>
+<li>mysql_secure_installation</li>
+</ul>
+<p><strong>#登录root账户</strong> </p>
+<ul>
+<li>mysql -uroot -p</li>
+</ul>
+<p><strong>#创建账户</strong> </p>
+<ul>
+<li>CREATE DATABASE metastore DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</li>
+<li>GRANT ALL ON metastore.* TO ‘hive‘@’%’ IDENTIFIED BY ‘123’;</li>
+</ul>
+<p><strong>#刷新权限</strong> </p>
+<ul>
+<li>flush privileges;</li>
+</ul>
+<h2 id="安装Hive"><a href="#安装Hive" class="headerlink" title="安装Hive"></a>安装Hive</h2><span class="label danger">仅在Master节点</span>
+
+<ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp apache-hive-2.2.0-bin.tar.gz /usr/aboutyun/</li>
+<li>cd /usr/aboutyun/</li>
+<li>tar zxvf apache-hive-2.2.0-bin.tar.gz</li>
+<li>rm -rf apache-hive-2.2.0-bin.tar.gz</li>
+<li>mv apache-hive-2.2.0-bin hive</li>
+</ul>
+<p><strong>#配置Hive环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET Hive PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HIVE_HOME</span>=/usr/aboutyun/hive </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$HIVE_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<p><strong>#配置mysql驱动包</strong> </p>
+<ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp mysql-connector-java-5.1.47.tar.gz /usr/aboutyun/</li>
+<li>cd /usr/aboutyun/</li>
+<li>tar zxvf mysql-connector-java-5.1.47.tar.gz </li>
+<li>rm -rf mysql-connector-java-5.1.47.tar.gz </li>
+<li>cp mysql-connector-java-5.1.47-bin.jar /usr/aboutyun/hive/lib/</li>
+</ul>
+<p><strong>#更换jline包（版本不一致）</strong> </p>
+<ul>
+<li>cp hive/lib/jline-2.12.jar /usr/aboutyun/hadoop/share/hadoop/yarn/lib/ </li>
+</ul>
+<p><strong>#配置hive</strong> </p>
+<ul>
+<li>cd hive </li>
+<li>mkdir -p data/hive/log</li>
+<li>mkdir -p data/hive/tmp </li>
+<li>mkdir -p data/hive/warehouse </li>
+<li>cd conf </li>
+<li>cp hive-env.sh.template hive-env.sh </li>
+<li>vim hive-env.sh </li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/aboutyun/jdk </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HADOOP_HOME</span>=/usr/aboutyun/hadoop </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HIVE_HOME</span>=/usr/aboutyun/hive </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HIVE_CONF_DIR</span>=/usr/aboutyun/hive/conf </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HIVE_AUX_JARS</span>=/usr/aboutyun/hive/lib</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>cp hive-default.xml.template hive-site.xml </li>
+<li>vim hive-site.xml</li>
+</ul>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="params">&lt;configuration&gt;</span> </span><br><span class="line"><span class="params">&lt;property&gt;</span> </span><br><span class="line"><span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionURL<span class="params">&lt;/name&gt;</span> </span><br><span class="line"><span class="params">&lt;value&gt;</span>jdbc:mysql:<span class="comment">//localhost:3306/hive?createDatabaseIfNotExist=true&amp;amp;useSSL=false&lt;/value&gt; </span></span><br><span class="line"><span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;property&gt;</span> </span><br><span class="line"><span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionDriverName<span class="params">&lt;/name&gt;</span> </span><br><span class="line"><span class="params">&lt;value&gt;</span>com.mysql.jdbc.Driver<span class="params">&lt;/value&gt;</span> </span><br><span class="line"><span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;property&gt;</span> </span><br><span class="line"><span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionUserName<span class="params">&lt;/name&gt;</span> </span><br><span class="line"><span class="params">&lt;value&gt;</span>hive<span class="params">&lt;/value&gt;</span> </span><br><span class="line"><span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;property&gt;</span> </span><br><span class="line"><span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionPassword<span class="params">&lt;/name&gt;</span> </span><br><span class="line"><span class="params">&lt;value&gt;</span><span class="number">123</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line"><span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;property&gt;</span> </span><br><span class="line"><span class="params">&lt;name&gt;</span>hive.metastore.warehouse.dir<span class="params">&lt;/name&gt;</span> </span><br><span class="line"><span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>aboutyun<span class="meta-keyword">/hive/</span>data<span class="meta-keyword">/hive/</span>warehouse<span class="params">&lt;/value&gt;</span> </span><br><span class="line"><span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;property&gt;</span> </span><br><span class="line"><span class="params">&lt;name&gt;</span>hive.exec.scratchdir<span class="params">&lt;/name&gt;</span> </span><br><span class="line"><span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>aboutyun<span class="meta-keyword">/hive/</span>data<span class="meta-keyword">/hive/</span>tmp<span class="params">&lt;/value&gt;</span> </span><br><span class="line"><span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;property&gt;</span> </span><br><span class="line"><span class="params">&lt;name&gt;</span>hive.querylog.location<span class="params">&lt;/name&gt;</span> </span><br><span class="line"><span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>aboutyun<span class="meta-keyword">/hive/</span>data<span class="meta-keyword">/hive/</span>log<span class="params">&lt;/value&gt;</span> </span><br><span class="line"><span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;/configuration&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>把{system:java.io.tmpdir} 改成 /usr/aboutyun/hive/data/hive/tmp </p>
+<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line"><span class="meta">:%s/$&#123;system:java.io.tmpdir&#125;/\/usr\/aboutyun\/hive\/data\/hive\/tmp/g</span> </span><br></pre></td></tr></table></figure>
+
+<p>把 {system:user.name} 改成 {user.name} </p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">:%s/</span><span class="variable">$&#123;</span><span class="symbol">system:</span>user.name&#125;/aboutyun/g</span><br></pre></td></tr></table></figure>
+
+<p><strong>#初始化hive(MYSQL版)</strong> </p>
+<ul>
+<li>schematool -dbType mysql -initSchema</li>
+</ul>
+<h3 id="安装Flume"><a href="#安装Flume" class="headerlink" title="安装Flume"></a>安装Flume</h3><ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp apache-flume-1.9.0-bin.tar.gz /usr/aboutyun/</li>
+<li>cd /usr/aboutyun/</li>
+<li>tar zxvf apache-flume-1.9.0-bin.tar.gz</li>
+<li>rm -rf apache-flume-1.9.0-bin.tar.gz</li>
+<li>mv apache-flume-1.9.0-bin flume</li>
+<li>cd flume</li>
+</ul>
+<p><strong>#Hbase环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET FLUME PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">FLUME_HOME</span>=/usr/aboutyun/flume </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$FLUME_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<p><strong>#修改Flume配置</strong> </p>
+<ul>
+<li>cd conf </li>
+<li>cp flume-env.sh.template flume-env.sh</li>
+<li>vim flume-env.sh</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/aboutyun/jdk </span><br></pre></td></tr></table></figure>
+
+<p><strong>#验证</strong> </p>
+<p><strong>Server</strong> </p>
+<figure class="highlight stata"><table><tr><td class="code"><pre><span class="line"># NetCat </span><br><span class="line">flume-ng agent --<span class="keyword">conf</span> <span class="keyword">conf</span> --<span class="keyword">conf</span>-<span class="keyword">file</span> <span class="keyword">conf</span>/flume-netcat.<span class="keyword">conf</span> --name=agent -Dflume.root.logger=INFO,console</span><br><span class="line"></span><br><span class="line"># Exec </span><br><span class="line">flume-ng agent --<span class="keyword">conf</span> <span class="keyword">conf</span> --<span class="keyword">conf</span>-<span class="keyword">file</span> <span class="keyword">conf</span>/flume-exec.<span class="keyword">conf</span> --name=agent -Dflume.root.logger=INFO,console</span><br><span class="line"></span><br><span class="line"># Avro </span><br><span class="line">flume-ng agent --<span class="keyword">conf</span> <span class="keyword">conf</span> --<span class="keyword">conf</span>-<span class="keyword">file</span> <span class="keyword">conf</span>/flume-netcat.<span class="keyword">conf</span> --name=agent -Dflume.root.logger=DEBUG,console</span><br></pre></td></tr></table></figure>
+
+<p><strong>Client</strong> </p>
+<figure class="highlight sqf"><table><tr><td class="code"><pre><span class="line"><span class="meta"># NetCat </span></span><br><span class="line">flume-ng <span class="built_in">agent</span> --conf conf --conf-file conf/flume-netcat.conf --<span class="built_in">name</span>=<span class="built_in">agent</span> -Dflume.root.logger=INFO,console</span><br><span class="line"></span><br><span class="line"><span class="meta"># Exec </span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span>;<span class="keyword">do</span> <span class="built_in">echo</span> `<span class="built_in">date</span>` &gt;&gt; /data/hadoop/flume/test.txt ; <span class="built_in">sleep</span> <span class="number">1</span>; done</span><br><span class="line"></span><br><span class="line"><span class="meta"># Avro </span></span><br><span class="line">telnet master <span class="number">44444</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Kafka"><a href="#安装Kafka" class="headerlink" title="安装Kafka"></a>安装Kafka</h2><ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp kafka_2.11-0.11.0.3.tgz /usr/aboutyun</li>
+<li>cd /usr/aboutyun</li>
+<li>tar zxvf kafka_2.11-0.11.0.3.tgz</li>
+<li>rm -rf kafka_2.11-0.11.0.3.tgz</li>
+<li>mv kafka_2.11-0.11.0.3 kafka</li>
+<li>cd kafka</li>
+</ul>
+<p><strong>#Kafka环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET KAFKA PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">KAFKA_HOME</span>=/usr/aboutyun/kafka </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$KAFKA_HOME/bin </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<p><strong>#修改Kafka配置</strong> </p>
+<ul>
+<li>mkdir logs</li>
+<li>cd config</li>
+<li>vim server.properties</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="attr">log.dirs</span>=/usr/aboutyun/kafka/logs </span><br><span class="line"><span class="attr">zookeeper.connect</span>=flink-slave1:<span class="number">2181</span>,flink-slave2:<span class="number">2181</span>,flink-slave3:<span class="number">2181</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">#Master1 </span></span><br><span class="line"><span class="attr">broker.id</span>=<span class="number">0</span></span><br><span class="line"><span class="comment">#Master2 </span></span><br><span class="line"><span class="attr">broker.id</span>=<span class="number">1</span></span><br><span class="line"><span class="comment">#Slave1 </span></span><br><span class="line"><span class="attr">broker.id</span>=<span class="number">2</span> </span><br><span class="line"><span class="comment">#Slave2 </span></span><br><span class="line"><span class="attr">broker.id</span>=<span class="number">3</span></span><br><span class="line"><span class="comment">#Slave3 </span></span><br><span class="line"><span class="attr">broker.id</span>=<span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>普通启动：</strong> </p>
+<ul>
+<li>kafka-server-start.sh -daemon /usr/aboutyun/kafka/config/server.properties</li>
+</ul>
+<p><strong>关闭集群：</strong> </p>
+<ul>
+<li>kafka-server-stop.sh</li>
+</ul>
+<h2 id="安装Flink"><a href="#安装Flink" class="headerlink" title="安装Flink"></a>安装Flink</h2><ul>
+<li>cd /mnt/hgfs/aboutyun</li>
+<li>cp flink-1.7.2-bin-hadoop27-scala_2.11.tgz /usr/aboutyun</li>
+<li>cd /usr/aboutyun</li>
+<li>tar zxvf flink-1.7.2-bin-hadoop27-scala_2.11.tgz</li>
+<li>rm -rf flink-1.7.2-bin-hadoop27-scala_2.11.tgz</li>
+<li>mv flink-1.7.2 flink</li>
+<li>cd flink</li>
+</ul>
+<p><strong>#Flink环境变量</strong> </p>
+<ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET FLINK PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">FLINK_HOME</span>=/usr/aboutyun/flink </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$FLINK_HOME/bin </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<p><strong>#修改Flink配置</strong> </p>
+<ul>
+<li>cd conf </li>
+<li>vim flink-conf.yaml</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下内容</span></span><br><span class="line"><span class="attribute">jobmanager</span>.rpc.address: flink-master<span class="number">1</span></span><br><span class="line"><span class="attribute">high</span>-availability: zookeeper</span><br><span class="line"><span class="attribute">high</span>-availability.zookeeper.path.root: /flink</span><br><span class="line"><span class="attribute">high</span>-availability.cluster-id: flink</span><br><span class="line"><span class="attribute">high</span>-availability.storageDir: hdfs:///flink/ha/</span><br><span class="line"><span class="attribute">high</span>-availability.zookeeper.quorum: flink-slave<span class="number">1</span>:<span class="number">2181</span>,flink-slave<span class="number">2</span>:<span class="number">2181</span>,flink-slave<span class="number">3</span>:<span class="number">2181</span></span><br><span class="line"><span class="attribute">yarn</span>.application-attempts: <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vim masters</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">flink</span>-master<span class="number">1</span>:<span class="number">8081</span></span><br><span class="line"><span class="attribute">flink</span>-master<span class="number">2</span>:<span class="number">8081</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>vim slaves</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">flink</span>-slave<span class="number">1</span> </span><br><span class="line"><span class="attribute">flink</span>-slave<span class="number">2</span></span><br><span class="line"><span class="attribute">flink</span>-slave<span class="number">3</span> </span><br></pre></td></tr></table></figure>
+
+<p><strong>#启动Standalone集群HA</strong> </p>
+<ul>
+<li>start-cluster.sh</li>
+</ul>
+<p><strong>#关闭Standalone集群</strong> </p>
+<ul>
+<li>stop-cluster.sh</li>
+</ul>
+<p><strong>#启动YARN集群HA</strong> </p>
+<ul>
+<li>yarn-session.sh</li>
+</ul>
+<p><strong>#监控网页</strong> </p>
+<p><a target="_blank" rel="noopener" href="http://flink-master1:8081/">Flink(master1)</a></p>
+<br />
+
+<p><meting-js
+    id="472361096"
+    server="netease"
+    type="song"
+    preload="none"/></p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BigData/" rel="tag"># BigData</a>
+              <a href="/tags/Flink/" rel="tag"># Flink</a>
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+              <a href="/tags/%E7%94%B5%E5%95%86/" rel="tag"># 电商</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/CDH/%E5%82%BB%E7%93%9C%E5%BC%8FCDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/" rel="prev" title="傻瓜式CDH集群部署指南">
+      <i class="fa fa-chevron-left"></i> 傻瓜式CDH集群部署指南
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="Flink电商团购项目（一）">
+      Flink电商团购项目（一） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85JDK"><span class="nav-number">1.</span> <span class="nav-text">安装JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Scala"><span class="nav-number">2.</span> <span class="nav-text">安装Scala</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85miniconda3"><span class="nav-number">3.</span> <span class="nav-text">安装miniconda3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Zookeeper"><span class="nav-number">4.</span> <span class="nav-text">安装Zookeeper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Hadoop"><span class="nav-number">5.</span> <span class="nav-text">安装Hadoop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql"><span class="nav-number">6.</span> <span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Hive"><span class="nav-number">7.</span> <span class="nav-text">安装Hive</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Flume"><span class="nav-number">7.1.</span> <span class="nav-text">安装Flume</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Kafka"><span class="nav-number">8.</span> <span class="nav-text">安装Kafka</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Flink"><span class="nav-number">9.</span> <span class="nav-text">安装Flink</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">XIE QING</p>
+  <div class="site-description" itemprop="description">怜我世人, 焚我残躯。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">闽ICP备18014770号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XIE QING</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

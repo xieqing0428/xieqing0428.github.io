@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/heart.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"alessa0.cn","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="TF-IDF, LCS, HMM ![ole-witt-vp7gEXuon08-unsplash](https:&#x2F;&#x2F;image.alessa0.cn&#x2F;122942.jpg)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BigData复习笔记02：TFIDF, LCS与中文分词">
+<meta property="og:url" content="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B002:TFIDF,LCS%E4%B8%8E%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D/">
+<meta property="og:site_name" content="听泉.ღ">
+<meta property="og:description" content="TF-IDF, LCS, HMM ![ole-witt-vp7gEXuon08-unsplash](https:&#x2F;&#x2F;image.alessa0.cn&#x2F;122942.jpg)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.alessa0.cn/123359.png">
+<meta property="og:image" content="https://image.alessa0.cn/140354.png">
+<meta property="og:image" content="https://image.alessa0.cn/143320.png">
+<meta property="og:image" content="https://image.alessa0.cn/011258.png">
+<meta property="og:image" content="https://image.alessa0.cn/135221.png">
+<meta property="article:published_time" content="2019-07-24T11:56:32.000Z">
+<meta property="article:modified_time" content="2021-06-17T09:32:03.142Z">
+<meta property="article:author" content="XIE QING">
+<meta property="article:tag" content="BigData">
+<meta property="article:tag" content="TF-IDF">
+<meta property="article:tag" content="LCS">
+<meta property="article:tag" content="HMM">
+<meta property="article:tag" content="中文分词">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.alessa0.cn/123359.png">
+
+<link rel="canonical" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B002:TFIDF,LCS%E4%B8%8E%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>BigData复习笔记02：TFIDF, LCS与中文分词 | 听泉.ღ</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">听泉.ღ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">— 听泉小窝 —</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B002:TFIDF,LCS%E4%B8%8E%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="XIE QING">
+      <meta itemprop="description" content="怜我世人, 焚我残躯。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="听泉.ღ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BigData复习笔记02：TFIDF, LCS与中文分词
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-07-24 19:56:32" itemprop="dateCreated datePublished" datetime="2019-07-24T19:56:32+08:00">2019-07-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 17:32:03" itemprop="dateModified" datetime="2021-06-17T17:32:03+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">复习笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p class="description">TF-IDF, LCS, HMM</p>
+![ole-witt-vp7gEXuon08-unsplash](https://image.alessa0.cn/122942.jpg)
+
+<span id="more"></span>
+
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>Chapter02. 中文分词 </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<h1 id="NLP文本相似度"><a href="#NLP文本相似度" class="headerlink" title="NLP文本相似度"></a>NLP文本相似度</h1><blockquote>
+<p>文本相似度</p>
+<blockquote>
+<p>语义相似（从人的角度理解语句含义）</p>
+<p>字面相似（中文分词）</p>
+</blockquote>
+</blockquote>
+<h2 id="余弦相似度-向量空间模型"><a href="#余弦相似度-向量空间模型" class="headerlink" title="余弦相似度/向量空间模型"></a>余弦相似度/向量空间模型</h2><h3 id="相似度度量"><a href="#相似度度量" class="headerlink" title="相似度度量"></a>相似度度量</h3><ul>
+<li>计算个体间相似程度</li>
+</ul>
+<h3 id="余弦相似度"><a href="#余弦相似度" class="headerlink" title="余弦相似度"></a>余弦相似度</h3><ul>
+<li>一个向量空间中两个向量夹角的余弦值作为衡量两个个体之间差异的大小</li>
+<li>余弦值接近1，夹角趋于0，表明两个向量越相似</li>
+</ul>
+<p>$$<br>  \begin{aligned} \cos (\theta) &amp;=\frac{\sum_{i=1}^{n}\left(x_{i} \times y_{i}\right)}{\sqrt{\sum_{i=1}^{n}\left(x_{i}\right)^{2}} \times \sqrt{\sum_{i=1}^{n}\left(y_{i}\right)^{2}}} \ &amp;=\frac{a \cdot b}{ | a| | x| | b| |} \end{aligned}<br>$$</p>
+<ul>
+<li>案例：<ul>
+<li>步骤0<ul>
+<li>句子A: 这只皮鞋号码大了，那只号码合适</li>
+<li>句子B: 这只皮鞋号码不小，那只更合适</li>
+</ul>
+</li>
+<li>步骤1: 分词<ul>
+<li>句子A: 这只/皮鞋/号码/大了，那只/号码/合适</li>
+<li>句子B: 这只/皮鞋/号码/不/小，那只/更/合适</li>
+</ul>
+</li>
+<li>步骤2: 列出所有词<ul>
+<li>这只, 皮鞋, 号码, 大了, 那只, 合适, 不, 小, 更</li>
+</ul>
+</li>
+<li>步骤3: 计算词频<ul>
+<li>句子A: 这只1, 皮鞋1, 号码2, 大了1, 那只1, 合适1, 不0, 小0, 更0</li>
+<li>句子B: 这只1, 皮鞋1, 号码1, 大了0, 那只1, 合适1, 不1, 小1, 更1</li>
+</ul>
+</li>
+<li>步骤4: 词频向量化<ul>
+<li>句子A: (1, 1, 2, 1, 1, 1, 0, 0, 0)</li>
+<li>句子B: (1, 1, 1, 0, 1, 1, 1, 1, 1)</li>
+</ul>
+</li>
+<li>步骤5: 套公式计算</li>
+</ul>
+</li>
+</ul>
+<p>$$<br>\begin{array}{l}{\cos (\theta)=\frac{1 \times 1+1 \times 1+2 \times 1+1 \times 0+1 \times 1+1 \times 1+0 \times 1+0 \times 1+0 \times 1}{\sqrt{1^{2}+1^{2}+2^{2}+1^{2}+1^{2}+1^{2}+0^{2}+0^{2}+0^{2}+1^{2}+1^{2}+1^{2}+0^{2}+1^{2}+1^{2}+1^{2}+1^{2}+1^{2}}}} \ {=\frac{6}{\sqrt{7} \times \sqrt{8}}} \ {=0.81}\end{array}<br>$$</p>
+<h3 id="文本相似度计算的处理流程"><a href="#文本相似度计算的处理流程" class="headerlink" title="文本相似度计算的处理流程"></a>文本相似度计算的处理流程</h3><ol start="0">
+<li>【依据】<strong>词袋模型</strong>B.O.W</li>
+<li>找出两篇文章的关键词</li>
+<li>每篇文章各取出若干个关键词，合并成一个集合，计算每篇文章对于这个集合中的词的词频</li>
+<li>生成两篇文章各自的词频向量</li>
+<li>计算两个向量的余弦相似度，值越大越相似</li>
+</ol>
+<h2 id="TD-IDF"><a href="#TD-IDF" class="headerlink" title="TD-IDF"></a>TD-IDF</h2><h3 id="词频TF"><a href="#词频TF" class="headerlink" title="词频TF"></a>词频TF</h3><blockquote>
+<p>假设：如果一个词很重要，应该会在文章中多次出现</p>
+</blockquote>
+<ul>
+<li>词频：一个词在文章中出现的次数<ul>
+<li><strong>停用词</strong>：类似“的”, “地”, “得” 对结果毫无帮助，必须过滤掉</li>
+</ul>
+</li>
+</ul>
+<h3 id="反文档频率IDF"><a href="#反文档频率IDF" class="headerlink" title="反文档频率IDF"></a>反文档频率IDF</h3><blockquote>
+<p>假设：如果某个词比较少见，但是它在这篇文章中多次出现，那么它很可能反应了这篇文章的特性，正是我们所需要的关键词</p>
+</blockquote>
+<ul>
+<li>在词频的基础上，赋予每一个词的权重，进一步体现该词的重要性<ul>
+<li>最少见的词（“的”、“是”、“在”）给予最小的权重</li>
+<li>较常见的词（“国内”、“中国”、“报道”）给予较小的权重</li>
+<li>较少见的词（“养殖”、“维基”、”涨停“）</li>
+</ul>
+</li>
+<li>将<strong>TF</strong>和<strong>IDF</strong>进行<strong>相乘</strong>，就得到了一个词的<strong>TF-IDF值</strong>，某个词对文章重要性越高，该值越大，于是排在前面的几个词，就是这篇文章的关键词。</li>
+</ul>
+<h3 id="计算步骤"><a href="#计算步骤" class="headerlink" title="计算步骤"></a>计算步骤</h3><ol start="0">
+<li>【前提】准备<strong>语料库</strong></li>
+<li>计算<strong>TF</strong>：某个词在文章中出现的次数<ul>
+<li>词频标准化（任选一种）<ul>
+<li>TF = 某个词在文章中出现的次数 / <strong>文章的总次数</strong></li>
+<li>TF = 某个词在文章中出现的次数 / <strong>该文章出现次数最多的词的出现次数</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>计算<strong>IDF</strong><ul>
+<li>标准化<ul>
+<li>IDF = <strong>log( 语料库的文档总数 / ( 包含该词的文档数 + 1 ) )</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>计算<strong>TF-IDF</strong><ul>
+<li>TF-IDF = 词频（TF）* 反文档频率（IDF）</li>
+<li>TF-IDF与一个词在文档中的出现次数成<strong>正比</strong>，与包含该词的文档数成<strong>反比</strong></li>
+</ul>
+</li>
+</ol>
+<h3 id="【Demo】判断相似文章"><a href="#【Demo】判断相似文章" class="headerlink" title="【Demo】判断相似文章"></a>【Demo】判断相似文章</h3><ul>
+<li>步骤1: 使用TF-IDF算法，找出两篇文章的关键词</li>
+<li>步骤2: 每篇文章各取出若干个关键词，合并成一个集合，计算每篇文章对于这个集合中的词的词频（为了避免文章长度的差异，可以使用<strong>相对词频</strong>）</li>
+<li>步骤3: 生成两篇文章各自的词频向量</li>
+<li>步骤4: 计算两个向量的余弦相似度，值越大越相似</li>
+</ul>
+<h3 id="【Demo】自动摘要"><a href="#【Demo】自动摘要" class="headerlink" title="【Demo】自动摘要"></a>【Demo】自动摘要</h3><blockquote>
+<p>文章的信息都包含在句子中，有些句子包含的信息多，有些句子包含的信息少。“自动摘要”就是要找出那些包含信息最多的句子。</p>
+<p>句子的信息量用“关键词”来衡量。如果包含的关键词越多，就说明这个句子越重要。</p>
+<p>只要关键词之间的距离小于“门槛值”，它们就被认为处于同一个簇之中，如果两个关键词之间有超过“门槛值”个数以上的其他词，就可以把这两个关键词分在两个簇。</p>
+<p>下一步，对于每个簇，都计算它的重要性分值。</p>
+<blockquote>
+<p>簇的重要性 = （包含的关键词数量）^2 / 簇的长度</p>
+<blockquote>
+<p>简化：不再区分“簇”，只考虑句子包含的关键词</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<ol>
+<li>确定关键词集合<ul>
+<li>取有限的次数（如Top-10）</li>
+<li>如：按TF-IDF分数 &gt; 0.7截断</li>
+</ul>
+</li>
+<li>找出包含关键词的句子</li>
+<li>把句子做排序，对每个句子划分等级<ul>
+<li>包含关键词越多越重要</li>
+<li>关键词分越高越重要</li>
+</ul>
+</li>
+<li>把等级高的句子取出来，形成摘要</li>
+</ol>
+<ul>
+<li>优点<ul>
+<li>简单快速，结果比较符合实际情况</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>单纯以“词频”做衡量标准，不够全面，有时重要的词可能出现的次数并不多</li>
+<li>该算法无法体现词的位置信息，出现位置靠前的词与出现位置靠后的词，都被视为重要性相同，这是不正确的<ul>
+<li>解决方法：对全文的第一段和每一段的第一句话给予较大权重。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="【案例代码】TF-IDF"><a href="#【案例代码】TF-IDF" class="headerlink" title="【案例代码】TF-IDF"></a>【案例代码】TF-IDF</h3><ol>
+<li><p>TF</p>
+<ol>
+<li><p>Map</p>
+<figure class="highlight python"><figcaption><span>map_tf.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">cnt = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file_name, file_content = ss</span><br><span class="line">    word_list = file_content.strip().split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word_list:</span><br><span class="line">        cnt += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    file_count = file_name + <span class="string">&#x27;:&#x27;</span> + <span class="built_in">str</span>(cnt)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word_list:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;%s\t%s\t%s&#x27;</span> % (file_count, word, <span class="number">1</span>))</span><br><span class="line">    cnt = <span class="number">0</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Reduce</p>
+<figure class="highlight python"><figcaption><span>red_tf.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">current_file = <span class="literal">None</span></span><br><span class="line">current_word = <span class="literal">None</span></span><br><span class="line">current_count = <span class="number">0</span></span><br><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file_count, word, val = ss</span><br><span class="line">    file_name, count = file_count.strip().split(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> current_word <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        current_word = word</span><br><span class="line">    <span class="keyword">if</span> current_word != word:</span><br><span class="line">        tf = math.log(<span class="built_in">float</span>(<span class="built_in">sum</span>) / <span class="built_in">float</span>(current_count))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;%s\t%s\t%s&#x27;</span> % (current_file, current_word, tf))</span><br><span class="line">        current_word = word</span><br><span class="line">        <span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line">    <span class="built_in">sum</span> += <span class="built_in">int</span>(val)</span><br><span class="line">    current_file = file_name</span><br><span class="line">    current_count = count</span><br><span class="line"></span><br><span class="line">tf = math.log(<span class="built_in">float</span>(<span class="built_in">sum</span>) / <span class="built_in">float</span>(current_count))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;%s\t%s\t%s&#x27;</span> % (current_file, current_word, tf))</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>IDF</p>
+<ol>
+<li><p>Map</p>
+<figure class="highlight python"><figcaption><span>map_idf.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file_name, file_content = ss</span><br><span class="line">    word_list = file_content.strip().split(<span class="string">&#x27; &#x27;</span>)</span><br><span class="line"></span><br><span class="line">    word_set = <span class="built_in">set</span>(word_list)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word_set:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;\t&#x27;</span>.join([word, <span class="string">&#x27;1&#x27;</span>]))</span><br></pre></td></tr></table></figure></li>
+<li><p>Reduce</p>
+<figure class="highlight python"><figcaption><span>red_idf.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">current_word = <span class="literal">None</span></span><br><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">docs_cnt = <span class="number">508</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    word, val = ss</span><br><span class="line">    <span class="keyword">if</span> current_word <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        current_word = word</span><br><span class="line">    <span class="keyword">if</span> current_word != word:</span><br><span class="line">        idf = math.log(<span class="built_in">float</span>(docs_cnt) / (<span class="built_in">float</span>(<span class="built_in">sum</span>) + <span class="number">1.0</span>))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;\t&#x27;</span>.join([current_word, <span class="built_in">str</span>(idf)]))</span><br><span class="line">        current_word = word</span><br><span class="line">        <span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">sum</span> += <span class="built_in">int</span>(val)</span><br><span class="line"></span><br><span class="line">idf = math.log(<span class="built_in">float</span>(docs_cnt) / (<span class="built_in">float</span>(<span class="built_in">sum</span>) + <span class="number">1.0</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;\t&#x27;</span>.join([current_word, <span class="built_in">str</span>(idf)]))</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>TF-IDF</p>
+<ol>
+<li><p>Map</p>
+<figure class="highlight python"><figcaption><span>map.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_local_file_func</span>(<span class="params">file</span>):</span></span><br><span class="line">    word_map = &#123;&#125;</span><br><span class="line">    file_in = <span class="built_in">open</span>(file, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> file_in:</span><br><span class="line">        ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        word, idf = ss</span><br><span class="line">        word_map[word] = idf</span><br><span class="line">    <span class="keyword">return</span> word_map</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mapper_func</span>(<span class="params">white_list_fd</span>):</span></span><br><span class="line">    word_map = read_local_file_func(white_list_fd)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">        ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        file, word, tf = ss</span><br><span class="line">        <span class="keyword">if</span> word != <span class="string">&quot;&quot;</span> <span class="keyword">and</span> (word <span class="keyword">in</span> word_map.keys()):</span><br><span class="line">            idf = word_map[word]</span><br><span class="line">            tfidf = <span class="built_in">float</span>(<span class="built_in">float</span>(tf) + <span class="built_in">float</span>(idf))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;%s\t%s\t%s&quot;</span> % (file, tfidf, word))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    module = sys.modules[__name__]</span><br><span class="line">    func = <span class="built_in">getattr</span>(module, sys.argv[<span class="number">1</span>])</span><br><span class="line">    args = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span>:</span><br><span class="line">        args = sys.argv[<span class="number">2</span>:]</span><br><span class="line">    func(*args)</span><br></pre></td></tr></table></figure></li>
+<li><p>Reduce</p>
+<figure class="highlight python"><figcaption><span>red.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">current_file = <span class="literal">None</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file, tfidf, word = ss</span><br><span class="line">    <span class="keyword">if</span> current_file <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        current_file = file</span><br><span class="line">        result = current_file + <span class="string">&#x27;\t&#x27;</span></span><br><span class="line">    <span class="keyword">if</span> current_file != file:</span><br><span class="line">        <span class="built_in">print</span>(result[:-<span class="number">1</span>])</span><br><span class="line">        current_file = file</span><br><span class="line">        result = current_file + <span class="string">&#x27;\t&#x27;</span></span><br><span class="line"></span><br><span class="line">    result += word + <span class="string">&#x27;:&#x27;</span> + tfidf + <span class="string">&#x27; &#x27;</span></span><br><span class="line"><span class="built_in">print</span>(result[:-<span class="number">1</span>])</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>【Hadoop Streaming脚本】</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">HADOOP_CMD=<span class="string">&quot;/usr/local/src/hadoop-2.8.5/bin/hadoop&quot;</span></span><br><span class="line">STREAM_JAR_PATH=<span class="string">&quot;/usr/local/src/hadoop-2.8.5/share/hadoop/tools/lib/hadoop-streaming-2.8.5.jar&quot;</span></span><br><span class="line"></span><br><span class="line">INPUT_FILE_PATH=<span class="string">&quot;/chapter02/01_tfidf/tfidf_input.data&quot;</span></span><br><span class="line">OUTPUT_PATH_TF=<span class="string">&quot;/chapter02/01_tfidf/output/python3/tf&quot;</span></span><br><span class="line">OUTPUT_PATH_IDF=<span class="string">&quot;/chapter02/01_tfidf/output/python3/idf&quot;</span></span><br><span class="line">OUTPUT_PATH_TFIDF=<span class="string">&quot;/chapter02/01_tfidf/output/python3/tfidf&quot;</span></span><br><span class="line">LOCAL_FILE_PATH=<span class="string">&quot;/mnt/hgfs/Code/chapter02/01_tfidf/tfidf_input.data&quot;</span></span><br><span class="line">UPLOAD_PATH=<span class="string">&quot;/chapter02/01_tfidf&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -rm -r -skipTrash <span class="variable">$&#123;INPUT_FILE_PATH&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -rm -r -skipTrash <span class="variable">$&#123;OUTPUT_PATH_TF&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -rm -r -skipTrash <span class="variable">$&#123;OUTPUT_PATH_IDF&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -rm -r -skipTrash <span class="variable">$&#123;OUTPUT_PATH_TFIDF&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -mkdir -p <span class="variable">$&#123;UPLOAD_PATH&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -put <span class="variable">$&#123;LOCAL_FILE_PATH&#125;</span> <span class="variable">$&#123;UPLOAD_PATH&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 1. tf</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> jar <span class="variable">$&#123;STREAM_JAR_PATH&#125;</span> \</span><br><span class="line">    -D stream.num.map.output.key.fields=2 \</span><br><span class="line">    -D num.key.fields.for.partition=1 \</span><br><span class="line">    -files map_tf.py,red_tf.py \</span><br><span class="line">    -input <span class="variable">$&#123;INPUT_FILE_PATH&#125;</span> \</span><br><span class="line">    -output <span class="variable">$&#123;OUTPUT_PATH_TF&#125;</span> \</span><br><span class="line">    -mapper <span class="string">&quot;python map_tf.py&quot;</span> \</span><br><span class="line">    -reducer <span class="string">&quot;python red_tf.py&quot;</span> \</span><br><span class="line">    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2. idf</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> jar <span class="variable">$&#123;STREAM_JAR_PATH&#125;</span> \</span><br><span class="line">    -files map_idf.py,red_idf.py \</span><br><span class="line">    -input <span class="variable">$&#123;INPUT_FILE_PATH&#125;</span> \</span><br><span class="line">    -output <span class="variable">$&#123;OUTPUT_PATH_IDF&#125;</span> \</span><br><span class="line">    -mapper <span class="string">&quot;python map_idf.py&quot;</span> \</span><br><span class="line">    -reducer <span class="string">&quot;python red_idf.py&quot;</span> \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 3. tf-idf</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> jar <span class="variable">$&#123;STREAM_JAR_PATH&#125;</span> \</span><br><span class="line">    -D stream.num.map.output.key.fields=2 \</span><br><span class="line">    -D num.key.fields.for.partition=1 \</span><br><span class="line">    -files map.py,red.py,<span class="string">&quot;hdfs://master:9000/chapter02/01_tfidf/output/python3/idf/part-00000#WH&quot;</span>  \</span><br><span class="line">    -input <span class="variable">$&#123;OUTPUT_PATH_TF&#125;</span> \</span><br><span class="line">    -output <span class="variable">$&#123;OUTPUT_PATH_TFIDF&#125;</span> \</span><br><span class="line">    -mapper <span class="string">&quot;python map.py mapper_func WH&quot;</span> \</span><br><span class="line">    -reducer <span class="string">&quot;python red.py&quot;</span> \</span><br><span class="line">    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="LCS"><a href="#LCS" class="headerlink" title="LCS"></a>LCS</h2><blockquote>
+<p>LCS：最长公共子序列(Longest Common Subsequence)</p>
+</blockquote>
+<ul>
+<li>注意区别最长公共子串(Longest Common Substring)<ul>
+<li>最长公共子串要求连续</li>
+</ul>
+</li>
+<li>用于描述两段文字之间的“相似度”<ul>
+<li>辨别抄袭，对一段文字进行修改后，计算改动前后文字的最长公共子序列。将除此子序列外的部分提取出来，用该方法判断修改的部分</li>
+</ul>
+</li>
+<li>可用于推荐结果过滤（相似项目）</li>
+</ul>
+<h3 id="解法1：暴力穷举"><a href="#解法1：暴力穷举" class="headerlink" title="解法1：暴力穷举"></a>解法1：暴力穷举</h3><blockquote>
+<p>假设字符串X, Y长度分别为m, n</p>
+</blockquote>
+<p>X的一个子序列，即下标序列{1, 2, …, m}严格递增子序列</p>
+<ul>
+<li>X共有2^m个不同子序列</li>
+<li>Y共有2^n个不同子序列</li>
+</ul>
+<p><strong>时间复杂度: O(2^m * 2^n)</strong>, 基本不可用</p>
+<h3 id="解法2：动态规划DP"><a href="#解法2：动态规划DP" class="headerlink" title="解法2：动态规划DP"></a>解法2：动态规划DP</h3><p>$$<br>L C S\left(X_{m}, Y_{n}\right)=\left{\begin{array}{ll}{L C S\left(X_{m-1}, Y_{n-1}\right)+x_{m}} &amp; {x_{m}=y_{n}} \ {\max \left{L C S\left(X_{m-1}, Y_{n}\right), L C S\left(X_{m}, Y_{n-1}\right)\right}} &amp; {x_{m} \neq y_{n}}\end{array}\right.<br>$$</p>
+<ul>
+<li>使用二维数组C[m, n]</li>
+<li>C[i, j]记录序列Xi和Yj的最长公共子序列的长度<ul>
+<li>当i = 0 或j = 0时，空序列时Xi和Yj的最长公共子序列，故C[i, j] = 0</li>
+</ul>
+</li>
+</ul>
+<p>$$<br>c(i, j)=\left{\begin{array}{c}{0} &amp; {i = 0\ or \ j = 0} \ {c(i-1, j-1)+1} &amp; {i &gt; 0,j &gt; 0\ and\ x_{i}=y_{j}} \ {\max {c(i-1, j), c(i, j-1)}} &amp; {i &gt; 0,j &gt; 0\ and\ x_{i} \neq y_{j}} \end{array}\right.<br>$$</p>
+<h3 id="【案例代码】LCS"><a href="#【案例代码】LCS" class="headerlink" title="【案例代码】LCS"></a>【案例代码】LCS</h3><ol>
+<li><p>Map</p>
+<figure class="highlight python"><figcaption><span>map.py</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cal_lcs</span>(<span class="params">str_1, str_2</span>):</span></span><br><span class="line">    len_1 = <span class="built_in">len</span>(str_1.strip())</span><br><span class="line">    len_2 = <span class="built_in">len</span>(str_2.strip())</span><br><span class="line"></span><br><span class="line">    tmp = <span class="built_in">max</span>(len_1, len_2) + <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    len_vv = [[<span class="number">0</span>] * tmp] * tmp</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, len_1 + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, len_2 + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> str_1[i - <span class="number">1</span>] == str_2[j - <span class="number">1</span>]:</span><br><span class="line">                len_vv[i][j] = len_vv[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                len_vv[i][j] = <span class="built_in">max</span>(len_vv[i - <span class="number">1</span>][j], len_vv[i][j - <span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">float</span>(<span class="built_in">float</span>(len_vv[len_1][len_2] * <span class="number">2</span>) / <span class="built_in">float</span>(len_1 + len_2))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">&#x27;\t&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    str_1, str_2 = ss</span><br><span class="line"></span><br><span class="line">    cos_score = cal_lcs(str_1, str_2)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;%s\t%s\t%s&#x27;</span> % (str_1, str_2, cos_score))</span><br></pre></td></tr></table></figure></li>
+<li><p>【Hadoop Streaming脚本】</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">HADOOP_CMD=<span class="string">&quot;/usr/local/src/hadoop-2.8.5/bin/hadoop&quot;</span></span><br><span class="line">STREAM_JAR_PATH=<span class="string">&quot;/usr/local/src/hadoop-2.8.5/share/hadoop/tools/lib/hadoop-streaming-2.8.5.jar&quot;</span></span><br><span class="line"></span><br><span class="line">INPUT_FILE_PATH=<span class="string">&quot;/chapter02/02_lcs/lcs_input.data&quot;</span></span><br><span class="line">OUTPUT_PATH=<span class="string">&quot;/chapter02/02_lcs/output/python3&quot;</span></span><br><span class="line">LOCAL_FILE_PATH=<span class="string">&quot;/mnt/hgfs/Code/chapter02/02_lcs/lcs_input.data&quot;</span></span><br><span class="line">UPLOAD_PATH=<span class="string">&quot;/chapter02/02_lcs&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -rm -r -skipTrash <span class="variable">$&#123;INPUT_FILE_PATH&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -rm -r -skipTrash <span class="variable">$&#123;OUTPUT_PATH&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -mkdir -p <span class="variable">$&#123;UPLOAD_PATH&#125;</span></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> fs -put <span class="variable">$&#123;LOCAL_FILE_PATH&#125;</span> <span class="variable">$&#123;UPLOAD_PATH&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;HADOOP_CMD&#125;</span> jar <span class="variable">$&#123;STREAM_JAR_PATH&#125;</span> \</span><br><span class="line">    -D mapreduce.job.reduces=0 \</span><br><span class="line">    -D mapreduce.job.name=lcs_demo \</span><br><span class="line">    -files map.py \</span><br><span class="line">    -input <span class="variable">$&#123;INPUT_FILE_PATH&#125;</span> \</span><br><span class="line">    -output <span class="variable">$&#123;OUTPUT_PATH&#125;</span> \</span><br><span class="line">    -mapper <span class="string">&quot;python map.py&quot;</span> \</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="中文分词"><a href="#中文分词" class="headerlink" title="中文分词"></a>中文分词</h1><h2 id="中文分词基础"><a href="#中文分词基础" class="headerlink" title="中文分词基础"></a>中文分词基础</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><blockquote>
+<p>一段文字不仅仅在于字面上是什么，还在于怎么切分和理解</p>
+</blockquote>
+<p>与英文不同，中文词之间没有空格，所以实现中文搜索引擎，比英文多了项分词的任务</p>
+<ul>
+<li>分词粒度<ul>
+<li>粗粒度：推荐场景</li>
+<li>细粒度：搜索场景（召回候选）</li>
+</ul>
+</li>
+<li>切分方法<ul>
+<li>01bit<ul>
+<li>切开的开始位置对应位是1，否则对应位是0</li>
+<li>“有/意见/分歧”的bit内容是11010</li>
+</ul>
+</li>
+<li>节点序列<ul>
+<li>用分词节点序列表示切分方案</li>
+<li>“有/意见/分歧”的分词节点序列是{0, 1, 3, 5}</li>
+</ul>
+</li>
+<li>基于词典匹配<ul>
+<li>最大长度匹配<ul>
+<li>前向查找</li>
+<li>后向查找（一般效果较好）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>数据结构<ul>
+<li>为了提高查找效率，不要逐个匹配词典中的词</li>
+<li>查找词典所占的时间可能占总的分词时间的1/3左右，为了保证切分速度，需要选择一个好的查找词典方法</li>
+<li>Trie树常用于加速分词查找词典问题</li>
+</ul>
+</li>
+</ul>
+<p>###【Demo】Trie树</p>
+<ul>
+<li>正向<ul>
+<li>北京大学生活动中心<ul>
+<li>Root<ul>
+<li>北-京</li>
+<li>北-京-大-学</li>
+<li>大-学-生</li>
+<li>学-生</li>
+<li>生-活</li>
+<li>活-动</li>
+<li>中-心</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>结果：北京大学/生活/动/中心</li>
+</ul>
+</li>
+<li>反向<ul>
+<li>北京大学生活动中心<ul>
+<li>Root<ul>
+<li>心-中</li>
+<li>动-活</li>
+<li>活-生</li>
+<li>生-学</li>
+<li>生-学-大</li>
+<li>学-大-京-北</li>
+<li>京-北</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>结果：北京/大学生/活动/中心</li>
+</ul>
+</li>
+</ul>
+<h3 id="【Demo】DAG词图"><a href="#【Demo】DAG词图" class="headerlink" title="【Demo】DAG词图"></a>【Demo】DAG词图</h3><p>例：广州本田雅阁汽车</p>
+<p>【DAG】：{0: [0, 1, 3], 1: [1], 2: [2, 3, 5], 3: [3], 4: [4, 5], 5: [5], 6: [6, 7], 7: [7]}</p>
+<p><img src="https://image.alessa0.cn/123359.png" alt="DAG"></p>
+<h2 id="概率语言模型"><a href="#概率语言模型" class="headerlink" title="概率语言模型"></a>概率语言模型</h2><blockquote>
+<p>假设需要分出来的词在语料库和词表中都存在，最简单的方法是按词计算概率。</p>
+<p>从统计思想的角度看，分词问题的输入是一个字串C = c1, c2, …, cN，输出是一个词串S = w1, w2, …, wM，其中M &lt;= N。对于一个特定的字符串C，会有多个切分方案S对应，分词的任务就是从不同S中找出一个切分方案，使得P(S|C)值最大。</p>
+<p>P(S|C)就是由字符串C产生切分S的概率，也就是对输入字符串切分出最有可能的词序列。<br>$$<br>\operatorname{Seg}(C)=\arg \max _{S \in \mathrm{G}} P(S | C)=\arg \max _{S \in G} \frac{P(C | S) P(S)}{P(C)}<br>$$</p>
+</blockquote>
+<h3 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h3><blockquote>
+<p>朴素贝叶斯：独立性假设</p>
+</blockquote>
+<h3 id="引例"><a href="#引例" class="headerlink" title="引例"></a>引例</h3><blockquote>
+<p>C：南京市长江大桥</p>
+</blockquote>
+<p>切分方案如下：</p>
+<ul>
+<li>S1：南京市/长江/大桥</li>
+<li>S2：南京/市长/江大桥</li>
+</ul>
+<p>计算条件概率P(S1|C)和P(S2|C)，然后根据P(S1|C)和P(S2|C)的值来决定选择S1还是S2。</p>
+<p>P(C)是字串在语料库中出现的概率。</p>
+<ul>
+<li>为容易实现，假设每个词之间的概率是上下文无关的</li>
+</ul>
+<p>根据<strong>朴素贝叶斯公式</strong></p>
+<blockquote>
+<p>$$<br>P(C \cap S)=P(S | C)^{\star} P(C)=P(C | S)^{\star} P(S)<br>$$</p>
+</blockquote>
+<p>所以条件概率为<br>$$<br>\mathrm{P}(S | C)=\frac{P(C | S) \times P(S)}{P(C)}<br>$$</p>
+<ul>
+<li>P(C)为常数，只是一个用来归一化的固定值</li>
+<li>在中文分词中，从词串恢复到汉字串仅有唯一的一种方式，所以P(C|S) = 1</li>
+<li>综上所述，比较P(S1|C)和P(S2|C)的大小就可以变成比较P(S1)和P(S2)的大小<ul>
+<li>P(S1) = P(南京市, 长江, 大桥) = P(南京市) * P(长江) * P(大桥)</li>
+<li>P(S2) = P(南京, 市长, 江大桥) = P(南京) * P(市长) * P(江大桥)</li>
+<li>P(S1) &gt; P(S2)，选择切分方案S1</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>$$<br>\mathrm{P}(\mathrm{S})=\mathrm{P}\left(\mathrm{w}<em>{1}, \mathrm{w}</em>{2}, \ldots, \mathrm{w}<em>{\mathrm{m}}\right) \approx \mathrm{P}\left(\mathrm{w}</em>{1}\right) \times \mathrm{P}\left(\mathrm{w}<em>{2}\right) \times \ldots \times \mathrm{P}\left(\mathrm{w}</em>{\mathrm{m}}\right) \propto \log \mathrm{P}\left(\mathrm{w}<em>{1}\right)+\log \mathrm{P}\left(\mathrm{w}</em>{2}\right)+\ldots+\log \mathrm{P}\left(\mathrm{w}_{\mathrm{m}}\right)<br>$$</p>
+</blockquote>
+<p>P(w)就是这个词出现在语料库中的概率。因为函数y = log(x)单调递增，因为词的概率小于1，所以取log后结果是负数。</p>
+<ul>
+<li>取log为了防止向下溢出</li>
+<li>结果由乘法转为加法，计算机处理起来速度更快</li>
+</ul>
+<h3 id="一元模型"><a href="#一元模型" class="headerlink" title="一元模型"></a>一元模型</h3><blockquote>
+<p>对于不同的S，M的值都是不一样的，分出的词越多，概率越小（引例）</p>
+</blockquote>
+<p>$$<br>\mathrm{P}(w_{i})=\frac{w_{i}在语料库中的出现次数n}{语料库中的总次数N}<br>$$</p>
+<p>于是<br>$$<br>\log \mathrm{P}\left(\mathrm{w}<em>{\mathrm{i}}\right)=\log \left(\mathrm{Freq}</em>{\mathrm{w}}\right)-\log \mathrm{N}<br>$$</p>
+<p>这个计算公式也叫做<strong>基于一元模型的计算公式</strong>，它综合考虑了切分出的词数和词频</p>
+<h3 id="N元模型"><a href="#N元模型" class="headerlink" title="N元模型"></a>N元模型</h3><blockquote>
+<p>给定一个词猜测下一个词。当给定“NBA”时，下一个词会联想到“篮球”，但不太可能会联想到“足球”</p>
+</blockquote>
+<p><strong>前后两词出现的概率是相互独立的</strong>的假设在实际中是<strong>不成立</strong>的。</p>
+<p>N元模型使用n个单词组成的序列来衡量切分方案的合理性，即概率的链规则。</p>
+<p>P(S) = P(w1, w2, …, wM) = P(w1) * P(w2|w1) * P(w3|w1, w2) * … * P(wM|w1, w2, …, wM-1)</p>
+<h2 id="Jieba分词工具"><a href="#Jieba分词工具" class="headerlink" title="Jieba分词工具"></a>Jieba分词工具</h2><blockquote>
+<p>源码地址：<a target="_blank" rel="noopener" href="https://github.com/fxsjy/jieba">https://github.com/fxsjy/jieba</a></p>
+</blockquote>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><h4 id="分词模式"><a href="#分词模式" class="headerlink" title="分词模式"></a>分词模式</h4><ul>
+<li>精确模式：将句子最精确的分开，适合文本分析</li>
+<li>全模式：句子中所有可以成词的词语都扫描出来，速度快，不能解决歧义</li>
+<li>搜索引擎模式：在精确模式的基础上，对长词再次切分，提高召回</li>
+</ul>
+<h4 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h4><ul>
+<li>语料库：词 + 词频 + 词性</li>
+<li>基于<del><strong>Trie树</strong>结构</del><strong>前缀词典</strong>，使用<strong>前向遍历</strong>实现词图扫描，生成句子中汉字所有可能成词情况所构成的有向无环图DAG<ul>
+<li>Python中实现的trie树是基于dict类型的数据结构而且dict中又嵌套dict 类型，这样嵌套很深，<strong>导致内存耗费严重</strong></li>
+<li>前缀词典储存词语及其前缀，如<code>set([&#39;数&#39;, &#39;数据&#39;, &#39;数据结&#39;, &#39;数据结构&#39;])</code>。在句子中按字正向查找词语，在前缀列表中就继续查找，直到不在前缀列表中或超出句子范围。大约比原词库增加40%词条。</li>
+</ul>
+</li>
+<li>采用<strong>动态规划</strong>DP查找最大概率路径，找出基于词频的最大切分组合</li>
+<li>对于未登录词，基于<strong>二元模型</strong>，采用基于汉字成词能力的<strong>HMM</strong>模型，使用<strong>Viterbi算法</strong></li>
+</ul>
+<h4 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h4><ol>
+<li>给定待分词的句子, 使用正则(re_han)获取匹配的中文字符(和英文字符)切分成的短语列表； </li>
+<li>利用get_DAG(sentence)函数获得待切分句子的DAG，首先检测(check_initialized)进程是否已经加载词库，若未初始化词库则调用initialize函数进行初始化，initialize中判断有无已经缓存的前缀词典cache_file文件，若有相应的cache文件则直接使用 marshal.load 方法加载前缀词典，若无则通过gen_pfdict对指定的词库dict.txt进行计算生成前缀词典，到jieba进程的初始化工作完成后就调用get_DAG获得句子的DAG； </li>
+<li>根据cut_block指定具体的方法(__cut_all,__cut_DAG,__cut_DAG_NO_HMM)对每个短语使用DAG进行分词 ，如cut_block=__cut_DAG时则使用DAG(查字典)和动态规划, 得到最大概率路径, 对DAG中那些没有在字典中查到的字, 组合成一个新的片段短语, 使用HMM模型进行分词, 也就是作者说的识别新词, 即识别字典外的新词； </li>
+<li>使用python的yield 语法生成一个词语生成器, 逐词语返回</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">源码地址：</span></span><br><span class="line"><span class="string">https://github.com/ustcdane/annotated_jieba/blob/master/jieba/__init__.py</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># jieba分词的主函数,返回结果是一个可迭代的 generator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cut</span>(<span class="params">self, sentence, cut_all=<span class="literal">False</span>, HMM=<span class="literal">True</span></span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        The main function that segments an entire sentence that contains</span></span><br><span class="line"><span class="string">        Chinese characters into seperated words.</span></span><br><span class="line"><span class="string">        Parameter:</span></span><br><span class="line"><span class="string">            - sentence: The str(unicode) to be segmented.</span></span><br><span class="line"><span class="string">            - cut_all: Model type. True for full pattern, False for accurate pattern.</span></span><br><span class="line"><span class="string">            - HMM: Whether to use the Hidden Markov Model.</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        sentence = strdecode(sentence) <span class="comment"># 解码为unicode</span></span><br><span class="line">        <span class="comment"># 不同模式下的正则</span></span><br><span class="line">        <span class="keyword">if</span> cut_all:</span><br><span class="line">            re_han = re_han_cut_all</span><br><span class="line">            re_skip = re_skip_cut_all</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            re_han = re_han_default</span><br><span class="line">            re_skip = re_skip_default</span><br><span class="line"></span><br><span class="line">         <span class="comment"># 设置不同模式下的cut_block分词方法</span></span><br><span class="line">        <span class="keyword">if</span> cut_all:</span><br><span class="line">            cut_block = self.__cut_all</span><br><span class="line">        <span class="keyword">elif</span> HMM:</span><br><span class="line">            cut_block = self.__cut_DAG</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cut_block = self.__cut_DAG_NO_HMM</span><br><span class="line">        <span class="comment"># 先用正则对句子进行切分</span></span><br><span class="line">        blocks = re_han.split(sentence)</span><br><span class="line">        <span class="keyword">for</span> blk <span class="keyword">in</span> blocks:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> blk:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> re_han.match(blk): <span class="comment"># re_han匹配的串</span></span><br><span class="line">                <span class="keyword">for</span> word <span class="keyword">in</span> cut_block(blk):<span class="comment"># 根据不同模式的方法进行分词</span></span><br><span class="line">                    <span class="keyword">yield</span> word</span><br><span class="line">            <span class="keyword">else</span>:<span class="comment"># 按照re_skip正则表对blk进行重新切分</span></span><br><span class="line">                tmp = re_skip.split(blk)<span class="comment"># 返回list</span></span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> tmp:</span><br><span class="line">                    <span class="keyword">if</span> re_skip.match(x):</span><br><span class="line">                        <span class="keyword">yield</span> x</span><br><span class="line">                    <span class="keyword">elif</span> <span class="keyword">not</span> cut_all: <span class="comment"># 精准模式下逐个字符输出</span></span><br><span class="line">                        <span class="keyword">for</span> xx <span class="keyword">in</span> x:</span><br><span class="line">                            <span class="keyword">yield</span> xx</span><br><span class="line">                    <span class="keyword">else</span>: </span><br><span class="line">                        <span class="keyword">yield</span> x</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.alessa0.cn/140354.png" alt="jieba"></p>
+<h4 id="前缀词典"><a href="#前缀词典" class="headerlink" title="前缀词典"></a>前缀词典</h4><blockquote>
+<p>对应代码中Tokenizer.FREQ字典</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_pfdict</span>(<span class="params">self, f_name</span>):</span></span><br><span class="line">    lfreq = &#123;&#125; <span class="comment"># 字典存储  词条:出现次数</span></span><br><span class="line">    ltotal = <span class="number">0</span> <span class="comment"># 所有词条的总的出现次数</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(f_name, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f: <span class="comment"># 打开文件 dict.txt </span></span><br><span class="line">        <span class="keyword">for</span> lineno, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(f, <span class="number">1</span>): <span class="comment"># 行号,行</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                line = line.strip().decode(<span class="string">&#x27;utf-8&#x27;</span>) <span class="comment"># 解码为Unicode</span></span><br><span class="line">                word, freq = line.split(<span class="string">&#x27; &#x27;</span>)[:<span class="number">2</span>] <span class="comment"># 获得词条 及其出现次数</span></span><br><span class="line">                freq = <span class="built_in">int</span>(freq)</span><br><span class="line">                lfreq[word] = freq</span><br><span class="line">                ltotal += freq</span><br><span class="line">                <span class="keyword">for</span> ch <span class="keyword">in</span> xrange(<span class="built_in">len</span>(word)):<span class="comment"># 处理word的前缀</span></span><br><span class="line">                    wfrag = word[:ch + <span class="number">1</span>]</span><br><span class="line">                    <span class="keyword">if</span> wfrag <span class="keyword">not</span> <span class="keyword">in</span> lfreq: <span class="comment"># word前缀不在lfreq则其出现频次置0 </span></span><br><span class="line">                        lfreq[wfrag] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">except</span> ValueError:</span><br><span class="line">                <span class="keyword">raise</span> ValueError(</span><br><span class="line">                    <span class="string">&#x27;invalid dictionary entry in %s at Line %s: %s&#x27;</span> % (f_name, lineno, line))</span><br><span class="line">    <span class="keyword">return</span> lfreq, ltotal</span><br></pre></td></tr></table></figure>
+
+<h4 id="DAG"><a href="#DAG" class="headerlink" title="DAG"></a>DAG</h4><blockquote>
+<p>对一个sentence DAG是以{key:list[i,j…], …}的字典结构存储, key是词的在sentence中的位置, list存放的是sentence中以位置key开始的可能的词语的结束位置.</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># DAG中是以&#123;key:list,...&#125;的字典结构存储</span></span><br><span class="line"><span class="comment"># key是字的开始位置</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_DAG</span>(<span class="params">self, sentence</span>):</span></span><br><span class="line">    self.check_initialized()</span><br><span class="line">    DAG = &#123;&#125;</span><br><span class="line">    N = <span class="built_in">len</span>(sentence)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> xrange(N):</span><br><span class="line">        tmplist = []</span><br><span class="line">        i = k</span><br><span class="line">        frag = sentence[k]</span><br><span class="line">        <span class="keyword">while</span> i &lt; N <span class="keyword">and</span> frag <span class="keyword">in</span> self.FREQ:</span><br><span class="line">            <span class="keyword">if</span> self.FREQ[frag]:</span><br><span class="line">                tmplist.append(i)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">            frag = sentence[k:i + <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tmplist:</span><br><span class="line">            tmplist.append(k)</span><br><span class="line">        DAG[k] = tmplist</span><br><span class="line">    <span class="keyword">return</span> DAG</span><br></pre></td></tr></table></figure>
+
+<h4 id="基于词频最大切分组合"><a href="#基于词频最大切分组合" class="headerlink" title="基于词频最大切分组合"></a>基于词频最大切分组合</h4><blockquote>
+<p>有了词库(dict.txt)的前缀字典和待分词句子sentence的DAG，使用动态规划方法，从后往前遍历，选择一个频度得分最大的一个切分组合。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#动态规划，计算最大概率的切分组合</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">calc</span>(<span class="params">self, sentence, DAG, route</span>):</span></span><br><span class="line">       N = <span class="built_in">len</span>(sentence)</span><br><span class="line">       route[N] = (<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        <span class="comment"># 对概率值取对数之后的结果(可以让概率相乘的计算变成对数相加,防止相乘造成下溢)</span></span><br><span class="line">       logtotal = log(self.total)</span><br><span class="line">       <span class="comment"># 从后往前遍历句子 反向计算最大概率</span></span><br><span class="line">       <span class="keyword">for</span> idx <span class="keyword">in</span> xrange(N - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">          <span class="comment"># 列表推倒求最大概率对数路径</span></span><br><span class="line">          <span class="comment"># route[idx] = max([ (概率对数，词语末字位置) for x in DAG[idx] ])</span></span><br><span class="line">          <span class="comment"># 以idx:(概率对数最大值，词语末字位置)键值对形式保存在route中</span></span><br><span class="line">          <span class="comment"># route[x+1][0] 表示 词路径[x+1,N-1]的最大概率对数,</span></span><br><span class="line">          <span class="comment"># [x+1][0]即表示取句子x+1位置对应元组(概率对数，词语末字位置)的概率对数</span></span><br><span class="line">           route[idx] = <span class="built_in">max</span>((log(self.FREQ.get(sentence[idx:x + <span class="number">1</span>]) <span class="keyword">or</span> <span class="number">1</span>) -</span><br><span class="line">                             logtotal + route[x + <span class="number">1</span>][<span class="number">0</span>], x) <span class="keyword">for</span> x <span class="keyword">in</span> DAG[idx])</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>例：广州本田雅阁汽车</p>
+</blockquote>
+<ul>
+<li>P(车) = -8.80006921905【语料库“车”词频取log】</li>
+<li>P(汽) = -12.897543648【语料库“汽”词频取log】</li>
+<li>P(汽车) = -8.78007494718【语料库“汽车”词频取log】</li>
+<li>P(汽车) &gt; P(汽) + P(车)，所以Route概率使用P(汽车)</li>
+<li>……</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">Route</span>: &#123;<span class="number">0</span>: (-<span class="number">33</span>.<span class="number">271126717488308</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="attribute">1</span>: (-<span class="number">32</span>.<span class="number">231489259807965</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="attribute">2</span>: (-<span class="number">23</span>.<span class="number">899234625632083</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">3</span>: (-<span class="number">31</span>.<span class="number">523246813843940</span>, <span class="number">3</span>),</span><br><span class="line">        <span class="attribute">4</span>: (-<span class="number">22</span>.<span class="number">214895405024865</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">5</span>: (-<span class="number">19</span>.<span class="number">008467873683230</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">6</span>: (-<span class="number">8</span>.<span class="number">7800749471799175</span>, <span class="number">7</span>),</span><br><span class="line">        <span class="attribute">7</span>: (-<span class="number">8</span>.<span class="number">8000692190498415</span>, <span class="number">7</span>),</span><br><span class="line">        <span class="attribute">8</span>: (<span class="number">0</span>.<span class="number">0</span>, &#x27;&#x27;)&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://image.alessa0.cn/143320.png" alt="route"></p>
+<h3 id="隐马尔可夫模型HMM"><a href="#隐马尔可夫模型HMM" class="headerlink" title="隐马尔可夫模型HMM"></a>隐马尔可夫模型HMM</h3><h4 id="马尔可夫链"><a href="#马尔可夫链" class="headerlink" title="马尔可夫链"></a>马尔可夫链</h4><blockquote>
+<p>一个随机过程模型，它表述了一系列可能的事件，在这个系列当中每一个事件的概率仅依赖于前一个事件。</p>
+</blockquote>
+<ul>
+<li>参数<ul>
+<li><strong>状态</strong>：由数字表示，假设共有M个</li>
+<li><strong>初始概率</strong>：$\pi_{k}=P\left(S_{1}=k\right) \quad \mathrm{k}=1,2, \ldots, \mathrm{M}$</li>
+<li><strong>状态转移概率</strong>：$a_{k, l}=P\left(S_{t+1}=l | S_{t}=k\right) \quad \mathrm{k}, 1=1,2, \ldots, \mathrm{M}$</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://image.alessa0.cn/011258.png" alt="马尔可夫"></p>
+<ul>
+<li><p>例子：<strong>天气</strong></p>
+<ul>
+<li>状态：{晴天, 雨天, 多云, ……}</li>
+<li>初始概率：P(晴天), P(雨天), ……</li>
+<li>状态转移概率：P(晴天|雨天), P(雨天|多云), ……</li>
+</ul>
+</li>
+<li><p>参数估计</p>
+<ul>
+<li>最大似然法<ul>
+<li><strong>初始概率</strong>：P(S1 = k) = (k作为序列开始的次数) / (观测序列总数)</li>
+<li><strong>状态转移概率</strong>：P(St + 1 = l |St = k) = (l紧跟k出现的次数) / (k出现的总次数)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>小结</strong></p>
+<ul>
+<li>马尔可夫链是对一个序列数据建模</li>
+</ul>
+</li>
+</ul>
+<h4 id="隐马尔可夫模型"><a href="#隐马尔可夫模型" class="headerlink" title="隐马尔可夫模型"></a>隐马尔可夫模型</h4><p>HMM 是一个<strong>关于时序的概率模型</strong>，它的<strong>变量分为两组</strong>：</p>
+<ul>
+<li>状态变量 (隐变量)：由马尔可夫链随机生成</li>
+<li>观测变量 ：状态序列每个状态对应生成一个观测结果</li>
+</ul>
+<p>状态变量和观测变量各自都是一个时间序列，每个状态/观测值都和一个时刻相对应</p>
+<blockquote>
+<p><strong>假设1</strong>：假设隐藏的马尔可夫链在任意时刻 tt 的状态只依赖于前一个时刻（t − 1时）的状态，与其他时刻的状态及观测无关，也与时刻 t 无关。</p>
+<p><strong>假设2</strong>：假设任意时刻的观测只依赖于该时刻的马尔可夫链状态，与其他观测及状态无关。</p>
+</blockquote>
+<ul>
+<li><p>参数</p>
+<ul>
+<li><p>状态：由数字表示，假设共有M个，状态序列S</p>
+</li>
+<li><p><strong>观测</strong>：由数字表示，假设共有N个，观测序列O</p>
+</li>
+<li><p>状态转移概率：$由a_{k, l}表示, 通常记作矩阵A$</p>
+</li>
+<li><p><strong>发射概率</strong>：$b_{k}(u)=\mathrm{P}\left(O_{t}=u | S_{t}=k\right) \quad u=1,2, \ldots, N ; k=1,2, \dots, M, 通常记作矩阵B$</p>
+</li>
+<li><p>初始概率：$由\pi_{k}表示$</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://image.alessa0.cn/135221.png" alt="HMM"></p>
+<h5 id="HMM解决三类问题"><a href="#HMM解决三类问题" class="headerlink" title="HMM解决三类问题"></a>HMM解决三类问题</h5><ul>
+<li><p>概率计算问题（又称评价问题）</p>
+<ul>
+<li><p>已知：</p>
+<ul>
+<li>模型$\lambda=[A, B, \pi]$</li>
+<li>观测序列O</li>
+</ul>
+</li>
+<li><p>求解：</p>
+<ul>
+<li>给定观测序列，求它和评估模型之间的匹配度$P(O | \lambda)$</li>
+</ul>
+</li>
+<li><p>方案：</p>
+<ul>
+<li>前向-后向算法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>预测问题（又称解码问题）</p>
+<ul>
+<li>已知：<ul>
+<li>模型$\lambda=[A, B, \pi]$</li>
+<li>观测序列O</li>
+</ul>
+</li>
+<li>求解：<ul>
+<li>给定观测序列，求最有可能与之对应的状态序列S</li>
+</ul>
+</li>
+<li>方案：<ul>
+<li>Viterbi算法</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>学习问题（又称训练问题）</p>
+<ul>
+<li>已知：<ul>
+<li>观测序列O</li>
+<li>或许会给与之对应的状态序列S</li>
+</ul>
+</li>
+<li>求解：<ul>
+<li>训练模型$\lambda=[A, B, \pi]$，使其$P(O | \lambda)$最大，最好地描述观测数据</li>
+</ul>
+</li>
+<li>方案：<ul>
+<li>有监督/无监督</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>相关文章：<a target="_blank" rel="noopener" href="http://www.52nlp.cn/hmm%E7%9B%B8%E5%85%B3%E6%96%87%E7%AB%A0%E7%B4%A2%E5%BC%95">52nlp</a></p>
+</blockquote>
+<h4 id="Jieba-HMM"><a href="#Jieba-HMM" class="headerlink" title="Jieba HMM"></a>Jieba HMM</h4><ul>
+<li><p>参数</p>
+<ul>
+<li>初始概率<ul>
+<li>BEMS位置信息</li>
+<li>词性</li>
+<li>例: {(‘B’, ‘mq’): -6.78695300139688, ……}</li>
+</ul>
+</li>
+<li>转移概率<ul>
+<li>例: {(‘B’, ‘ad’): {(‘E’, ‘ad’): -0.0007479013978476627}, ……}</li>
+</ul>
+</li>
+<li>发射概率<ul>
+<li>例: {(‘B’, ‘df’): {u’不’: 0.0}……}</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Viterbi算法实现</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#状态转移矩阵，比如B状态前只可能是E或S状态  </span></span><br><span class="line">PrevStatus = &#123;  </span><br><span class="line">    <span class="string">&#x27;B&#x27;</span>:(<span class="string">&#x27;E&#x27;</span>,<span class="string">&#x27;S&#x27;</span>),  </span><br><span class="line">    <span class="string">&#x27;M&#x27;</span>:(<span class="string">&#x27;M&#x27;</span>,<span class="string">&#x27;B&#x27;</span>),  </span><br><span class="line">    <span class="string">&#x27;S&#x27;</span>:(<span class="string">&#x27;S&#x27;</span>,<span class="string">&#x27;E&#x27;</span>),  </span><br><span class="line">    <span class="string">&#x27;E&#x27;</span>:(<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;M&#x27;</span>)  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">viterbi</span>(<span class="params">obs, states, start_p, trans_p, emit_p</span>):</span></span><br><span class="line">    V = [&#123;&#125;]  <span class="comment"># 状态概率矩阵  </span></span><br><span class="line">    path = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> states:  <span class="comment"># 初始化状态概率</span></span><br><span class="line">        V[<span class="number">0</span>][y] = start_p[y] + emit_p[y].get(obs[<span class="number">0</span>], MIN_FLOAT)</span><br><span class="line">        path[y] = [y] <span class="comment"># 记录路径</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="built_in">len</span>(obs)):</span><br><span class="line">        V.append(&#123;&#125;)</span><br><span class="line">        newpath = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> states:</span><br><span class="line">            em_p = emit_p[y].get(obs[t], MIN_FLOAT)</span><br><span class="line">            <span class="comment"># t时刻状态为y的最大概率(从t-1时刻中选择到达时刻t且状态为y的状态y0)</span></span><br><span class="line">            (prob, state) = <span class="built_in">max</span>([(V[t - <span class="number">1</span>][y0] + trans_p[y0].get(y, MIN_FLOAT) + em_p, y0) <span class="keyword">for</span> y0 <span class="keyword">in</span> PrevStatus[y]])</span><br><span class="line">            V[t][y] = prob</span><br><span class="line">            newpath[y] = path[state] + [y] <span class="comment"># 只保存概率最大的一种路径 </span></span><br><span class="line">        path = newpath </span><br><span class="line">    <span class="comment"># 求出最后一个字哪一种状态的对应概率最大，最后一个字只可能是两种情况：E(结尾)和S(独立词)  </span></span><br><span class="line">    (prob, state) = <span class="built_in">max</span>((V[<span class="built_in">len</span>(obs) - <span class="number">1</span>][y], y) <span class="keyword">for</span> y <span class="keyword">in</span> <span class="string">&#x27;ES&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<br />
+
+<p><meting-js
+    id="525086802"
+    server="netease"
+    type="song"
+    preload="none"/></p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BigData/" rel="tag"># BigData</a>
+              <a href="/tags/TF-IDF/" rel="tag"># TF-IDF</a>
+              <a href="/tags/LCS/" rel="tag"># LCS</a>
+              <a href="/tags/HMM/" rel="tag"># HMM</a>
+              <a href="/tags/%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D/" rel="tag"># 中文分词</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B001:HDFS1.0%E4%B8%8EMapReduce/" rel="prev" title="BigData复习笔记01：HDFS1.0与MapReduce">
+      <i class="fa fa-chevron-left"></i> BigData复习笔记01：HDFS1.0与MapReduce
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B003:%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/" rel="next" title="BigData复习笔记03：推荐算法">
+      BigData复习笔记03：推荐算法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NLP%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="nav-number">1.</span> <span class="nav-text">NLP文本相似度</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E5%BA%A6-%E5%90%91%E9%87%8F%E7%A9%BA%E9%97%B4%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">余弦相似度&#x2F;向量空间模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%BA%A6%E9%87%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">相似度度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%99%E5%BC%A6%E7%9B%B8%E4%BC%BC%E5%BA%A6"><span class="nav-number">1.1.2.</span> <span class="nav-text">余弦相似度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%9B%B8%E4%BC%BC%E5%BA%A6%E8%AE%A1%E7%AE%97%E7%9A%84%E5%A4%84%E7%90%86%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">文本相似度计算的处理流程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TD-IDF"><span class="nav-number">1.2.</span> <span class="nav-text">TD-IDF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%8D%E9%A2%91TF"><span class="nav-number">1.2.1.</span> <span class="nav-text">词频TF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E6%96%87%E6%A1%A3%E9%A2%91%E7%8E%87IDF"><span class="nav-number">1.2.2.</span> <span class="nav-text">反文档频率IDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.2.3.</span> <span class="nav-text">计算步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%90Demo%E3%80%91%E5%88%A4%E6%96%AD%E7%9B%B8%E4%BC%BC%E6%96%87%E7%AB%A0"><span class="nav-number">1.2.4.</span> <span class="nav-text">【Demo】判断相似文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%90Demo%E3%80%91%E8%87%AA%E5%8A%A8%E6%91%98%E8%A6%81"><span class="nav-number">1.2.5.</span> <span class="nav-text">【Demo】自动摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%90%E6%A1%88%E4%BE%8B%E4%BB%A3%E7%A0%81%E3%80%91TF-IDF"><span class="nav-number">1.2.6.</span> <span class="nav-text">【案例代码】TF-IDF</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LCS"><span class="nav-number">1.3.</span> <span class="nav-text">LCS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%951%EF%BC%9A%E6%9A%B4%E5%8A%9B%E7%A9%B7%E4%B8%BE"><span class="nav-number">1.3.1.</span> <span class="nav-text">解法1：暴力穷举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%B3%952%EF%BC%9A%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92DP"><span class="nav-number">1.3.2.</span> <span class="nav-text">解法2：动态规划DP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%90%E6%A1%88%E4%BE%8B%E4%BB%A3%E7%A0%81%E3%80%91LCS"><span class="nav-number">1.3.3.</span> <span class="nav-text">【案例代码】LCS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D"><span class="nav-number">2.</span> <span class="nav-text">中文分词</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D%E5%9F%BA%E7%A1%80"><span class="nav-number">2.1.</span> <span class="nav-text">中文分词基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">2.1.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E3%80%90Demo%E3%80%91DAG%E8%AF%8D%E5%9B%BE"><span class="nav-number">2.1.2.</span> <span class="nav-text">【Demo】DAG词图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">概率语言模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%A1%80"><span class="nav-number">2.2.1.</span> <span class="nav-text">基础</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E4%BE%8B"><span class="nav-number">2.2.2.</span> <span class="nav-text">引例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E5%85%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.3.</span> <span class="nav-text">一元模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N%E5%85%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.4.</span> <span class="nav-text">N元模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jieba%E5%88%86%E8%AF%8D%E5%B7%A5%E5%85%B7"><span class="nav-number">2.3.</span> <span class="nav-text">Jieba分词工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">2.3.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E8%AF%8D%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">分词模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">具体步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E7%BC%80%E8%AF%8D%E5%85%B8"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">前缀词典</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DAG"><span class="nav-number">2.3.1.5.</span> <span class="nav-text">DAG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E8%AF%8D%E9%A2%91%E6%9C%80%E5%A4%A7%E5%88%87%E5%88%86%E7%BB%84%E5%90%88"><span class="nav-number">2.3.1.6.</span> <span class="nav-text">基于词频最大切分组合</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM"><span class="nav-number">2.3.2.</span> <span class="nav-text">隐马尔可夫模型HMM</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE"><span class="nav-number">2.3.2.1.</span> <span class="nav-text">马尔可夫链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.3.2.2.</span> <span class="nav-text">隐马尔可夫模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#HMM%E8%A7%A3%E5%86%B3%E4%B8%89%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.2.2.1.</span> <span class="nav-text">HMM解决三类问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Jieba-HMM"><span class="nav-number">2.3.2.3.</span> <span class="nav-text">Jieba HMM</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">XIE QING</p>
+  <div class="site-description" itemprop="description">怜我世人, 焚我残躯。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">闽ICP备18014770号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XIE QING</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

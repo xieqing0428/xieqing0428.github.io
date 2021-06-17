@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/heart.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"alessa0.cn","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="CDH环境配置 ![clay-banks-1554989-unsplash](https:&#x2F;&#x2F;image.alessa0.cn&#x2F;074403.jpg)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="傻瓜式CDH集群部署指南">
+<meta property="og:url" content="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/CDH/%E5%82%BB%E7%93%9C%E5%BC%8FCDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/">
+<meta property="og:site_name" content="听泉.ღ">
+<meta property="og:description" content="CDH环境配置 ![clay-banks-1554989-unsplash](https:&#x2F;&#x2F;image.alessa0.cn&#x2F;074403.jpg)">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-17T06:40:59.000Z">
+<meta property="article:modified_time" content="2021-06-17T09:32:03.143Z">
+<meta property="article:author" content="XIE QING">
+<meta property="article:tag" content="BigData">
+<meta property="article:tag" content="CDH环境搭建">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/CDH/%E5%82%BB%E7%93%9C%E5%BC%8FCDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>傻瓜式CDH集群部署指南 | 听泉.ღ</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">听泉.ღ</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">— 听泉小窝 —</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/CDH/%E5%82%BB%E7%93%9C%E5%BC%8FCDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="XIE QING">
+      <meta itemprop="description" content="怜我世人, 焚我残躯。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="听泉.ღ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          傻瓜式CDH集群部署指南
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-17 14:40:59" itemprop="dateCreated datePublished" datetime="2019-05-17T14:40:59+08:00">2019-05-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-06-17 17:32:03" itemprop="dateModified" datetime="2021-06-17T17:32:03+08:00">2021-06-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/CDH/" itemprop="url" rel="index"><span itemprop="name">CDH</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p class="description">CDH环境配置</p>
+![clay-banks-1554989-unsplash](https://image.alessa0.cn/074403.jpg)<span id="more"></span>
+
+<blockquote class="blockquote-center">
+            <i class="fa fa-quote-left"></i>
+            <p>单机内存最低8G </p>
+
+            <i class="fa fa-quote-right"></i>
+          </blockquote>
+
+<div class="text-center"><a class="btn" target="_blank" rel="noopener" href="https://www.cloudera.com/">
+            <i class="fa fa-home fa-lg fa-fw"></i>Cloudera
+          </a></div>
+# 集群环境
+
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>CentOS-7-x86_64-Minimal-1810.iso</p>
+<ul>
+<li><strong>cdh-master</strong> 192.168.69.111  <strong>4core</strong>  <strong>16G</strong></li>
+<li><strong>cdh-slave1</strong>   192.168.69.112  <strong>4core</strong>  <strong>8G</strong></li>
+<li><strong>cdh-slave2</strong>   192.168.69.113  <strong>4core</strong>  <strong>8G</strong></li>
+</ul>
+<h1 id="关闭防火墙及修改hosts"><a href="#关闭防火墙及修改hosts" class="headerlink" title="关闭防火墙及修改hosts"></a>关闭防火墙及修改hosts</h1><h2 id="永久关闭内核防火墙"><a href="#永久关闭内核防火墙" class="headerlink" title="永久关闭内核防火墙"></a>永久关闭内核防火墙</h2><ul>
+<li>vim /etc/selinux/config</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">SELINUX</span>=disabled</span><br></pre></td></tr></table></figure>
+
+<h2 id="关闭系统防火墙"><a href="#关闭系统防火墙" class="headerlink" title="关闭系统防火墙"></a>关闭系统防火墙</h2><h3 id="停止firewall"><a href="#停止firewall" class="headerlink" title="停止firewall"></a>停止firewall</h3><ul>
+<li>systemctl stop firewalld.service</li>
+</ul>
+<h3 id="禁止firewall开机启动"><a href="#禁止firewall开机启动" class="headerlink" title="禁止firewall开机启动"></a>禁止firewall开机启动</h3><ul>
+<li>systemctl disable firewalld.service</li>
+</ul>
+<h2 id="修改hosts文件"><a href="#修改hosts文件" class="headerlink" title="修改hosts文件"></a>修改hosts文件</h2><ul>
+<li>vim /etc/hosts</li>
+</ul>
+<figure class="highlight accesslog"><table><tr><td class="code"><pre><span class="line"># 添加如下信息</span><br><span class="line"><span class="number">192.168.69.111</span> cdh-master </span><br><span class="line"><span class="number">192.168.69.112</span> cdh-slave1 </span><br><span class="line"><span class="number">192.168.69.113</span> cdh-slave2 </span><br></pre></td></tr></table></figure>
+
+<h1 id="SSH互信"><a href="#SSH互信" class="headerlink" title="SSH互信"></a>SSH互信</h1><h2 id="生成密钥对（公钥和私钥）"><a href="#生成密钥对（公钥和私钥）" class="headerlink" title="生成密钥对（公钥和私钥）"></a>生成密钥对（公钥和私钥）</h2><ul>
+<li>ssh-keygen -t rsa -P ‘’</li>
+</ul>
+<h2 id="追加authorized-keys"><a href="#追加authorized-keys" class="headerlink" title="追加authorized_keys"></a>追加authorized_keys</h2><figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 追加authorized_keys</span></span><br><span class="line">cat ~<span class="regexp">/.ssh/i</span>d_rsa.pub &gt; ~<span class="regexp">/.ssh/</span>authorized_keys</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改权限</span></span><br><span class="line">chmod g-w ~</span><br><span class="line">chmod <span class="number">700</span> ~/.ssh </span><br><span class="line">chmod <span class="number">600</span> ~<span class="regexp">/.ssh/</span>authorized_keys</span><br></pre></td></tr></table></figure>
+
+<h2 id="追加密钥到Master"><a href="#追加密钥到Master" class="headerlink" title="追加密钥到Master"></a>追加密钥到Master</h2><ul>
+<li>ssh cdh-slave1 cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</li>
+<li>ssh cdh-slave2 cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</li>
+</ul>
+<h2 id="复制密钥到从节点"><a href="#复制密钥到从节点" class="headerlink" title="复制密钥到从节点"></a>复制密钥到从节点</h2><ul>
+<li>scp <del>/.ssh/authorized_keys cdh-slave1:</del>/.ssh/authorized_keys</li>
+<li>scp <del>/.ssh/authorized_keys cdh-slave2:</del>/.ssh/authorized_keys</li>
+</ul>
+<h1 id="ntp时间同步"><a href="#ntp时间同步" class="headerlink" title="ntp时间同步"></a>ntp时间同步</h1><h2 id="所有节点安装相关ntp组件"><a href="#所有节点安装相关ntp组件" class="headerlink" title="所有节点安装相关ntp组件"></a>所有节点安装相关ntp组件</h2><ul>
+<li>yum -y install ntp</li>
+</ul>
+<h2 id="所有节点设置时区"><a href="#所有节点设置时区" class="headerlink" title="所有节点设置时区"></a>所有节点设置时区</h2><ul>
+<li>timedatectl set-timezone Asia/Shanghai</li>
+</ul>
+<h2 id="启动ntp，以及设置开机启动"><a href="#启动ntp，以及设置开机启动" class="headerlink" title="启动ntp，以及设置开机启动"></a>启动ntp，以及设置开机启动</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动ntp</span></span><br><span class="line">systemctl start ntpd</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置开机启动</span></span><br><span class="line">systemctl <span class="builtin-name">enable</span> ntpd</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置ntp服务器-master节点"><a href="#配置ntp服务器-master节点" class="headerlink" title="配置ntp服务器(master节点)"></a>配置ntp服务器(master节点)</h2><ul>
+<li>vim /etc/ntp.conf</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="meta"># 修改如下几行</span></span><br><span class="line"><span class="meta">#server 0.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="meta">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="meta">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="meta">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 添加如下几行</span></span><br><span class="line">restrict <span class="number">192.168</span><span class="number">.69</span><span class="number">.2</span> mask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span> nomodify notrap</span><br><span class="line">server <span class="number">127.127</span><span class="number">.1</span><span class="number">.0</span></span><br><span class="line">fudge <span class="number">127.127</span><span class="number">.1</span><span class="number">.0</span> stratum <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="配置ntp服务器-slave节点"><a href="#配置ntp服务器-slave节点" class="headerlink" title="配置ntp服务器(slave节点)"></a>配置ntp服务器(slave节点)</h2><ul>
+<li>vim /etc/ntp.conf</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="code"><pre><span class="line"><span class="meta"># 修改如下几行</span></span><br><span class="line"><span class="meta">#server 0.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="meta">#server 1.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="meta">#server 2.centos.pool.ntp.org iburst</span></span><br><span class="line"><span class="meta">#server 3.centos.pool.ntp.org iburst</span></span><br><span class="line"></span><br><span class="line"><span class="meta"># 添加如下几行(master节点)</span></span><br><span class="line">restrict <span class="number">192.168</span><span class="number">.69</span><span class="number">.2</span> mask <span class="number">255.255</span><span class="number">.255</span><span class="number">.0</span> nomodify notrap</span><br><span class="line">server <span class="number">192.168</span><span class="number">.69</span><span class="number">.111</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="重启ntp服务"><a href="#重启ntp服务" class="headerlink" title="重启ntp服务"></a>重启ntp服务</h2><ul>
+<li>systemctl restart ntpd</li>
+</ul>
+<h2 id="主节点定时服务"><a href="#主节点定时服务" class="headerlink" title="主节点定时服务"></a>主节点定时服务</h2><ul>
+<li>crontab -e</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="number">0</span>-<span class="number">59</span><span class="regexp">/10 * * * * /u</span>sr<span class="regexp">/sbin/</span>ntpdate -u asia.pool.ntp.org</span><br></pre></td></tr></table></figure>
+
+<h2 id="手动同步master的时间"><a href="#手动同步master的时间" class="headerlink" title="手动同步master的时间"></a>手动同步master的时间</h2><ul>
+<li>ntpdate -u 192.168.69.111</li>
+</ul>
+<h2 id="查看同步状态"><a href="#查看同步状态" class="headerlink" title="查看同步状态"></a>查看同步状态</h2><ul>
+<li>ntpstat</li>
+</ul>
+<h1 id="配置Cloudera-rpm仓库"><a href="#配置Cloudera-rpm仓库" class="headerlink" title="配置Cloudera rpm仓库"></a>配置Cloudera rpm仓库</h1><h2 id="下载repo文件"><a href="#下载repo文件" class="headerlink" title="下载repo文件"></a>下载repo文件</h2><ul>
+<li>sudo wget <a target="_blank" rel="noopener" href="https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/cloudera-manager.repo">https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/cloudera-manager.repo</a> -P /etc/yum.repos.d/</li>
+</ul>
+<h2 id="使用GPG-key导入仓库"><a href="#使用GPG-key导入仓库" class="headerlink" title="使用GPG key导入仓库"></a>使用GPG key导入仓库</h2><ul>
+<li>sudo rpm –import <a target="_blank" rel="noopener" href="https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPM-GPG-KEY-cloudera">https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPM-GPG-KEY-cloudera</a></li>
+</ul>
+<h2 id="下载parcel文件"><a href="#下载parcel文件" class="headerlink" title="下载parcel文件"></a>下载parcel文件</h2><ul>
+<li>mkdir -p /opt/cloudera/parcel-repo/</li>
+<li>sudo wget <a target="_blank" rel="noopener" href="https://archive.cloudera.com/cdh6/6.2.0/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel">https://archive.cloudera.com/cdh6/6.2.0/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel</a> /opt/cloudera/parcel-repo/</li>
+<li>sudo wget <a target="_blank" rel="noopener" href="https://archive.cloudera.com/cdh6/6.2.0/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel.sha256">https://archive.cloudera.com/cdh6/6.2.0/parcels/CDH-6.2.0-1.cdh6.2.0.p0.967373-el7.parcel.sha256</a> /opt/cloudera/parcel-repo/</li>
+<li>sudo wget <a target="_blank" rel="noopener" href="https://archive.cloudera.com/cdh6/6.2.0/parcels/manifest.json">https://archive.cloudera.com/cdh6/6.2.0/parcels/manifest.json</a> /opt/cloudera/parcel-repo/</li>
+</ul>
+<h1 id="安装-Java（64-bit）"><a href="#安装-Java（64-bit）" class="headerlink" title="安装 Java（64-bit）"></a>安装 Java（64-bit）</h1><h2 id="卸载掉自带的-OpenJdk"><a href="#卸载掉自带的-OpenJdk" class="headerlink" title="卸载掉自带的 OpenJdk"></a>卸载掉自带的 OpenJdk</h2><ul>
+<li>rpm -qa | grep java</li>
+</ul>
+<h2 id="使用Cloudera-Manager-安装-Java"><a href="#使用Cloudera-Manager-安装-Java" class="headerlink" title="使用Cloudera Manager 安装 Java"></a>使用Cloudera Manager 安装 Java</h2><ul>
+<li>sudo yum -y install oracle-j2sdk1.8</li>
+</ul>
+<h2 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h2><ul>
+<li>vim /etc/profile</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line"><span class="comment"># SET JAVA PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/java/jdk1.8.0_181-cloudera/</span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.:$CLASSPATH:$JAVA_HOME/lib </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$JAVA_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>source /etc/profile</li>
+</ul>
+<h3 id="yum-update报错Error-Delta-RPMs-disabled-because-usr-bin-applydeltarpm-not-installed"><a href="#yum-update报错Error-Delta-RPMs-disabled-because-usr-bin-applydeltarpm-not-installed" class="headerlink" title="yum update报错Error: Delta RPMs disabled because /usr/bin/applydeltarpm not installed."></a>yum update报错<code>Error: Delta RPMs disabled because /usr/bin/applydeltarpm not installed.</code></h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 安装deltarpm</span></span><br><span class="line"><span class="attribute">yum</span> provides <span class="string">&#x27;*/applydeltarpm&#x27;</span></span><br><span class="line">yum install deltarpm</span><br></pre></td></tr></table></figure>
+
+<h1 id="安装Cloudera-Manager-Server"><a href="#安装Cloudera-Manager-Server" class="headerlink" title="安装Cloudera Manager Server"></a>安装Cloudera Manager Server</h1><h2 id="安装Cloudera-Manager包"><a href="#安装Cloudera-Manager包" class="headerlink" title="安装Cloudera Manager包"></a>安装Cloudera Manager包</h2><ul>
+<li>sudo yum -y install cloudera-manager-daemons cloudera-manager-agent cloudera-manager-server</li>
+</ul>
+<p>Ps：可以在<a target="_blank" rel="noopener" href="https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPMS/x86_64/">https://archive.cloudera.com/cm6/6.2.0/redhat7/yum/RPMS/x86_64/</a> 提前下好rpm包进行安装。</p>
+<h2 id="启用Auto-TLS"><a href="#启用Auto-TLS" class="headerlink" title="启用Auto-TLS"></a>启用Auto-TLS</h2><p>待续</p>
+<h1 id="安装和配置数据库MariaDB-for-Cloudera-Software-master节点"><a href="#安装和配置数据库MariaDB-for-Cloudera-Software-master节点" class="headerlink" title="安装和配置数据库MariaDB for Cloudera Software(master节点)"></a>安装和配置数据库MariaDB for Cloudera Software(master节点)</h1><h2 id="安装MariaDB"><a href="#安装MariaDB" class="headerlink" title="安装MariaDB"></a>安装MariaDB</h2><ul>
+<li>sudo yum -y install mariadb-server</li>
+</ul>
+<h2 id="配置MariaDB"><a href="#配置MariaDB" class="headerlink" title="配置MariaDB"></a>配置MariaDB</h2><ul>
+<li>vim /etc/my.cnf</li>
+</ul>
+<figure class="highlight nix"><table><tr><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line"><span class="attr">datadir=/var/lib/mysql</span></span><br><span class="line"><span class="attr">socket=/var/lib/mysql/mysql.sock</span></span><br><span class="line"><span class="attr">transaction-isolation</span> = READ-COMMITTED</span><br><span class="line"><span class="comment"># Disabling symbolic-links is recommended to prevent assorted security risks;</span></span><br><span class="line"><span class="comment"># to do so, uncomment this line:</span></span><br><span class="line"><span class="attr">symbolic-links</span> = <span class="number">0</span></span><br><span class="line"><span class="comment"># Settings user and group are ignored when systemd is used.</span></span><br><span class="line"><span class="comment"># If you need to run mysqld under a different user or group,</span></span><br><span class="line"><span class="comment"># customize your systemd unit file for mariadb according to the</span></span><br><span class="line"><span class="comment"># instructions in http://fedoraproject.org/wiki/Systemd</span></span><br><span class="line"></span><br><span class="line"><span class="attr">key_buffer</span> = <span class="number">16</span>M</span><br><span class="line"><span class="attr">key_buffer_size</span> = <span class="number">32</span>M</span><br><span class="line"><span class="attr">max_allowed_packet</span> = <span class="number">32</span>M</span><br><span class="line"><span class="attr">thread_stack</span> = <span class="number">256</span>K</span><br><span class="line"><span class="attr">thread_cache_size</span> = <span class="number">64</span></span><br><span class="line"><span class="attr">query_cache_limit</span> = <span class="number">8</span>M</span><br><span class="line"><span class="attr">query_cache_size</span> = <span class="number">64</span>M</span><br><span class="line"><span class="attr">query_cache_type</span> = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">max_connections</span> = <span class="number">550</span></span><br><span class="line"><span class="comment">#expire_logs_days = 10</span></span><br><span class="line"><span class="comment">#max_binlog_size = 100M</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#log_bin should be on a disk with enough free space.</span></span><br><span class="line"><span class="comment">#Replace &#x27;/var/lib/mysql/mysql_binary_log&#x27; with an appropriate path for your</span></span><br><span class="line"><span class="comment">#system and chown the specified folder to the mysql user.</span></span><br><span class="line"><span class="attr">log_bin=/var/lib/mysql/mysql_binary_log</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#In later versions of MariaDB, if you enable the binary log and do not set</span></span><br><span class="line"><span class="comment">#a server_id, MariaDB will not start. The server_id must be unique within</span></span><br><span class="line"><span class="comment">#the replicating group.</span></span><br><span class="line"><span class="attr">server_id=1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">binlog_format</span> = mixed</span><br><span class="line"></span><br><span class="line"><span class="attr">read_buffer_size</span> = <span class="number">2</span>M</span><br><span class="line"><span class="attr">read_rnd_buffer_size</span> = <span class="number">16</span>M</span><br><span class="line"><span class="attr">sort_buffer_size</span> = <span class="number">8</span>M</span><br><span class="line"><span class="attr">join_buffer_size</span> = <span class="number">8</span>M</span><br><span class="line"></span><br><span class="line"><span class="comment"># InnoDB settings</span></span><br><span class="line"><span class="attr">innodb_file_per_table</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">innodb_flush_log_at_trx_commit</span>  = <span class="number">2</span></span><br><span class="line"><span class="attr">innodb_log_buffer_size</span> = <span class="number">64</span>M</span><br><span class="line"><span class="attr">innodb_buffer_pool_size</span> = <span class="number">4</span>G</span><br><span class="line"><span class="attr">innodb_thread_concurrency</span> = <span class="number">8</span></span><br><span class="line"><span class="attr">innodb_flush_method</span> = O_DIRECT</span><br><span class="line"><span class="attr">innodb_log_file_size</span> = <span class="number">512</span>M</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line"><span class="attr">log-error=/var/log/mariadb/mariadb.log</span></span><br><span class="line"><span class="attr">pid-file=/var/run/mariadb/mariadb.pid</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># include all files from the config directory</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line">!includedir /etc/my.cnf.d</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动MariaDB"><a href="#启动MariaDB" class="headerlink" title="启动MariaDB"></a>启动MariaDB</h2><h3 id="开机启动MariaDB"><a href="#开机启动MariaDB" class="headerlink" title="开机启动MariaDB"></a>开机启动MariaDB</h3><ul>
+<li>sudo systemctl enable mariadb</li>
+</ul>
+<h3 id="启动MariaDB服务"><a href="#启动MariaDB服务" class="headerlink" title="启动MariaDB服务"></a>启动MariaDB服务</h3><ul>
+<li>sudo systemctl start mariadb</li>
+</ul>
+<h2 id="安全设置"><a href="#安全设置" class="headerlink" title="安全设置"></a>安全设置</h2><ul>
+<li>sudo /usr/bin/mysql_secure_installation</li>
+</ul>
+<figure class="highlight tp"><table><tr><td class="code"><pre><span class="line">[...]</span><br><span class="line">Enter current password for root (enter for none):</span><br><span class="line">OK, successfully used password, moving on...</span><br><span class="line">[...]</span><br><span class="line">Set root password? [<span class="keyword">Y</span>/n] <span class="keyword">Y</span></span><br><span class="line">New password: <span class="number">123</span></span><br><span class="line">Re-enter new password: <span class="number">123</span></span><br><span class="line">[...]</span><br><span class="line">Remove anonymous users? [<span class="keyword">Y</span>/n] <span class="keyword">Y</span></span><br><span class="line">[...]</span><br><span class="line">Disallow root login remotely? [<span class="keyword">Y</span>/n] <span class="keyword">Y</span></span><br><span class="line">[...]</span><br><span class="line">Remove test database and access to it [<span class="keyword">Y</span>/n] <span class="keyword">Y</span></span><br><span class="line">[...]</span><br><span class="line">Reload privilege tables now? [<span class="keyword">Y</span>/n] <span class="keyword">Y</span></span><br><span class="line">[...]</span><br><span class="line">All done<span class="comment">!  If you&#x27;ve completed all of the above steps, your MariaDB</span></span><br><span class="line"><span class="comment">installation should now be secure.</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">Thanks for using MariaDB!</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装MySQL-JDBC-Driver-for-MariaDB"><a href="#安装MySQL-JDBC-Driver-for-MariaDB" class="headerlink" title="安装MySQL JDBC Driver for MariaDB"></a>安装MySQL JDBC Driver for MariaDB</h2><h3 id="下载驱动包"><a href="#下载驱动包" class="headerlink" title="下载驱动包"></a>下载驱动包</h3><ul>
+<li>wget <a target="_blank" rel="noopener" href="https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.46.tar.gz">https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.46.tar.gz</a></li>
+</ul>
+<h3 id="解压驱动包"><a href="#解压驱动包" class="headerlink" title="解压驱动包"></a>解压驱动包</h3><ul>
+<li>tar zxvf mysql-connector-java-5.1.46.tar.gz</li>
+<li>rm -rf mysql-connector-java-5.1.46.tar.gz</li>
+</ul>
+<h3 id="复制驱动包"><a href="#复制驱动包" class="headerlink" title="复制驱动包"></a>复制驱动包</h3><ul>
+<li>sudo mkdir -p /usr/share/java/</li>
+<li>cd mysql-connector-java-5.1.46</li>
+<li>sudo cp mysql-connector-java-5.1.46-bin.jar /usr/share/java/mysql-connector-java.jar</li>
+</ul>
+<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><h3 id="登录root账户"><a href="#登录root账户" class="headerlink" title="登录root账户"></a>登录root账户</h3><ul>
+<li>mysql -uroot -p</li>
+</ul>
+<h3 id="创建hive数据库"><a href="#创建hive数据库" class="headerlink" title="创建hive数据库"></a>创建hive数据库</h3><ul>
+<li>CREATE DATABASE metastore DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci; </li>
+<li>CREATE DATABASE scm DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci; </li>
+<li>CREATE DATABASE oozie DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</li>
+<li>CREATE DATABASE hue DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;</li>
+</ul>
+<h3 id="创建账户"><a href="#创建账户" class="headerlink" title="创建账户"></a>创建账户</h3><ul>
+<li>GRANT ALL ON metastore.* TO ‘hive‘@’%’ IDENTIFIED BY ‘123’; </li>
+<li>GRANT ALL ON scm.* TO ‘scm‘@’%’ IDENTIFIED BY ‘123’; </li>
+<li>GRANT ALL ON oozie.* TO ‘oozie‘@’%’ IDENTIFIED BY ‘123’; </li>
+<li>GRANT ALL ON hue.* TO ‘hue‘@’%’ IDENTIFIED BY ‘123’; </li>
+</ul>
+<h3 id="刷新权限"><a href="#刷新权限" class="headerlink" title="刷新权限"></a>刷新权限</h3><ul>
+<li>flush privileges;</li>
+</ul>
+<h3 id="查看数据库"><a href="#查看数据库" class="headerlink" title="查看数据库"></a>查看数据库</h3><ul>
+<li>SHOW DATABASES;</li>
+</ul>
+<h3 id="查看权限"><a href="#查看权限" class="headerlink" title="查看权限"></a>查看权限</h3><ul>
+<li>SHOW GRANTS FOR ‘hive‘@’%’;</li>
+</ul>
+<h1 id="设置Cloudera-Manager数据库-master节点"><a href="#设置Cloudera-Manager数据库-master节点" class="headerlink" title="设置Cloudera Manager数据库(master节点)"></a>设置Cloudera Manager数据库(master节点)</h1><h2 id="设置语法"><a href="#设置语法" class="headerlink" title="设置语法"></a>设置语法</h2><ul>
+<li>sudo /opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm 123</li>
+</ul>
+<h2 id="准备数据库"><a href="#准备数据库" class="headerlink" title="准备数据库"></a>准备数据库</h2><ul>
+<li>sudo /opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm</li>
+</ul>
+<h1 id="安装CDH及其他软件"><a href="#安装CDH及其他软件" class="headerlink" title="安装CDH及其他软件"></a>安装CDH及其他软件</h1><h2 id="【强烈建议】所有节点拍摄快照"><a href="#【强烈建议】所有节点拍摄快照" class="headerlink" title="【强烈建议】所有节点拍摄快照"></a>【强烈建议】所有节点拍摄快照</h2><h2 id="启动Cloudera-Manager-Server-master节点"><a href="#启动Cloudera-Manager-Server-master节点" class="headerlink" title="启动Cloudera Manager Server(master节点)"></a>启动Cloudera Manager Server(master节点)</h2><ul>
+<li>sudo systemctl start cloudera-scm-server</li>
+</ul>
+<h2 id="查看日志-master节点"><a href="#查看日志-master节点" class="headerlink" title="查看日志(master节点)"></a>查看日志(master节点)</h2><ul>
+<li>sudo tail -f /var/log/cloudera-scm-server/cloudera-scm-server.log</li>
+</ul>
+<p>直至出现<code>INFO WebServerImpl:com.cloudera.server.cmf.WebServerImpl: Started Jetty server.</code></p>
+<h2 id="登录web页面"><a href="#登录web页面" class="headerlink" title="登录web页面"></a>登录web页面</h2><ul>
+<li><a target="_blank" rel="noopener" href="http://cdh-master:7180/">http://cdh-master:7180</a></li>
+</ul>
+<p>账户：admin<br>密码：admin</p>
+<h2 id="安装组件"><a href="#安装组件" class="headerlink" title="安装组件"></a>安装组件</h2><h3 id="x-接受最终用户许可条款和条件"><a href="#x-接受最终用户许可条款和条件" class="headerlink" title="- [x] 接受最终用户许可条款和条件"></a>- [x] 接受最终用户许可条款和条件</h3><h3 id="选择Cloudera-Express免费版"><a href="#选择Cloudera-Express免费版" class="headerlink" title="选择Cloudera Express免费版"></a>选择Cloudera Express免费版</h3><h3 id="集群安装"><a href="#集群安装" class="headerlink" title="集群安装"></a>集群安装</h3><h4 id="Cluster-Basics"><a href="#Cluster-Basics" class="headerlink" title="Cluster Basics"></a>Cluster Basics</h4><ul>
+<li>CDH</li>
+</ul>
+<h4 id="Specify-Hosts"><a href="#Specify-Hosts" class="headerlink" title="Specify Hosts"></a>Specify Hosts</h4><ul>
+<li>输入<code>cdh-master, cdh-slave1, cdh-slave2</code>点击’搜索’</li>
+</ul>
+<h4 id="选择存储库"><a href="#选择存储库" class="headerlink" title="选择存储库"></a>选择存储库</h4><ul>
+<li>选择<code>Public Cloudera Repository</code></li>
+<li>选择<code>Parcels</code></li>
+<li>其他默认</li>
+</ul>
+<h4 id="JDK-安装选项"><a href="#JDK-安装选项" class="headerlink" title="JDK 安装选项"></a>JDK 安装选项</h4><ul>
+<li>选中<code>安装 Oracle Java SE 开发工具包 (JDK)</code></li>
+</ul>
+<h4 id="设置登录凭据"><a href="#设置登录凭据" class="headerlink" title="设置登录凭据"></a>设置登录凭据</h4><ul>
+<li>选择<code>root</code></li>
+<li>输入密码</li>
+</ul>
+<h4 id="安装agents"><a href="#安装agents" class="headerlink" title="安装agents"></a>安装agents</h4><h4 id="安装Parcels"><a href="#安装Parcels" class="headerlink" title="安装Parcels"></a>安装Parcels</h4><h4 id="Inspect-Hosts"><a href="#Inspect-Hosts" class="headerlink" title="Inspect Hosts"></a>Inspect Hosts</h4><ul>
+<li><p>虚拟内存设置</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">sysctl -<span class="keyword">w</span> <span class="keyword">vm</span>.swappiness=<span class="number">10</span></span><br><span class="line"><span class="keyword">echo</span> <span class="keyword">vm</span>.swappiness = <span class="number">10</span> &gt;&gt; /etc/sysctl.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure></li>
+<li><p>大内存页设置</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 临时</span></span><br><span class="line">echo never&gt;<span class="regexp">/sys/</span>kernel<span class="regexp">/mm/</span>transparent_hugepage/defrag</span><br><span class="line">echo never&gt;<span class="regexp">/sys/</span>kernel<span class="regexp">/mm/</span>transparent_hugepage/enabled</span><br><span class="line"></span><br><span class="line"><span class="comment"># 永久</span></span><br><span class="line">vim <span class="regexp">/etc/</span>rc.local</span><br><span class="line"><span class="comment"># 加入如下信息</span></span><br><span class="line">echo never&gt;<span class="regexp">/sys/</span>kernel<span class="regexp">/mm/</span>transparent_hugepage/defrag</span><br><span class="line">echo never&gt;<span class="regexp">/sys/</span>kernel<span class="regexp">/mm/</span>transparent_hugepage/enabled</span><br><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line">chmod +x <span class="regexp">/etc/</span>rc.d/rc.local</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="组件列表"><a href="#组件列表" class="headerlink" title="组件列表"></a>组件列表</h4><table>
+<thead>
+<tr>
+<th align="left">组件</th>
+<th align="left">版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Supervisord</td>
+<td align="left">3.0</td>
+</tr>
+<tr>
+<td align="left">Cloudera Manager Agent</td>
+<td align="left">6.2.0</td>
+</tr>
+<tr>
+<td align="left">Cloudera Manager Management Daemon</td>
+<td align="left">6.2.0</td>
+</tr>
+<tr>
+<td align="left">Flume NG</td>
+<td align="left">1.9.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Hadoop</td>
+<td align="left">3.0.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">HDFS</td>
+<td align="left">3.0.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">HttpFS</td>
+<td align="left">3.0.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">hadoop-kms</td>
+<td align="left">3.0.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">MapReduce 2</td>
+<td align="left">3.0.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">YARN</td>
+<td align="left">3.0.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">HBase</td>
+<td align="left">2.1.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Lily HBase Indexer</td>
+<td align="left">1.5+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Hive</td>
+<td align="left">2.1.1+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">HCatalog</td>
+<td align="left">2.1.1+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Hue</td>
+<td align="left">4.2.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Impala</td>
+<td align="left">3.2.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Java 8</td>
+<td align="left">1.8.0_181</td>
+</tr>
+<tr>
+<td align="left">Kafka</td>
+<td align="left">2.1.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Kite（仅限 CDH 5 ）</td>
+<td align="left">1.0.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">kudu</td>
+<td align="left">1.9.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Oozie</td>
+<td align="left">5.1.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Parquet</td>
+<td align="left">1.9.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Pig</td>
+<td align="left">0.17.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">sentry</td>
+<td align="left">2.1.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Solr</td>
+<td align="left">7.4.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">spark</td>
+<td align="left">2.4.0+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">Sqoop</td>
+<td align="left">1.4.7+cdh6.2.0</td>
+</tr>
+<tr>
+<td align="left">ZooKeeper</td>
+<td align="left">3.4.5+cdh6.2.0</td>
+</tr>
+</tbody></table>
+<h1 id="使用向导设置群集"><a href="#使用向导设置群集" class="headerlink" title="使用向导设置群集"></a>使用向导设置群集</h1><h2 id="选择服务"><a href="#选择服务" class="headerlink" title="选择服务"></a>选择服务</h2><ul>
+<li>选择<code>所有服务</code></li>
+<li><del>选择<code>HBase</code> <code>HDFS</code> <code>Hive</code> <code>Hue</code> <code>Kafka</code> <code>Oozie</code> <code>YARN(MR2 Included)</code> <code> ZooKeeper</code></del></li>
+</ul>
+<h2 id="自定义角色分配"><a href="#自定义角色分配" class="headerlink" title="自定义角色分配"></a>自定义角色分配</h2><ul>
+<li>默认</li>
+</ul>
+<h2 id="数据库设置"><a href="#数据库设置" class="headerlink" title="数据库设置"></a>数据库设置</h2><h3 id="Hive"><a href="#Hive" class="headerlink" title="Hive"></a>Hive</h3><ul>
+<li>MySQL &gt; 否 &gt; cdh-master &gt; metastore &gt; hive &gt; 123 </li>
+</ul>
+<h3 id="Oozie"><a href="#Oozie" class="headerlink" title="Oozie"></a>Oozie</h3><ul>
+<li>MySQL &gt; cdh-master &gt; oozie &gt; oozie &gt; 123</li>
+</ul>
+<h3 id="Hue"><a href="#Hue" class="headerlink" title="Hue"></a>Hue</h3><ul>
+<li>MySQL &gt; cdh-master &gt; hue &gt; hue &gt; 123</li>
+</ul>
+<h2 id="审核更改"><a href="#审核更改" class="headerlink" title="审核更改"></a>审核更改</h2><ul>
+<li>默认</li>
+</ul>
+<h2 id="命令详细信息"><a href="#命令详细信息" class="headerlink" title="命令详细信息"></a>命令详细信息</h2><p>Ps：若搭建过程中多次尝试安装，建议删除/dfs/nn下文件，避免HDFS服务报错</p>
+<h2 id="汇总"><a href="#汇总" class="headerlink" title="汇总"></a>汇总</h2><h1 id="错误排查"><a href="#错误排查" class="headerlink" title="错误排查"></a>错误排查</h1><p>推荐链接 &gt;&gt; <a target="_blank" rel="noopener" href="https://blog.csdn.net/zzq900503/article/details/53393721">https://blog.csdn.net/zzq900503/article/details/53393721</a></p>
+<br />
+
+<p><meting-js
+    id="31654478"
+    server="netease"
+    type="song"
+    preload="none"/></p>
+<hr />
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/BigData/" rel="tag"># BigData</a>
+              <a href="/tags/CDH%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="tag"># CDH环境搭建</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Flink/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%8D%81%E4%BA%94/" rel="prev" title="Hadoop 集群搭建(十五)：Flink">
+      <i class="fa fa-chevron-left"></i> Hadoop 集群搭建(十五)：Flink
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E9%9B%B6%EF%BC%89/" rel="next" title="Flink电商团购项目（零）：环境搭建">
+      Flink电商团购项目（零）：环境搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99%E5%8F%8A%E4%BF%AE%E6%94%B9hosts"><span class="nav-number"></span> <span class="nav-text">关闭防火墙及修改hosts</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B0%B8%E4%B9%85%E5%85%B3%E9%97%AD%E5%86%85%E6%A0%B8%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-number">1.</span> <span class="nav-text">永久关闭内核防火墙</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E7%B3%BB%E7%BB%9F%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-number">2.</span> <span class="nav-text">关闭系统防火墙</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2firewall"><span class="nav-number">2.1.</span> <span class="nav-text">停止firewall</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A6%81%E6%AD%A2firewall%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="nav-number">2.2.</span> <span class="nav-text">禁止firewall开机启动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9hosts%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">修改hosts文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH%E4%BA%92%E4%BF%A1"><span class="nav-number"></span> <span class="nav-text">SSH互信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%AF%86%E9%92%A5%E5%AF%B9%EF%BC%88%E5%85%AC%E9%92%A5%E5%92%8C%E7%A7%81%E9%92%A5%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">生成密钥对（公钥和私钥）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E5%8A%A0authorized-keys"><span class="nav-number">2.</span> <span class="nav-text">追加authorized_keys</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%BD%E5%8A%A0%E5%AF%86%E9%92%A5%E5%88%B0Master"><span class="nav-number">3.</span> <span class="nav-text">追加密钥到Master</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E5%AF%86%E9%92%A5%E5%88%B0%E4%BB%8E%E8%8A%82%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">复制密钥到从节点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ntp%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5"><span class="nav-number"></span> <span class="nav-text">ntp时间同步</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9%E5%AE%89%E8%A3%85%E7%9B%B8%E5%85%B3ntp%E7%BB%84%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">所有节点安装相关ntp组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9%E8%AE%BE%E7%BD%AE%E6%97%B6%E5%8C%BA"><span class="nav-number">2.</span> <span class="nav-text">所有节点设置时区</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8ntp%EF%BC%8C%E4%BB%A5%E5%8F%8A%E8%AE%BE%E7%BD%AE%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8"><span class="nav-number">3.</span> <span class="nav-text">启动ntp，以及设置开机启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEntp%E6%9C%8D%E5%8A%A1%E5%99%A8-master%E8%8A%82%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">配置ntp服务器(master节点)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEntp%E6%9C%8D%E5%8A%A1%E5%99%A8-slave%E8%8A%82%E7%82%B9"><span class="nav-number">5.</span> <span class="nav-text">配置ntp服务器(slave节点)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E5%90%AFntp%E6%9C%8D%E5%8A%A1"><span class="nav-number">6.</span> <span class="nav-text">重启ntp服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%8A%82%E7%82%B9%E5%AE%9A%E6%97%B6%E6%9C%8D%E5%8A%A1"><span class="nav-number">7.</span> <span class="nav-text">主节点定时服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E5%90%8C%E6%AD%A5master%E7%9A%84%E6%97%B6%E9%97%B4"><span class="nav-number">8.</span> <span class="nav-text">手动同步master的时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%90%8C%E6%AD%A5%E7%8A%B6%E6%80%81"><span class="nav-number">9.</span> <span class="nav-text">查看同步状态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%85%8D%E7%BD%AECloudera-rpm%E4%BB%93%E5%BA%93"><span class="nav-number"></span> <span class="nav-text">配置Cloudera rpm仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDrepo%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">下载repo文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8GPG-key%E5%AF%BC%E5%85%A5%E4%BB%93%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">使用GPG key导入仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDparcel%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">下载parcel文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-Java%EF%BC%8864-bit%EF%BC%89"><span class="nav-number"></span> <span class="nav-text">安装 Java（64-bit）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B8%E8%BD%BD%E6%8E%89%E8%87%AA%E5%B8%A6%E7%9A%84-OpenJdk"><span class="nav-number">1.</span> <span class="nav-text">卸载掉自带的 OpenJdk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Cloudera-Manager-%E5%AE%89%E8%A3%85-Java"><span class="nav-number">2.</span> <span class="nav-text">使用Cloudera Manager 安装 Java</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">设置环境变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yum-update%E6%8A%A5%E9%94%99Error-Delta-RPMs-disabled-because-usr-bin-applydeltarpm-not-installed"><span class="nav-number">3.1.</span> <span class="nav-text">yum update报错Error: Delta RPMs disabled because &#x2F;usr&#x2F;bin&#x2F;applydeltarpm not installed.</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Cloudera-Manager-Server"><span class="nav-number"></span> <span class="nav-text">安装Cloudera Manager Server</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Cloudera-Manager%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">安装Cloudera Manager包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E7%94%A8Auto-TLS"><span class="nav-number">2.</span> <span class="nav-text">启用Auto-TLS</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE%E6%95%B0%E6%8D%AE%E5%BA%93MariaDB-for-Cloudera-Software-master%E8%8A%82%E7%82%B9"><span class="nav-number"></span> <span class="nav-text">安装和配置数据库MariaDB for Cloudera Software(master节点)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85MariaDB"><span class="nav-number">1.</span> <span class="nav-text">安装MariaDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEMariaDB"><span class="nav-number">2.</span> <span class="nav-text">配置MariaDB</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8MariaDB"><span class="nav-number">3.</span> <span class="nav-text">启动MariaDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8MariaDB"><span class="nav-number">3.1.</span> <span class="nav-text">开机启动MariaDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8MariaDB%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.2.</span> <span class="nav-text">启动MariaDB服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E8%AE%BE%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">安全设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85MySQL-JDBC-Driver-for-MariaDB"><span class="nav-number">5.</span> <span class="nav-text">安装MySQL JDBC Driver for MariaDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">5.1.</span> <span class="nav-text">下载驱动包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%8E%8B%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">5.2.</span> <span class="nav-text">解压驱动包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E5%88%B6%E9%A9%B1%E5%8A%A8%E5%8C%85"><span class="nav-number">5.3.</span> <span class="nav-text">复制驱动包</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">6.</span> <span class="nav-text">创建数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%99%BB%E5%BD%95root%E8%B4%A6%E6%88%B7"><span class="nav-number">6.1.</span> <span class="nav-text">登录root账户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BAhive%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">6.2.</span> <span class="nav-text">创建hive数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%B4%A6%E6%88%B7"><span class="nav-number">6.3.</span> <span class="nav-text">创建账户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B7%E6%96%B0%E6%9D%83%E9%99%90"><span class="nav-number">6.4.</span> <span class="nav-text">刷新权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">6.5.</span> <span class="nav-text">查看数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9D%83%E9%99%90"><span class="nav-number">6.6.</span> <span class="nav-text">查看权限</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AECloudera-Manager%E6%95%B0%E6%8D%AE%E5%BA%93-master%E8%8A%82%E7%82%B9"><span class="nav-number"></span> <span class="nav-text">设置Cloudera Manager数据库(master节点)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E8%AF%AD%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">设置语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">准备数据库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85CDH%E5%8F%8A%E5%85%B6%E4%BB%96%E8%BD%AF%E4%BB%B6"><span class="nav-number"></span> <span class="nav-text">安装CDH及其他软件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E3%80%90%E5%BC%BA%E7%83%88%E5%BB%BA%E8%AE%AE%E3%80%91%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9%E6%8B%8D%E6%91%84%E5%BF%AB%E7%85%A7"><span class="nav-number">1.</span> <span class="nav-text">【强烈建议】所有节点拍摄快照</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8Cloudera-Manager-Server-master%E8%8A%82%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">启动Cloudera Manager Server(master节点)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97-master%E8%8A%82%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">查看日志(master节点)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E5%BD%95web%E9%A1%B5%E9%9D%A2"><span class="nav-number">4.</span> <span class="nav-text">登录web页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%BB%84%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">安装组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#x-%E6%8E%A5%E5%8F%97%E6%9C%80%E7%BB%88%E7%94%A8%E6%88%B7%E8%AE%B8%E5%8F%AF%E6%9D%A1%E6%AC%BE%E5%92%8C%E6%9D%A1%E4%BB%B6"><span class="nav-number">5.1.</span> <span class="nav-text">- [x] 接受最终用户许可条款和条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9Cloudera-Express%E5%85%8D%E8%B4%B9%E7%89%88"><span class="nav-number">5.2.</span> <span class="nav-text">选择Cloudera Express免费版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BE%A4%E5%AE%89%E8%A3%85"><span class="nav-number">5.3.</span> <span class="nav-text">集群安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cluster-Basics"><span class="nav-number">5.3.1.</span> <span class="nav-text">Cluster Basics</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Specify-Hosts"><span class="nav-number">5.3.2.</span> <span class="nav-text">Specify Hosts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%AD%98%E5%82%A8%E5%BA%93"><span class="nav-number">5.3.3.</span> <span class="nav-text">选择存储库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-%E5%AE%89%E8%A3%85%E9%80%89%E9%A1%B9"><span class="nav-number">5.3.4.</span> <span class="nav-text">JDK 安装选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E7%99%BB%E5%BD%95%E5%87%AD%E6%8D%AE"><span class="nav-number">5.3.5.</span> <span class="nav-text">设置登录凭据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85agents"><span class="nav-number">5.3.6.</span> <span class="nav-text">安装agents</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Parcels"><span class="nav-number">5.3.7.</span> <span class="nav-text">安装Parcels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Inspect-Hosts"><span class="nav-number">5.3.8.</span> <span class="nav-text">Inspect Hosts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6%E5%88%97%E8%A1%A8"><span class="nav-number">5.3.9.</span> <span class="nav-text">组件列表</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%90%91%E5%AF%BC%E8%AE%BE%E7%BD%AE%E7%BE%A4%E9%9B%86"><span class="nav-number"></span> <span class="nav-text">使用向导设置群集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">选择服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A7%92%E8%89%B2%E5%88%86%E9%85%8D"><span class="nav-number">2.</span> <span class="nav-text">自定义角色分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE"><span class="nav-number">3.</span> <span class="nav-text">数据库设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hive"><span class="nav-number">3.1.</span> <span class="nav-text">Hive</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Oozie"><span class="nav-number">3.2.</span> <span class="nav-text">Oozie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hue"><span class="nav-number">3.3.</span> <span class="nav-text">Hue</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%A1%E6%A0%B8%E6%9B%B4%E6%94%B9"><span class="nav-number">4.</span> <span class="nav-text">审核更改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%AF%A6%E7%BB%86%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">命令详细信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%87%E6%80%BB"><span class="nav-number">6.</span> <span class="nav-text">汇总</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5"><span class="nav-number"></span> <span class="nav-text">错误排查</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">XIE QING</p>
+  <div class="site-description" itemprop="description">怜我世人, 焚我残躯。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">闽ICP备18014770号-1 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XIE QING</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
