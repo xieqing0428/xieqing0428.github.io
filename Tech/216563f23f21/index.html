@@ -300,7 +300,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.4k</span>
+      <span>2.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -342,18 +342,18 @@
 <li>vim /etc/sysconfig/network-scripts/ifcfg-ens33</li>
 </ul>
 <mark class="label danger">Master</mark>
-<figure class="highlight ini"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.101</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span> </span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.101</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span> </span><br></pre></td></tr></tbody></table></figure>
 <mark class="label danger">仅在 Slave1</mark>
-<figure class="highlight ini"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.102</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span> </span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.102</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span> </span><br></pre></td></tr></tbody></table></figure>
 <mark class="label danger">仅在 Slave2</mark>
-<figure class="highlight ini"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.103</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.103</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span></span><br></pre></td></tr></tbody></table></figure>
 <h1 id="关闭系统防火墙及内核防火墙">关闭系统防火墙及内核防火墙</h1>
 <p><strong>永久关闭内核防火墙：</strong></p>
 <ul>
 <li>yum -y install vim</li>
 <li>vim /etc/selinux/config</li>
 </ul>
-<figure class="highlight ini"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">SELINUX</span>=disabled</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">SELINUX</span>=disabled</span><br></pre></td></tr></tbody></table></figure>
 <p><strong>停止 firewall：</strong></p>
 <ul>
 <li>systemctl stop firewalld.service</li>
@@ -380,7 +380,7 @@
 <ul>
 <li>vim /etc/hosts</li>
 </ul>
-<figure class="highlight accesslog"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 添加如下信息</span><br><span class="line"><span class="number">192.168.69.101</span> master </span><br><span class="line"><span class="number">192.168.69.102</span> slave1 </span><br><span class="line"><span class="number">192.168.69.103</span> slave2 </span><br><span class="line"># 本地(可不加)</span><br><span class="line"><span class="number">192.168.69.1</span> client</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight accesslog"><table><tbody><tr><td class="code"><pre><span class="line"># 添加如下信息</span><br><span class="line"><span class="number">192.168.69.101</span> master </span><br><span class="line"><span class="number">192.168.69.102</span> slave1 </span><br><span class="line"><span class="number">192.168.69.103</span> slave2 </span><br><span class="line"># 本地(可不加)</span><br><span class="line"><span class="number">192.168.69.1</span> client</span><br></pre></td></tr></tbody></table></figure>
 <h1 id="ssh互信配置">SSH 互信配置</h1>
 <p><strong>生成密钥对（公钥和私钥）-- 三次回车生成密钥：</strong></p>
 <ul>
@@ -430,7 +430,7 @@
 <ul>
 <li>vim /etc/fstab</li>
 </ul>
-<figure class="highlight awk"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 末尾添加如下信息</span></span><br><span class="line">.host:<span class="regexp">/ /m</span>nt/hgfs fuse.vmhgfs-fuse allow_other <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 末尾添加如下信息</span></span><br><span class="line">.host:<span class="regexp">/ /m</span>nt/hgfs fuse.vmhgfs-fuse allow_other <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
 <p><strong>删除工具包</strong></p>
 <ul>
 <li>cd ~</li>
@@ -648,13 +648,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">88k</span>
+    <span title="站点总字数">85k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">1:20</span>
+    <span title="站点阅读时长">1:17</span>
   </span>
 </div>
 <div class="busuanzi-count">
