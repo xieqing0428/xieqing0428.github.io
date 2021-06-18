@@ -344,10 +344,7 @@ ZooKeeper：你们都安分点…
 <ul>
 <li>vim ~/.bashrc</li>
 </ul>
-<pre><code class="highlight routeros"><span class="comment"># 添加如下信息</span>
-<span class="comment"># SET ZOOKEEPER PATH </span>
-<span class="builtin-name">export</span> <span class="attribute">ZOOKEEPER_HOME</span>=/usr/local/src/zookeeper-3.4.14 
-<span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$ZOOKEEPER_HOME/bin</code></pre>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET ZOOKEEPER PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">ZOOKEEPER_HOME</span>=/usr/local/src/zookeeper-3.4.14 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$ZOOKEEPER_HOME/bin </span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>source ~/.bashrc</li>
 </ul>
@@ -366,12 +363,7 @@ ZooKeeper：你们都安分点…
 <li>cp zoo_sample.cfg zoo.cfg</li>
 <li>vim zoo.cfg</li>
 </ul>
-<pre><code class="highlight apache"><span class="comment"># 添加如下信息</span>
-<span class="attribute">dataDir</span>=/usr/local/src/zookeeper-<span class="number">3</span>.<span class="number">4</span>.<span class="number">14</span>/data 
-<span class="attribute">dataLogDir</span>=/usr/local/src/zookeeper-<span class="number">3</span>.<span class="number">4</span>.<span class="number">14</span>/logs 
-<span class="attribute">server</span>.<span class="number">1</span>=master:<span class="number">2888</span>:<span class="number">3888</span> 
-<span class="attribute">server</span>.<span class="number">2</span>=slave<span class="number">1</span>:<span class="number">2888</span>:<span class="number">3888</span> 
-<span class="attribute">server</span>.<span class="number">3</span>=slave<span class="number">2</span>:<span class="number">2888</span>:<span class="number">3888</span></code></pre>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="attribute">dataDir</span>=/usr/local/src/zookeeper-<span class="number">3</span>.<span class="number">4</span>.<span class="number">14</span>/data </span><br><span class="line"><span class="attribute">dataLogDir</span>=/usr/local/src/zookeeper-<span class="number">3</span>.<span class="number">4</span>.<span class="number">14</span>/logs </span><br><span class="line"><span class="attribute">server</span>.<span class="number">1</span>=master:<span class="number">2888</span>:<span class="number">3888</span> </span><br><span class="line"><span class="attribute">server</span>.<span class="number">2</span>=slave<span class="number">1</span>:<span class="number">2888</span>:<span class="number">3888</span> </span><br><span class="line"><span class="attribute">server</span>.<span class="number">3</span>=slave<span class="number">2</span>:<span class="number">2888</span>:<span class="number">3888</span> </span><br></pre></td></tr></tbody></table></figure>
 <p><strong>分别添加唯一标识 ID：</strong></p>
 <mark class="label danger">仅在 Master</mark>
 <ul>

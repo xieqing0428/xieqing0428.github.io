@@ -263,31 +263,20 @@
 <h2 id="installation">Installation</h2>
 <h3 id="step-1-go-to-hexo-dir">Step 1 → Go to Hexo dir</h3>
 <p>Change dir to <strong>Hexo</strong> directory. There must be <code>source</code>, <code>themes</code> and other directories:</p>
-<pre><code class="highlight sh">$ <span class="built_in">cd</span> hexo-site
-$ ls
-_config.next.yml  db.json           package-lock.json scaffolds         themes
-_config.yml       node_modules      package.json      <span class="built_in">source</span></code></pre>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> hexo-site</span><br><span class="line">$ ls</span><br><span class="line">_config.next.yml  db.json           package-lock.json scaffolds         themes</span><br><span class="line">_config.yml       node_modules      package.json      <span class="built_in">source</span></span><br></pre></td></tr></tbody></table></figure>
 <h3 id="step-2-get-module">Step 2 → Get module</h3>
 <p>Install module to <code>source/lib</code> directory:</p>
-<pre><code class="highlight sh">$ git <span class="built_in">clone</span> https://github.com/next-theme/theme-next-pdf <span class="built_in">source</span>/lib/pdf</code></pre>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/next-theme/theme-next-pdf <span class="built_in">source</span>/lib/pdf</span><br></pre></td></tr></tbody></table></figure>
 <h3 id="step-3-set-it-up">Step 3 → Set it up</h3>
 <p>Enable module in <strong>NexT</strong> <code>_config.next.yml</code> file:</p>
-<pre><code class="highlight yml"><span class="comment"># PDF tag</span>
-<span class="comment"># NexT will try to load pdf files natively, if failed, pdf.js will be used.</span>
-<span class="comment"># So, you have to install the dependency of pdf.js if you want to use pdf tag and make it available to all browsers.</span>
-<span class="comment"># See: https://github.com/next-theme/theme-next-pdf</span>
-<span class="attr">pdf:</span>
-  <span class="attr">enable:</span> <span class="literal">true</span>
-  <span class="comment"># Default height</span>
-  <span class="attr">height:</span> <span class="string">500px</span></code></pre>
+<figure class="highlight yml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># PDF tag</span></span><br><span class="line"><span class="comment"># NexT will try to load pdf files natively, if failed, pdf.js will be used.</span></span><br><span class="line"><span class="comment"># So, you have to install the dependency of pdf.js if you want to use pdf tag and make it available to all browsers.</span></span><br><span class="line"><span class="comment"># See: https://github.com/next-theme/theme-next-pdf</span></span><br><span class="line"><span class="attr">pdf:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># Default height</span></span><br><span class="line">  <span class="attr">height:</span> <span class="string">500px</span></span><br></pre></td></tr></tbody></table></figure>
 <h2 id="usage">Usage</h2>
 <p>In order to embed PDF files in the article, you just need to create an <code>pdf</code> tag with the URL of your local PDF file, e.g.</p>
-<pre><code class="highlight gradle">{% pdf <span class="regexp">/path/</span>to<span class="regexp">/your/</span><span class="keyword">file</span>.pdf %}</code></pre>
+<figure class="highlight gradle"><table><tbody><tr><td class="code"><pre><span class="line">{% pdf <span class="regexp">/path/</span>to<span class="regexp">/your/</span><span class="keyword">file</span>.pdf %}</span><br></pre></td></tr></tbody></table></figure>
 <p>Notice: Do not use cross-origin PDF files, it might be blocked by the CORS policy.</p>
 <p>Enjoy it!</p>
 <h2 id="update">Update</h2>
-<pre><code class="highlight sh">$ <span class="built_in">cd</span> hexo-site/<span class="built_in">source</span>/lib/pdf
-$ git pull</code></pre>
+<figure class="highlight sh"><table><tbody><tr><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> hexo-site/<span class="built_in">source</span>/lib/pdf</span><br><span class="line">$ git pull</span><br></pre></td></tr></tbody></table></figure>
 
       </div>
       

@@ -607,211 +607,26 @@ TF-IDF, LCS, HMM
 <li><p>TF</p>
 <ol type="1">
 <li><p>Map</p>
-<pre><div class="caption"><span>map_tf.py</span></div><code class="highlight python"><span class="keyword">import</span> sys
-
-cnt = <span class="number">0</span>
-
-<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
-    ss = line.strip().split(<span class="string">'\t'</span>)
-    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:
-        <span class="keyword">continue</span>
-    file_name, file_content = ss
-    word_list = file_content.strip().split(<span class="string">' '</span>)
-    <span class="keyword">for</span> word <span class="keyword">in</span> word_list:
-        cnt += <span class="number">1</span>
-
-    file_count = file_name + <span class="string">':'</span> + <span class="built_in">str</span>(cnt)
-
-    <span class="keyword">for</span> word <span class="keyword">in</span> word_list:
-        <span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (file_count, word, <span class="number">1</span>))
-    cnt = <span class="number">0</span></code></pre></li>
+<figure class="highlight python"><figcaption><span>map_tf.py</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">cnt = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file_name, file_content = ss</span><br><span class="line">    word_list = file_content.strip().split(<span class="string">' '</span>)</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word_list:</span><br><span class="line">        cnt += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    file_count = file_name + <span class="string">':'</span> + <span class="built_in">str</span>(cnt)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word_list:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (file_count, word, <span class="number">1</span>))</span><br><span class="line">    cnt = <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure></li>
 <li><p>Reduce</p>
-<pre><div class="caption"><span>red_tf.py</span></div><code class="highlight python"><span class="keyword">import</span> sys
-<span class="keyword">import</span> math
-
-current_file = <span class="literal">None</span>
-current_word = <span class="literal">None</span>
-current_count = <span class="number">0</span>
-<span class="built_in">sum</span> = <span class="number">0</span>
-
-<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
-    ss = line.strip().split(<span class="string">'\t'</span>)
-    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:
-        <span class="keyword">continue</span>
-    file_count, word, val = ss
-    file_name, count = file_count.strip().split(<span class="string">':'</span>)
-    <span class="keyword">if</span> current_word <span class="keyword">is</span> <span class="literal">None</span>:
-        current_word = word
-    <span class="keyword">if</span> current_word != word:
-        tf = math.log(<span class="built_in">float</span>(<span class="built_in">sum</span>) / <span class="built_in">float</span>(current_count))
-        <span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (current_file, current_word, tf))
-        current_word = word
-        <span class="built_in">sum</span> = <span class="number">0</span>
-    <span class="built_in">sum</span> += <span class="built_in">int</span>(val)
-    current_file = file_name
-    current_count = count
-
-tf = math.log(<span class="built_in">float</span>(<span class="built_in">sum</span>) / <span class="built_in">float</span>(current_count))
-<span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (current_file, current_word, tf))</code></pre></li>
+<figure class="highlight python"><figcaption><span>red_tf.py</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">current_file = <span class="literal">None</span></span><br><span class="line">current_word = <span class="literal">None</span></span><br><span class="line">current_count = <span class="number">0</span></span><br><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file_count, word, val = ss</span><br><span class="line">    file_name, count = file_count.strip().split(<span class="string">':'</span>)</span><br><span class="line">    <span class="keyword">if</span> current_word <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        current_word = word</span><br><span class="line">    <span class="keyword">if</span> current_word != word:</span><br><span class="line">        tf = math.log(<span class="built_in">float</span>(<span class="built_in">sum</span>) / <span class="built_in">float</span>(current_count))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (current_file, current_word, tf))</span><br><span class="line">        current_word = word</span><br><span class="line">        <span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line">    <span class="built_in">sum</span> += <span class="built_in">int</span>(val)</span><br><span class="line">    current_file = file_name</span><br><span class="line">    current_count = count</span><br><span class="line"></span><br><span class="line">tf = math.log(<span class="built_in">float</span>(<span class="built_in">sum</span>) / <span class="built_in">float</span>(current_count))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (current_file, current_word, tf))</span><br></pre></td></tr></tbody></table></figure></li>
 </ol></li>
 <li><p>IDF</p>
 <ol type="1">
 <li><p>Map</p>
-<pre><div class="caption"><span>map_idf.py</span></div><code class="highlight python"><span class="keyword">import</span> sys
-
-
-<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
-    ss = line.strip().split(<span class="string">'\t'</span>)
-    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:
-        <span class="keyword">continue</span>
-    file_name, file_content = ss
-    word_list = file_content.strip().split(<span class="string">' '</span>)
-
-    word_set = <span class="built_in">set</span>(word_list)
-
-    <span class="keyword">for</span> word <span class="keyword">in</span> word_set:
-        <span class="built_in">print</span>(<span class="string">'\t'</span>.join([word, <span class="string">'1'</span>]))</code></pre></li>
+<figure class="highlight python"><figcaption><span>map_idf.py</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file_name, file_content = ss</span><br><span class="line">    word_list = file_content.strip().split(<span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line">    word_set = <span class="built_in">set</span>(word_list)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> word_set:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'\t'</span>.join([word, <span class="string">'1'</span>]))</span><br></pre></td></tr></tbody></table></figure></li>
 <li><p>Reduce</p>
-<pre><div class="caption"><span>red_idf.py</span></div><code class="highlight python"><span class="keyword">import</span> sys
-<span class="keyword">import</span> math
-
-current_word = <span class="literal">None</span>
-<span class="built_in">sum</span> = <span class="number">0</span>
-
-docs_cnt = <span class="number">508</span>
-
-<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
-    ss = line.strip().split(<span class="string">'\t'</span>)
-    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:
-        <span class="keyword">continue</span>
-    word, val = ss
-    <span class="keyword">if</span> current_word <span class="keyword">is</span> <span class="literal">None</span>:
-        current_word = word
-    <span class="keyword">if</span> current_word != word:
-        idf = math.log(<span class="built_in">float</span>(docs_cnt) / (<span class="built_in">float</span>(<span class="built_in">sum</span>) + <span class="number">1.0</span>))
-        <span class="built_in">print</span>(<span class="string">'\t'</span>.join([current_word, <span class="built_in">str</span>(idf)]))
-        current_word = word
-        <span class="built_in">sum</span> = <span class="number">0</span>
-
-    <span class="built_in">sum</span> += <span class="built_in">int</span>(val)
-
-idf = math.log(<span class="built_in">float</span>(docs_cnt) / (<span class="built_in">float</span>(<span class="built_in">sum</span>) + <span class="number">1.0</span>))
-<span class="built_in">print</span>(<span class="string">'\t'</span>.join([current_word, <span class="built_in">str</span>(idf)]))</code></pre></li>
+<figure class="highlight python"><figcaption><span>red_idf.py</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line">current_word = <span class="literal">None</span></span><br><span class="line"><span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">docs_cnt = <span class="number">508</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    word, val = ss</span><br><span class="line">    <span class="keyword">if</span> current_word <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        current_word = word</span><br><span class="line">    <span class="keyword">if</span> current_word != word:</span><br><span class="line">        idf = math.log(<span class="built_in">float</span>(docs_cnt) / (<span class="built_in">float</span>(<span class="built_in">sum</span>) + <span class="number">1.0</span>))</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'\t'</span>.join([current_word, <span class="built_in">str</span>(idf)]))</span><br><span class="line">        current_word = word</span><br><span class="line">        <span class="built_in">sum</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">sum</span> += <span class="built_in">int</span>(val)</span><br><span class="line"></span><br><span class="line">idf = math.log(<span class="built_in">float</span>(docs_cnt) / (<span class="built_in">float</span>(<span class="built_in">sum</span>) + <span class="number">1.0</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">'\t'</span>.join([current_word, <span class="built_in">str</span>(idf)]))</span><br></pre></td></tr></tbody></table></figure></li>
 </ol></li>
 <li><p>TF-IDF</p>
 <ol type="1">
 <li><p>Map</p>
-<pre><div class="caption"><span>map.py</span></div><code class="highlight python"><span class="comment">#!/usr/bin/python</span>
-
-<span class="keyword">import</span> sys
-
-
-<span class="function"><span class="keyword">def</span> <span class="title">read_local_file_func</span>(<span class="params">file</span>):</span>
-    word_map = {}
-    file_in = <span class="built_in">open</span>(file, <span class="string">'r'</span>)
-    <span class="keyword">for</span> line <span class="keyword">in</span> file_in:
-        ss = line.strip().split(<span class="string">'\t'</span>)
-        <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:
-            <span class="keyword">continue</span>
-        word, idf = ss
-        word_map[word] = idf
-    <span class="keyword">return</span> word_map
-
-
-<span class="function"><span class="keyword">def</span> <span class="title">mapper_func</span>(<span class="params">white_list_fd</span>):</span>
-    word_map = read_local_file_func(white_list_fd)
-
-    <span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
-        ss = line.strip().split(<span class="string">'\t'</span>)
-        <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:
-            <span class="keyword">continue</span>
-        file, word, tf = ss
-        <span class="keyword">if</span> word != <span class="string">""</span> <span class="keyword">and</span> (word <span class="keyword">in</span> word_map.keys()):
-            idf = word_map[word]
-            tfidf = <span class="built_in">float</span>(<span class="built_in">float</span>(tf) + <span class="built_in">float</span>(idf))
-            <span class="built_in">print</span>(<span class="string">"%s\t%s\t%s"</span> % (file, tfidf, word))
-
-
-<span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:
-    module = sys.modules[__name__]
-    func = <span class="built_in">getattr</span>(module, sys.argv[<span class="number">1</span>])
-    args = <span class="literal">None</span>
-    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span>:
-        args = sys.argv[<span class="number">2</span>:]
-    func(*args)</code></pre></li>
+<figure class="highlight python"><figcaption><span>map.py</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_local_file_func</span>(<span class="params">file</span>):</span></span><br><span class="line">    word_map = {}</span><br><span class="line">    file_in = <span class="built_in">open</span>(file, <span class="string">'r'</span>)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> file_in:</span><br><span class="line">        ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        word, idf = ss</span><br><span class="line">        word_map[word] = idf</span><br><span class="line">    <span class="keyword">return</span> word_map</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">mapper_func</span>(<span class="params">white_list_fd</span>):</span></span><br><span class="line">    word_map = read_local_file_func(white_list_fd)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">        ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        file, word, tf = ss</span><br><span class="line">        <span class="keyword">if</span> word != <span class="string">""</span> <span class="keyword">and</span> (word <span class="keyword">in</span> word_map.keys()):</span><br><span class="line">            idf = word_map[word]</span><br><span class="line">            tfidf = <span class="built_in">float</span>(<span class="built_in">float</span>(tf) + <span class="built_in">float</span>(idf))</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"%s\t%s\t%s"</span> % (file, tfidf, word))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    module = sys.modules[__name__]</span><br><span class="line">    func = <span class="built_in">getattr</span>(module, sys.argv[<span class="number">1</span>])</span><br><span class="line">    args = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span>:</span><br><span class="line">        args = sys.argv[<span class="number">2</span>:]</span><br><span class="line">    func(*args)</span><br></pre></td></tr></tbody></table></figure></li>
 <li><p>Reduce</p>
-<pre><div class="caption"><span>red.py</span></div><code class="highlight python"><span class="keyword">import</span> sys
-
-current_file = <span class="literal">None</span>
-result = <span class="string">''</span>
-
-<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
-    ss = line.strip().split(<span class="string">'\t'</span>)
-    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:
-        <span class="keyword">continue</span>
-    file, tfidf, word = ss
-    <span class="keyword">if</span> current_file <span class="keyword">is</span> <span class="literal">None</span>:
-        current_file = file
-        result = current_file + <span class="string">'\t'</span>
-    <span class="keyword">if</span> current_file != file:
-        <span class="built_in">print</span>(result[:-<span class="number">1</span>])
-        current_file = file
-        result = current_file + <span class="string">'\t'</span>
-
-    result += word + <span class="string">':'</span> + tfidf + <span class="string">' '</span>
-<span class="built_in">print</span>(result[:-<span class="number">1</span>])</code></pre></li>
+<figure class="highlight python"><figcaption><span>red.py</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">current_file = <span class="literal">None</span></span><br><span class="line">result = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    file, tfidf, word = ss</span><br><span class="line">    <span class="keyword">if</span> current_file <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        current_file = file</span><br><span class="line">        result = current_file + <span class="string">'\t'</span></span><br><span class="line">    <span class="keyword">if</span> current_file != file:</span><br><span class="line">        <span class="built_in">print</span>(result[:-<span class="number">1</span>])</span><br><span class="line">        current_file = file</span><br><span class="line">        result = current_file + <span class="string">'\t'</span></span><br><span class="line"></span><br><span class="line">    result += word + <span class="string">':'</span> + tfidf + <span class="string">' '</span></span><br><span class="line"><span class="built_in">print</span>(result[:-<span class="number">1</span>])</span><br></pre></td></tr></tbody></table></figure></li>
 </ol></li>
 <li><p>【Hadoop Streaming 脚本】</p>
-<pre><code class="highlight bash"><span class="meta">#!/usr/bin/env bash</span>
-
-HADOOP_CMD=<span class="string">"/usr/local/src/hadoop-2.8.5/bin/hadoop"</span>
-STREAM_JAR_PATH=<span class="string">"/usr/local/src/hadoop-2.8.5/share/hadoop/tools/lib/hadoop-streaming-2.8.5.jar"</span>
-
-INPUT_FILE_PATH=<span class="string">"/chapter02/01_tfidf/tfidf_input.data"</span>
-OUTPUT_PATH_TF=<span class="string">"/chapter02/01_tfidf/output/python3/tf"</span>
-OUTPUT_PATH_IDF=<span class="string">"/chapter02/01_tfidf/output/python3/idf"</span>
-OUTPUT_PATH_TFIDF=<span class="string">"/chapter02/01_tfidf/output/python3/tfidf"</span>
-LOCAL_FILE_PATH=<span class="string">"/mnt/hgfs/Code/chapter02/01_tfidf/tfidf_input.data"</span>
-UPLOAD_PATH=<span class="string">"/chapter02/01_tfidf"</span>
-
-
-<span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${INPUT_FILE_PATH}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH_TF}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH_IDF}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH_TFIDF}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -mkdir -p <span class="variable">${UPLOAD_PATH}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -put <span class="variable">${LOCAL_FILE_PATH}</span> <span class="variable">${UPLOAD_PATH}</span>
-
-<span class="comment"># Step 1. tf</span>
-<span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \
-    -D stream.num.map.output.key.fields=2 \
-    -D num.key.fields.for.partition=1 \
-    -files map_tf.py,red_tf.py \
-    -input <span class="variable">${INPUT_FILE_PATH}</span> \
-    -output <span class="variable">${OUTPUT_PATH_TF}</span> \
-    -mapper <span class="string">"python map_tf.py"</span> \
-    -reducer <span class="string">"python red_tf.py"</span> \
-    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \
-
-<span class="comment"># Step 2. idf</span>
-<span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \
-    -files map_idf.py,red_idf.py \
-    -input <span class="variable">${INPUT_FILE_PATH}</span> \
-    -output <span class="variable">${OUTPUT_PATH_IDF}</span> \
-    -mapper <span class="string">"python map_idf.py"</span> \
-    -reducer <span class="string">"python red_idf.py"</span> \
-
-<span class="comment"># Step 3. tf-idf</span>
-<span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \
-    -D stream.num.map.output.key.fields=2 \
-    -D num.key.fields.for.partition=1 \
-    -files map.py,red.py,<span class="string">"hdfs://master:9000/chapter02/01_tfidf/output/python3/idf/part-00000#WH"</span>  \
-    -input <span class="variable">${OUTPUT_PATH_TF}</span> \
-    -output <span class="variable">${OUTPUT_PATH_TFIDF}</span> \
-    -mapper <span class="string">"python map.py mapper_func WH"</span> \
-    -reducer <span class="string">"python red.py"</span> \
-    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \
-</code></pre></li>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">HADOOP_CMD=<span class="string">"/usr/local/src/hadoop-2.8.5/bin/hadoop"</span></span><br><span class="line">STREAM_JAR_PATH=<span class="string">"/usr/local/src/hadoop-2.8.5/share/hadoop/tools/lib/hadoop-streaming-2.8.5.jar"</span></span><br><span class="line"></span><br><span class="line">INPUT_FILE_PATH=<span class="string">"/chapter02/01_tfidf/tfidf_input.data"</span></span><br><span class="line">OUTPUT_PATH_TF=<span class="string">"/chapter02/01_tfidf/output/python3/tf"</span></span><br><span class="line">OUTPUT_PATH_IDF=<span class="string">"/chapter02/01_tfidf/output/python3/idf"</span></span><br><span class="line">OUTPUT_PATH_TFIDF=<span class="string">"/chapter02/01_tfidf/output/python3/tfidf"</span></span><br><span class="line">LOCAL_FILE_PATH=<span class="string">"/mnt/hgfs/Code/chapter02/01_tfidf/tfidf_input.data"</span></span><br><span class="line">UPLOAD_PATH=<span class="string">"/chapter02/01_tfidf"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${INPUT_FILE_PATH}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH_TF}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH_IDF}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH_TFIDF}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -mkdir -p <span class="variable">${UPLOAD_PATH}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -put <span class="variable">${LOCAL_FILE_PATH}</span> <span class="variable">${UPLOAD_PATH}</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 1. tf</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \</span><br><span class="line">    -D stream.num.map.output.key.fields=2 \</span><br><span class="line">    -D num.key.fields.for.partition=1 \</span><br><span class="line">    -files map_tf.py,red_tf.py \</span><br><span class="line">    -input <span class="variable">${INPUT_FILE_PATH}</span> \</span><br><span class="line">    -output <span class="variable">${OUTPUT_PATH_TF}</span> \</span><br><span class="line">    -mapper <span class="string">"python map_tf.py"</span> \</span><br><span class="line">    -reducer <span class="string">"python red_tf.py"</span> \</span><br><span class="line">    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2. idf</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \</span><br><span class="line">    -files map_idf.py,red_idf.py \</span><br><span class="line">    -input <span class="variable">${INPUT_FILE_PATH}</span> \</span><br><span class="line">    -output <span class="variable">${OUTPUT_PATH_IDF}</span> \</span><br><span class="line">    -mapper <span class="string">"python map_idf.py"</span> \</span><br><span class="line">    -reducer <span class="string">"python red_idf.py"</span> \</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 3. tf-idf</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \</span><br><span class="line">    -D stream.num.map.output.key.fields=2 \</span><br><span class="line">    -D num.key.fields.for.partition=1 \</span><br><span class="line">    -files map.py,red.py,<span class="string">"hdfs://master:9000/chapter02/01_tfidf/output/python3/idf/part-00000#WH"</span>  \</span><br><span class="line">    -input <span class="variable">${OUTPUT_PATH_TF}</span> \</span><br><span class="line">    -output <span class="variable">${OUTPUT_PATH_TFIDF}</span> \</span><br><span class="line">    -mapper <span class="string">"python map.py mapper_func WH"</span> \</span><br><span class="line">    -reducer <span class="string">"python red.py"</span> \</span><br><span class="line">    -partitioner org.apache.hadoop.mapred.lib.KeyFieldBasedPartitioner \</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure></li>
 </ol>
 <h2 id="lcs">LCS</h2>
 <blockquote>
@@ -851,59 +666,9 @@ UPLOAD_PATH=<span class="string">"/chapter02/01_tfidf"</span>
 <h3 id="案例代码lcs">【案例代码】LCS</h3>
 <ol type="1">
 <li><p>Map</p>
-<pre><div class="caption"><span>map.py</span></div><code class="highlight python"><span class="keyword">import</span> sys
-
-
-<span class="function"><span class="keyword">def</span> <span class="title">cal_lcs</span>(<span class="params">str_1, str_2</span>):</span>
-    len_1 = <span class="built_in">len</span>(str_1.strip())
-    len_2 = <span class="built_in">len</span>(str_2.strip())
-
-    tmp = <span class="built_in">max</span>(len_1, len_2) + <span class="number">10</span>
-
-    len_vv = [[<span class="number">0</span>] * tmp] * tmp
-
-    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, len_1 + <span class="number">1</span>):
-        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, len_2 + <span class="number">1</span>):
-            <span class="keyword">if</span> str_1[i - <span class="number">1</span>] == str_2[j - <span class="number">1</span>]:
-                len_vv[i][j] = len_vv[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span>
-            <span class="keyword">else</span>:
-                len_vv[i][j] = <span class="built_in">max</span>(len_vv[i - <span class="number">1</span>][j], len_vv[i][j - <span class="number">1</span>])
-    <span class="keyword">return</span> <span class="built_in">float</span>(<span class="built_in">float</span>(len_vv[len_1][len_2] * <span class="number">2</span>) / <span class="built_in">float</span>(len_1 + len_2))
-
-
-<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
-    ss = line.strip().split(<span class="string">'\t'</span>)
-    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:
-        <span class="keyword">continue</span>
-    str_1, str_2 = ss
-
-    cos_score = cal_lcs(str_1, str_2)
-    <span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (str_1, str_2, cos_score))</code></pre></li>
+<figure class="highlight python"><figcaption><span>map.py</span></figcaption><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cal_lcs</span>(<span class="params">str_1, str_2</span>):</span></span><br><span class="line">    len_1 = <span class="built_in">len</span>(str_1.strip())</span><br><span class="line">    len_2 = <span class="built_in">len</span>(str_2.strip())</span><br><span class="line"></span><br><span class="line">    tmp = <span class="built_in">max</span>(len_1, len_2) + <span class="number">10</span></span><br><span class="line"></span><br><span class="line">    len_vv = [[<span class="number">0</span>] * tmp] * tmp</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, len_1 + <span class="number">1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, len_2 + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> str_1[i - <span class="number">1</span>] == str_2[j - <span class="number">1</span>]:</span><br><span class="line">                len_vv[i][j] = len_vv[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                len_vv[i][j] = <span class="built_in">max</span>(len_vv[i - <span class="number">1</span>][j], len_vv[i][j - <span class="number">1</span>])</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">float</span>(<span class="built_in">float</span>(len_vv[len_1][len_2] * <span class="number">2</span>) / <span class="built_in">float</span>(len_1 + len_2))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">    ss = line.strip().split(<span class="string">'\t'</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(ss) != <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    str_1, str_2 = ss</span><br><span class="line"></span><br><span class="line">    cos_score = cal_lcs(str_1, str_2)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'%s\t%s\t%s'</span> % (str_1, str_2, cos_score))</span><br></pre></td></tr></tbody></table></figure></li>
 <li><p>【Hadoop Streaming 脚本】</p>
-<pre><code class="highlight bash"><span class="meta">#!/usr/bin/env bash</span>
-
-HADOOP_CMD=<span class="string">"/usr/local/src/hadoop-2.8.5/bin/hadoop"</span>
-STREAM_JAR_PATH=<span class="string">"/usr/local/src/hadoop-2.8.5/share/hadoop/tools/lib/hadoop-streaming-2.8.5.jar"</span>
-
-INPUT_FILE_PATH=<span class="string">"/chapter02/02_lcs/lcs_input.data"</span>
-OUTPUT_PATH=<span class="string">"/chapter02/02_lcs/output/python3"</span>
-LOCAL_FILE_PATH=<span class="string">"/mnt/hgfs/Code/chapter02/02_lcs/lcs_input.data"</span>
-UPLOAD_PATH=<span class="string">"/chapter02/02_lcs"</span>
-
-
-<span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${INPUT_FILE_PATH}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -mkdir -p <span class="variable">${UPLOAD_PATH}</span>
-<span class="variable">${HADOOP_CMD}</span> fs -put <span class="variable">${LOCAL_FILE_PATH}</span> <span class="variable">${UPLOAD_PATH}</span>
-
-<span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \
-    -D mapreduce.job.reduces=0 \
-    -D mapreduce.job.name=lcs_demo \
-    -files map.py \
-    -input <span class="variable">${INPUT_FILE_PATH}</span> \
-    -output <span class="variable">${OUTPUT_PATH}</span> \
-    -mapper <span class="string">"python map.py"</span> \
-</code></pre></li>
+<figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">HADOOP_CMD=<span class="string">"/usr/local/src/hadoop-2.8.5/bin/hadoop"</span></span><br><span class="line">STREAM_JAR_PATH=<span class="string">"/usr/local/src/hadoop-2.8.5/share/hadoop/tools/lib/hadoop-streaming-2.8.5.jar"</span></span><br><span class="line"></span><br><span class="line">INPUT_FILE_PATH=<span class="string">"/chapter02/02_lcs/lcs_input.data"</span></span><br><span class="line">OUTPUT_PATH=<span class="string">"/chapter02/02_lcs/output/python3"</span></span><br><span class="line">LOCAL_FILE_PATH=<span class="string">"/mnt/hgfs/Code/chapter02/02_lcs/lcs_input.data"</span></span><br><span class="line">UPLOAD_PATH=<span class="string">"/chapter02/02_lcs"</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${INPUT_FILE_PATH}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -rm -r -skipTrash <span class="variable">${OUTPUT_PATH}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -mkdir -p <span class="variable">${UPLOAD_PATH}</span></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> fs -put <span class="variable">${LOCAL_FILE_PATH}</span> <span class="variable">${UPLOAD_PATH}</span></span><br><span class="line"></span><br><span class="line"><span class="variable">${HADOOP_CMD}</span> jar <span class="variable">${STREAM_JAR_PATH}</span> \</span><br><span class="line">    -D mapreduce.job.reduces=0 \</span><br><span class="line">    -D mapreduce.job.name=lcs_demo \</span><br><span class="line">    -files map.py \</span><br><span class="line">    -input <span class="variable">${INPUT_FILE_PATH}</span> \</span><br><span class="line">    -output <span class="variable">${OUTPUT_PATH}</span> \</span><br><span class="line">    -mapper <span class="string">"python map.py"</span> \</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure></li>
 </ol>
 <h1 id="中文分词">中文分词</h1>
 <h2 id="中文分词基础">中文分词基础</h2>
@@ -1079,55 +844,7 @@ UPLOAD_PATH=<span class="string">"/chapter02/02_lcs"</span>
 <li>根据 cut_block 指定具体的方法 (__cut_all,__cut_DAG,__cut_DAG_NO_HMM) 对每个短语使用 DAG 进行分词 ，如 cut_block=__cut_DAG 时则使用 DAG (查字典) 和动态规划，得到最大概率路径，对 DAG 中那些没有在字典中查到的字，组合成一个新的片段短语，使用 HMM 模型进行分词，也就是作者说的识别新词，即识别字典外的新词；</li>
 <li>使用 python 的 yield 语法生成一个词语生成器，逐词语返回 </li>
 </ol>
-<pre><code class="highlight python"><span class="string">"""</span>
-<span class="string">源码地址：</span>
-<span class="string">https://github.com/ustcdane/annotated_jieba/blob/master/jieba/__init__.py</span>
-<span class="string">"""</span>
-
-<span class="comment"># jieba分词的主函数,返回结果是一个可迭代的 generator</span>
-    <span class="function"><span class="keyword">def</span> <span class="title">cut</span>(<span class="params">self, sentence, cut_all=<span class="literal">False</span>, HMM=<span class="literal">True</span></span>):</span>
-        <span class="string">'''</span>
-<span class="string">        The main function that segments an entire sentence that contains</span>
-<span class="string">        Chinese characters into seperated words.</span>
-<span class="string">        Parameter:</span>
-<span class="string">            - sentence: The str(unicode) to be segmented.</span>
-<span class="string">            - cut_all: Model type. True for full pattern, False for accurate pattern.</span>
-<span class="string">            - HMM: Whether to use the Hidden Markov Model.</span>
-<span class="string">        '''</span>
-        sentence = strdecode(sentence) <span class="comment"># 解码为unicode</span>
-        <span class="comment"># 不同模式下的正则</span>
-        <span class="keyword">if</span> cut_all:
-            re_han = re_han_cut_all
-            re_skip = re_skip_cut_all
-        <span class="keyword">else</span>:
-            re_han = re_han_default
-            re_skip = re_skip_default
-
-         <span class="comment"># 设置不同模式下的cut_block分词方法</span>
-        <span class="keyword">if</span> cut_all:
-            cut_block = self.__cut_all
-        <span class="keyword">elif</span> HMM:
-            cut_block = self.__cut_DAG
-        <span class="keyword">else</span>:
-            cut_block = self.__cut_DAG_NO_HMM
-        <span class="comment"># 先用正则对句子进行切分</span>
-        blocks = re_han.split(sentence)
-        <span class="keyword">for</span> blk <span class="keyword">in</span> blocks:
-            <span class="keyword">if</span> <span class="keyword">not</span> blk:
-                <span class="keyword">continue</span>
-            <span class="keyword">if</span> re_han.match(blk): <span class="comment"># re_han匹配的串</span>
-                <span class="keyword">for</span> word <span class="keyword">in</span> cut_block(blk):<span class="comment"># 根据不同模式的方法进行分词</span>
-                    <span class="keyword">yield</span> word
-            <span class="keyword">else</span>:<span class="comment"># 按照re_skip正则表对blk进行重新切分</span>
-                tmp = re_skip.split(blk)<span class="comment"># 返回list</span>
-                <span class="keyword">for</span> x <span class="keyword">in</span> tmp:
-                    <span class="keyword">if</span> re_skip.match(x):
-                        <span class="keyword">yield</span> x
-                    <span class="keyword">elif</span> <span class="keyword">not</span> cut_all: <span class="comment"># 精准模式下逐个字符输出</span>
-                        <span class="keyword">for</span> xx <span class="keyword">in</span> x:
-                            <span class="keyword">yield</span> xx
-                    <span class="keyword">else</span>: 
-                        <span class="keyword">yield</span> x</code></pre>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">源码地址：</span></span><br><span class="line"><span class="string">https://github.com/ustcdane/annotated_jieba/blob/master/jieba/__init__.py</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># jieba分词的主函数,返回结果是一个可迭代的 generator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cut</span>(<span class="params">self, sentence, cut_all=<span class="literal">False</span>, HMM=<span class="literal">True</span></span>):</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        The main function that segments an entire sentence that contains</span></span><br><span class="line"><span class="string">        Chinese characters into seperated words.</span></span><br><span class="line"><span class="string">        Parameter:</span></span><br><span class="line"><span class="string">            - sentence: The str(unicode) to be segmented.</span></span><br><span class="line"><span class="string">            - cut_all: Model type. True for full pattern, False for accurate pattern.</span></span><br><span class="line"><span class="string">            - HMM: Whether to use the Hidden Markov Model.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        sentence = strdecode(sentence) <span class="comment"># 解码为unicode</span></span><br><span class="line">        <span class="comment"># 不同模式下的正则</span></span><br><span class="line">        <span class="keyword">if</span> cut_all:</span><br><span class="line">            re_han = re_han_cut_all</span><br><span class="line">            re_skip = re_skip_cut_all</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            re_han = re_han_default</span><br><span class="line">            re_skip = re_skip_default</span><br><span class="line"></span><br><span class="line">         <span class="comment"># 设置不同模式下的cut_block分词方法</span></span><br><span class="line">        <span class="keyword">if</span> cut_all:</span><br><span class="line">            cut_block = self.__cut_all</span><br><span class="line">        <span class="keyword">elif</span> HMM:</span><br><span class="line">            cut_block = self.__cut_DAG</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cut_block = self.__cut_DAG_NO_HMM</span><br><span class="line">        <span class="comment"># 先用正则对句子进行切分</span></span><br><span class="line">        blocks = re_han.split(sentence)</span><br><span class="line">        <span class="keyword">for</span> blk <span class="keyword">in</span> blocks:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> blk:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> re_han.match(blk): <span class="comment"># re_han匹配的串</span></span><br><span class="line">                <span class="keyword">for</span> word <span class="keyword">in</span> cut_block(blk):<span class="comment"># 根据不同模式的方法进行分词</span></span><br><span class="line">                    <span class="keyword">yield</span> word</span><br><span class="line">            <span class="keyword">else</span>:<span class="comment"># 按照re_skip正则表对blk进行重新切分</span></span><br><span class="line">                tmp = re_skip.split(blk)<span class="comment"># 返回list</span></span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> tmp:</span><br><span class="line">                    <span class="keyword">if</span> re_skip.match(x):</span><br><span class="line">                        <span class="keyword">yield</span> x</span><br><span class="line">                    <span class="keyword">elif</span> <span class="keyword">not</span> cut_all: <span class="comment"># 精准模式下逐个字符输出</span></span><br><span class="line">                        <span class="keyword">for</span> xx <span class="keyword">in</span> x:</span><br><span class="line">                            <span class="keyword">yield</span> xx</span><br><span class="line">                    <span class="keyword">else</span>: </span><br><span class="line">                        <span class="keyword">yield</span> x</span><br></pre></td></tr></tbody></table></figure>
 <figure>
 <img data-src="https://image.alessa0.cn/140354.png" alt="jieba"><figcaption aria-hidden="true">jieba</figcaption>
 </figure>
@@ -1135,67 +852,17 @@ UPLOAD_PATH=<span class="string">"/chapter02/02_lcs"</span>
 <blockquote>
 <p>对应代码中 Tokenizer.FREQ 字典</p>
 </blockquote>
-<pre><code class="highlight python"><span class="function"><span class="keyword">def</span> <span class="title">gen_pfdict</span>(<span class="params">self, f_name</span>):</span>
-    lfreq = {} <span class="comment"># 字典存储  词条:出现次数</span>
-    ltotal = <span class="number">0</span> <span class="comment"># 所有词条的总的出现次数</span>
-    <span class="keyword">with</span> <span class="built_in">open</span>(f_name, <span class="string">'rb'</span>) <span class="keyword">as</span> f: <span class="comment"># 打开文件 dict.txt </span>
-        <span class="keyword">for</span> lineno, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(f, <span class="number">1</span>): <span class="comment"># 行号,行</span>
-            <span class="keyword">try</span>:
-                line = line.strip().decode(<span class="string">'utf-8'</span>) <span class="comment"># 解码为Unicode</span>
-                word, freq = line.split(<span class="string">' '</span>)[:<span class="number">2</span>] <span class="comment"># 获得词条 及其出现次数</span>
-                freq = <span class="built_in">int</span>(freq)
-                lfreq[word] = freq
-                ltotal += freq
-                <span class="keyword">for</span> ch <span class="keyword">in</span> xrange(<span class="built_in">len</span>(word)):<span class="comment"># 处理word的前缀</span>
-                    wfrag = word[:ch + <span class="number">1</span>]
-                    <span class="keyword">if</span> wfrag <span class="keyword">not</span> <span class="keyword">in</span> lfreq: <span class="comment"># word前缀不在lfreq则其出现频次置0 </span>
-                        lfreq[wfrag] = <span class="number">0</span>
-            <span class="keyword">except</span> ValueError:
-                <span class="keyword">raise</span> ValueError(
-                    <span class="string">'invalid dictionary entry in %s at Line %s: %s'</span> % (f_name, lineno, line))
-    <span class="keyword">return</span> lfreq, ltotal</code></pre>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_pfdict</span>(<span class="params">self, f_name</span>):</span></span><br><span class="line">    lfreq = {} <span class="comment"># 字典存储  词条:出现次数</span></span><br><span class="line">    ltotal = <span class="number">0</span> <span class="comment"># 所有词条的总的出现次数</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(f_name, <span class="string">'rb'</span>) <span class="keyword">as</span> f: <span class="comment"># 打开文件 dict.txt </span></span><br><span class="line">        <span class="keyword">for</span> lineno, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(f, <span class="number">1</span>): <span class="comment"># 行号,行</span></span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                line = line.strip().decode(<span class="string">'utf-8'</span>) <span class="comment"># 解码为Unicode</span></span><br><span class="line">                word, freq = line.split(<span class="string">' '</span>)[:<span class="number">2</span>] <span class="comment"># 获得词条 及其出现次数</span></span><br><span class="line">                freq = <span class="built_in">int</span>(freq)</span><br><span class="line">                lfreq[word] = freq</span><br><span class="line">                ltotal += freq</span><br><span class="line">                <span class="keyword">for</span> ch <span class="keyword">in</span> xrange(<span class="built_in">len</span>(word)):<span class="comment"># 处理word的前缀</span></span><br><span class="line">                    wfrag = word[:ch + <span class="number">1</span>]</span><br><span class="line">                    <span class="keyword">if</span> wfrag <span class="keyword">not</span> <span class="keyword">in</span> lfreq: <span class="comment"># word前缀不在lfreq则其出现频次置0 </span></span><br><span class="line">                        lfreq[wfrag] = <span class="number">0</span></span><br><span class="line">            <span class="keyword">except</span> ValueError:</span><br><span class="line">                <span class="keyword">raise</span> ValueError(</span><br><span class="line">                    <span class="string">'invalid dictionary entry in %s at Line %s: %s'</span> % (f_name, lineno, line))</span><br><span class="line">    <span class="keyword">return</span> lfreq, ltotal</span><br></pre></td></tr></tbody></table></figure>
 <h4 id="dag">DAG</h4>
 <blockquote>
 <p>对一个 sentence DAG 是以 {key:list [i,j…], …} 的字典结构存储，key 是词的在 sentence 中的位置，list 存放的是 sentence 中以位置 key 开始的可能的词语的结束位置.</p>
 </blockquote>
-<pre><code class="highlight python"><span class="comment"># DAG中是以{key:list,...}的字典结构存储</span>
-<span class="comment"># key是字的开始位置</span>
-<span class="function"><span class="keyword">def</span> <span class="title">get_DAG</span>(<span class="params">self, sentence</span>):</span>
-    self.check_initialized()
-    DAG = {}
-    N = <span class="built_in">len</span>(sentence)
-    <span class="keyword">for</span> k <span class="keyword">in</span> xrange(N):
-        tmplist = []
-        i = k
-        frag = sentence[k]
-        <span class="keyword">while</span> i &lt; N <span class="keyword">and</span> frag <span class="keyword">in</span> self.FREQ:
-            <span class="keyword">if</span> self.FREQ[frag]:
-                tmplist.append(i)
-            i += <span class="number">1</span>
-            frag = sentence[k:i + <span class="number">1</span>]
-        <span class="keyword">if</span> <span class="keyword">not</span> tmplist:
-            tmplist.append(k)
-        DAG[k] = tmplist
-    <span class="keyword">return</span> DAG</code></pre>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># DAG中是以{key:list,...}的字典结构存储</span></span><br><span class="line"><span class="comment"># key是字的开始位置</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_DAG</span>(<span class="params">self, sentence</span>):</span></span><br><span class="line">    self.check_initialized()</span><br><span class="line">    DAG = {}</span><br><span class="line">    N = <span class="built_in">len</span>(sentence)</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> xrange(N):</span><br><span class="line">        tmplist = []</span><br><span class="line">        i = k</span><br><span class="line">        frag = sentence[k]</span><br><span class="line">        <span class="keyword">while</span> i &lt; N <span class="keyword">and</span> frag <span class="keyword">in</span> self.FREQ:</span><br><span class="line">            <span class="keyword">if</span> self.FREQ[frag]:</span><br><span class="line">                tmplist.append(i)</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line">            frag = sentence[k:i + <span class="number">1</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tmplist:</span><br><span class="line">            tmplist.append(k)</span><br><span class="line">        DAG[k] = tmplist</span><br><span class="line">    <span class="keyword">return</span> DAG</span><br></pre></td></tr></tbody></table></figure>
 <h4 id="基于词频最大切分组合">基于词频最大切分组合</h4>
 <blockquote>
 <p>有了词库 (dict.txt) 的前缀字典和待分词句子 sentence 的 DAG，使用动态规划方法，从后往前遍历，选择一个频度得分最大的一个切分组合。</p>
 </blockquote>
-<pre><code class="highlight python"><span class="comment">#动态规划，计算最大概率的切分组合</span>
-   <span class="function"><span class="keyword">def</span> <span class="title">calc</span>(<span class="params">self, sentence, DAG, route</span>):</span>
-       N = <span class="built_in">len</span>(sentence)
-       route[N] = (<span class="number">0</span>, <span class="number">0</span>)
-        <span class="comment"># 对概率值取对数之后的结果(可以让概率相乘的计算变成对数相加,防止相乘造成下溢)</span>
-       logtotal = log(self.total)
-       <span class="comment"># 从后往前遍历句子 反向计算最大概率</span>
-       <span class="keyword">for</span> idx <span class="keyword">in</span> xrange(N - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):
-          <span class="comment"># 列表推倒求最大概率对数路径</span>
-          <span class="comment"># route[idx] = max([ (概率对数，词语末字位置) for x in DAG[idx] ])</span>
-          <span class="comment"># 以idx:(概率对数最大值，词语末字位置)键值对形式保存在route中</span>
-          <span class="comment"># route[x+1][0] 表示 词路径[x+1,N-1]的最大概率对数,</span>
-          <span class="comment"># [x+1][0]即表示取句子x+1位置对应元组(概率对数，词语末字位置)的概率对数</span>
-           route[idx] = <span class="built_in">max</span>((log(self.FREQ.get(sentence[idx:x + <span class="number">1</span>]) <span class="keyword">or</span> <span class="number">1</span>) -
-                             logtotal + route[x + <span class="number">1</span>][<span class="number">0</span>], x) <span class="keyword">for</span> x <span class="keyword">in</span> DAG[idx])</code></pre>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">#动态规划，计算最大概率的切分组合</span></span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">calc</span>(<span class="params">self, sentence, DAG, route</span>):</span></span><br><span class="line">       N = <span class="built_in">len</span>(sentence)</span><br><span class="line">       route[N] = (<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        <span class="comment"># 对概率值取对数之后的结果(可以让概率相乘的计算变成对数相加,防止相乘造成下溢)</span></span><br><span class="line">       logtotal = log(self.total)</span><br><span class="line">       <span class="comment"># 从后往前遍历句子 反向计算最大概率</span></span><br><span class="line">       <span class="keyword">for</span> idx <span class="keyword">in</span> xrange(N - <span class="number">1</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">          <span class="comment"># 列表推倒求最大概率对数路径</span></span><br><span class="line">          <span class="comment"># route[idx] = max([ (概率对数，词语末字位置) for x in DAG[idx] ])</span></span><br><span class="line">          <span class="comment"># 以idx:(概率对数最大值，词语末字位置)键值对形式保存在route中</span></span><br><span class="line">          <span class="comment"># route[x+1][0] 表示 词路径[x+1,N-1]的最大概率对数,</span></span><br><span class="line">          <span class="comment"># [x+1][0]即表示取句子x+1位置对应元组(概率对数，词语末字位置)的概率对数</span></span><br><span class="line">           route[idx] = <span class="built_in">max</span>((log(self.FREQ.get(sentence[idx:x + <span class="number">1</span>]) <span class="keyword">or</span> <span class="number">1</span>) -</span><br><span class="line">                             logtotal + route[x + <span class="number">1</span>][<span class="number">0</span>], x) <span class="keyword">for</span> x <span class="keyword">in</span> DAG[idx])</span><br></pre></td></tr></tbody></table></figure>
 <blockquote>
 <p>例：广州本田雅阁汽车</p>
 </blockquote>
@@ -1206,15 +873,7 @@ UPLOAD_PATH=<span class="string">"/chapter02/02_lcs"</span>
 <li>P (汽车) &gt; P (汽) + P (车)，所以 Route 概率使用 P (汽车)</li>
 <li>……</li>
 </ul>
-<pre><code class="highlight apache"><span class="attribute">Route</span>: {<span class="number">0</span>: (-<span class="number">33</span>.<span class="number">271126717488308</span>, <span class="number">1</span>),
-        <span class="attribute">1</span>: (-<span class="number">32</span>.<span class="number">231489259807965</span>, <span class="number">1</span>),
-        <span class="attribute">2</span>: (-<span class="number">23</span>.<span class="number">899234625632083</span>, <span class="number">5</span>),
-        <span class="attribute">3</span>: (-<span class="number">31</span>.<span class="number">523246813843940</span>, <span class="number">3</span>),
-        <span class="attribute">4</span>: (-<span class="number">22</span>.<span class="number">214895405024865</span>, <span class="number">5</span>),
-        <span class="attribute">5</span>: (-<span class="number">19</span>.<span class="number">008467873683230</span>, <span class="number">5</span>),
-        <span class="attribute">6</span>: (-<span class="number">8</span>.<span class="number">7800749471799175</span>, <span class="number">7</span>),
-        <span class="attribute">7</span>: (-<span class="number">8</span>.<span class="number">8000692190498415</span>, <span class="number">7</span>),
-        <span class="attribute">8</span>: (<span class="number">0</span>.<span class="number">0</span>, '')}</code></pre>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attribute">Route</span>: {<span class="number">0</span>: (-<span class="number">33</span>.<span class="number">271126717488308</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="attribute">1</span>: (-<span class="number">32</span>.<span class="number">231489259807965</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="attribute">2</span>: (-<span class="number">23</span>.<span class="number">899234625632083</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">3</span>: (-<span class="number">31</span>.<span class="number">523246813843940</span>, <span class="number">3</span>),</span><br><span class="line">        <span class="attribute">4</span>: (-<span class="number">22</span>.<span class="number">214895405024865</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">5</span>: (-<span class="number">19</span>.<span class="number">008467873683230</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">6</span>: (-<span class="number">8</span>.<span class="number">7800749471799175</span>, <span class="number">7</span>),</span><br><span class="line">        <span class="attribute">7</span>: (-<span class="number">8</span>.<span class="number">8000692190498415</span>, <span class="number">7</span>),</span><br><span class="line">        <span class="attribute">8</span>: (<span class="number">0</span>.<span class="number">0</span>, '')}</span><br></pre></td></tr></tbody></table></figure>
 <figure>
 <img data-src="https://image.alessa0.cn/143320.png" alt="route"><figcaption aria-hidden="true">route</figcaption>
 </figure>
@@ -1353,31 +1012,7 @@ UPLOAD_PATH=<span class="string">"/chapter02/02_lcs"</span>
 </ul></li>
 <li>Viterbi 算法实现</li>
 </ul>
-<pre><code class="highlight python"><span class="comment">#状态转移矩阵，比如B状态前只可能是E或S状态  </span>
-PrevStatus = {  
-    <span class="string">'B'</span>:(<span class="string">'E'</span>,<span class="string">'S'</span>),  
-    <span class="string">'M'</span>:(<span class="string">'M'</span>,<span class="string">'B'</span>),  
-    <span class="string">'S'</span>:(<span class="string">'S'</span>,<span class="string">'E'</span>),  
-    <span class="string">'E'</span>:(<span class="string">'B'</span>,<span class="string">'M'</span>)  
-}  
-<span class="function"><span class="keyword">def</span> <span class="title">viterbi</span>(<span class="params">obs, states, start_p, trans_p, emit_p</span>):</span>
-    V = [{}]  <span class="comment"># 状态概率矩阵  </span>
-    path = {}
-    <span class="keyword">for</span> y <span class="keyword">in</span> states:  <span class="comment"># 初始化状态概率</span>
-        V[<span class="number">0</span>][y] = start_p[y] + emit_p[y].get(obs[<span class="number">0</span>], MIN_FLOAT)
-        path[y] = [y] <span class="comment"># 记录路径</span>
-    <span class="keyword">for</span> t <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="built_in">len</span>(obs)):
-        V.append({})
-        newpath = {}
-        <span class="keyword">for</span> y <span class="keyword">in</span> states:
-            em_p = emit_p[y].get(obs[t], MIN_FLOAT)
-            <span class="comment"># t时刻状态为y的最大概率(从t-1时刻中选择到达时刻t且状态为y的状态y0)</span>
-            (prob, state) = <span class="built_in">max</span>([(V[t - <span class="number">1</span>][y0] + trans_p[y0].get(y, MIN_FLOAT) + em_p, y0) <span class="keyword">for</span> y0 <span class="keyword">in</span> PrevStatus[y]])
-            V[t][y] = prob
-            newpath[y] = path[state] + [y] <span class="comment"># 只保存概率最大的一种路径 </span>
-        path = newpath 
-    <span class="comment"># 求出最后一个字哪一种状态的对应概率最大，最后一个字只可能是两种情况：E(结尾)和S(独立词)  </span>
-    (prob, state) = <span class="built_in">max</span>((V[<span class="built_in">len</span>(obs) - <span class="number">1</span>][y], y) <span class="keyword">for</span> y <span class="keyword">in</span> <span class="string">'ES'</span>)</code></pre>
+<figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">#状态转移矩阵，比如B状态前只可能是E或S状态  </span></span><br><span class="line">PrevStatus = {  </span><br><span class="line">    <span class="string">'B'</span>:(<span class="string">'E'</span>,<span class="string">'S'</span>),  </span><br><span class="line">    <span class="string">'M'</span>:(<span class="string">'M'</span>,<span class="string">'B'</span>),  </span><br><span class="line">    <span class="string">'S'</span>:(<span class="string">'S'</span>,<span class="string">'E'</span>),  </span><br><span class="line">    <span class="string">'E'</span>:(<span class="string">'B'</span>,<span class="string">'M'</span>)  </span><br><span class="line">}  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">viterbi</span>(<span class="params">obs, states, start_p, trans_p, emit_p</span>):</span></span><br><span class="line">    V = [{}]  <span class="comment"># 状态概率矩阵  </span></span><br><span class="line">    path = {}</span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> states:  <span class="comment"># 初始化状态概率</span></span><br><span class="line">        V[<span class="number">0</span>][y] = start_p[y] + emit_p[y].get(obs[<span class="number">0</span>], MIN_FLOAT)</span><br><span class="line">        path[y] = [y] <span class="comment"># 记录路径</span></span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> xrange(<span class="number">1</span>, <span class="built_in">len</span>(obs)):</span><br><span class="line">        V.append({})</span><br><span class="line">        newpath = {}</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> states:</span><br><span class="line">            em_p = emit_p[y].get(obs[t], MIN_FLOAT)</span><br><span class="line">            <span class="comment"># t时刻状态为y的最大概率(从t-1时刻中选择到达时刻t且状态为y的状态y0)</span></span><br><span class="line">            (prob, state) = <span class="built_in">max</span>([(V[t - <span class="number">1</span>][y0] + trans_p[y0].get(y, MIN_FLOAT) + em_p, y0) <span class="keyword">for</span> y0 <span class="keyword">in</span> PrevStatus[y]])</span><br><span class="line">            V[t][y] = prob</span><br><span class="line">            newpath[y] = path[state] + [y] <span class="comment"># 只保存概率最大的一种路径 </span></span><br><span class="line">        path = newpath </span><br><span class="line">    <span class="comment"># 求出最后一个字哪一种状态的对应概率最大，最后一个字只可能是两种情况：E(结尾)和S(独立词)  </span></span><br><span class="line">    (prob, state) = <span class="built_in">max</span>((V[<span class="built_in">len</span>(obs) - <span class="number">1</span>][y], y) <span class="keyword">for</span> y <span class="keyword">in</span> <span class="string">'ES'</span>)</span><br></pre></td></tr></tbody></table></figure>
 <p><br></p>
 <p><meting-js id="525086802" server="netease" type="song" preload="none"></meting-js></p>
 <hr>

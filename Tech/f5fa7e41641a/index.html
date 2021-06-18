@@ -344,10 +344,7 @@ Flume：xx 托我给您带个话…
 <ul>
 <li>vim ~/.bashrc</li>
 </ul>
-<pre><code class="highlight routeros"><span class="comment"># 添加如下信息</span>
-<span class="comment"># SET FLUME PATH </span>
-<span class="builtin-name">export</span> <span class="attribute">FLUME_HOME</span>=/usr/local/src/apache-flume-1.9.0-bin 
-<span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$FLUME_HOME/bin</code></pre>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET FLUME PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">FLUME_HOME</span>=/usr/local/src/apache-flume-1.9.0-bin </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$FLUME_HOME/bin </span><br></pre></td></tr></tbody></table></figure>
 <ul>
 <li>source ~/.bashrc</li>
 </ul>
@@ -357,88 +354,23 @@ Flume：xx 托我给您带个话…
 <li>cp flume-env.sh.template flume-env.sh</li>
 <li>vim flume-env.sh</li>
 </ul>
-<pre><code class="highlight apache"><span class="comment"># 添加如下信息</span>
-<span class="attribute">export</span> JAVA_HOME=/usr/local/src/jdk<span class="number">1</span>.<span class="number">8</span>.<span class="number">0</span>_<span class="number">212</span></code></pre>
+<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="attribute">export</span> JAVA_HOME=/usr/local/src/jdk<span class="number">1</span>.<span class="number">8</span>.<span class="number">0</span>_<span class="number">212</span> </span><br></pre></td></tr></tbody></table></figure>
 <h1 id="新增配置文件">新增配置文件</h1>
 <p><strong>NetCat：</strong></p>
 <ul>
 <li>vim flume-netcat.conf</li>
 </ul>
-<pre><code class="highlight ini"><span class="comment"># 添加如下信息</span>
-<span class="comment"># Name the components on this agent</span>
-<span class="attr">agent.sources</span> = r1
-<span class="attr">agent.sinks</span> = k1
-<span class="attr">agent.channels</span> = c1
-
-<span class="comment"># Describe/configuration the source</span>
-<span class="attr">agent.sources.r1.type</span> = netcat
-<span class="attr">agent.sources.r1.bind</span> = <span class="number">127.0</span>.<span class="number">0.1</span>
-<span class="attr">agent.sources.r1.port</span> = <span class="number">44444</span>
-
-<span class="comment"># Describe the sink</span>
-<span class="attr">agent.sinks.k1.type</span> = logger
-
-<span class="comment"># Use a channel which buffers events in memory</span>
-<span class="attr">agent.channels.c1.type</span> = memory
-<span class="attr">agent.channels.c1.capacity</span> = <span class="number">1000</span>
-<span class="attr">agent.channels.c1.transactionCapacity</span> = <span class="number">100</span>
-
-<span class="comment"># Bind the source and sink to the channel</span>
-<span class="attr">agent.sources.r1.channels</span> = c1
-<span class="attr">agent.sinks.k1.channel</span> = c1</code></pre>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># Name the components on this agent</span></span><br><span class="line"><span class="attr">agent.sources</span> = r1</span><br><span class="line"><span class="attr">agent.sinks</span> = k1</span><br><span class="line"><span class="attr">agent.channels</span> = c1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe/configuration the source</span></span><br><span class="line"><span class="attr">agent.sources.r1.type</span> = netcat</span><br><span class="line"><span class="attr">agent.sources.r1.bind</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">agent.sources.r1.port</span> = <span class="number">44444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe the sink</span></span><br><span class="line"><span class="attr">agent.sinks.k1.type</span> = logger</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use a channel which buffers events in memory</span></span><br><span class="line"><span class="attr">agent.channels.c1.type</span> = memory</span><br><span class="line"><span class="attr">agent.channels.c1.capacity</span> = <span class="number">1000</span></span><br><span class="line"><span class="attr">agent.channels.c1.transactionCapacity</span> = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind the source and sink to the channel</span></span><br><span class="line"><span class="attr">agent.sources.r1.channels</span> = c1</span><br><span class="line"><span class="attr">agent.sinks.k1.channel</span> = c1</span><br></pre></td></tr></tbody></table></figure>
 <p><strong>Exec：</strong></p>
 <ul>
 <li>vim flume-exec.conf</li>
 </ul>
-<pre><code class="highlight ini"><span class="comment"># 添加如下信息</span>
-<span class="comment"># Name the components on this agent</span>
-<span class="attr">agent.sources</span> = r1
-<span class="attr">agent.sinks</span> = k1
-<span class="attr">agent.channels</span> = c1
-
-<span class="comment"># Describe/configuration the source</span>
-<span class="attr">agent.sources.r1.type</span> = exec
-<span class="attr">agent.sources.r1.command</span> = tail -f /data/hadoop/flume/test.txt
-
-<span class="comment"># Describe the sink</span>
-<span class="attr">agent.sinks.k1.type</span> = logger
-
-<span class="comment"># Use a channel which buffers events in memory</span>
-<span class="attr">agent.channels.c1.type</span> = memory
-<span class="attr">agent.channels.c1.capacity</span> = <span class="number">1000</span>
-<span class="attr">agent.channels.c1.transactionCapacity</span> = <span class="number">100</span>
-
-<span class="comment"># Bind the source and sink to the channel</span>
-<span class="attr">agent.sources.r1.channels</span> = c1
-<span class="attr">agent.sinks.k1.channel</span> = c1</code></pre>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># Name the components on this agent</span></span><br><span class="line"><span class="attr">agent.sources</span> = r1</span><br><span class="line"><span class="attr">agent.sinks</span> = k1</span><br><span class="line"><span class="attr">agent.channels</span> = c1</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe/configuration the source</span></span><br><span class="line"><span class="attr">agent.sources.r1.type</span> = exec</span><br><span class="line"><span class="attr">agent.sources.r1.command</span> = tail -f /data/hadoop/flume/test.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe the sink</span></span><br><span class="line"><span class="attr">agent.sinks.k1.type</span> = logger</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use a channel which buffers events in memory</span></span><br><span class="line"><span class="attr">agent.channels.c1.type</span> = memory</span><br><span class="line"><span class="attr">agent.channels.c1.capacity</span> = <span class="number">1000</span></span><br><span class="line"><span class="attr">agent.channels.c1.transactionCapacity</span> = <span class="number">100</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bind the source and sink to the channel</span></span><br><span class="line"><span class="attr">agent.sources.r1.channels</span> = c1</span><br><span class="line"><span class="attr">agent.sinks.k1.channel</span> = c1</span><br></pre></td></tr></tbody></table></figure>
 <p><strong>Avro：</strong></p>
 <ul>
 <li>vim flume-avro.conf</li>
 </ul>
-<pre><code class="highlight ini"><span class="comment"># 添加如下信息</span>
-<span class="comment"># Define a memory channel called c1 on agent</span>
-<span class="attr">agent.channels.c1.type</span> = memory
-
-<span class="comment"># Define an avro source alled r1 on agent and  tell it</span>
-<span class="attr">agent.sources.r1.channels</span> = c1
-<span class="attr">agent.sources.r1.type</span> = avro
-<span class="attr">agent.sources.r1.bind</span> = <span class="number">127.0</span>.<span class="number">0.1</span>
-<span class="attr">agent.sources.r1.port</span> = <span class="number">44444</span>
-
-<span class="comment"># Describe/configuration the source</span>
-<span class="attr">agent.sinks.k1.type</span> = hdfs
-<span class="attr">agent.sinks.k1.channel</span> = c1
-<span class="attr">agent.sinks.k1.hdfs.path</span> = hdfs://master:<span class="number">9000</span>/flume_data_pool
-<span class="attr">agent.sinks.k1.hdfs.filePrefix</span> = events-
-<span class="attr">agent.sinks.k1.hdfs.fileType</span> = DataStream
-<span class="attr">agent.sinks.k1.hdfs.writeFormat</span> = Text
-<span class="attr">agent.sinks.k1.hdfs.rollSize</span> = <span class="number">0</span>
-<span class="attr">agent.sinks.k1.hdfs.rollCount</span>= <span class="number">600000</span>
-<span class="attr">agent.sinks.k1.hdfs.rollInterval</span> = <span class="number">600</span>
-
-<span class="attr">agent.channels</span> = c1
-<span class="attr">agent.sources</span> = r1
-<span class="attr">agent.sinks</span> = k1</code></pre>
+<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># Define a memory channel called c1 on agent</span></span><br><span class="line"><span class="attr">agent.channels.c1.type</span> = memory</span><br><span class="line"></span><br><span class="line"><span class="comment"># Define an avro source alled r1 on agent and  tell it</span></span><br><span class="line"><span class="attr">agent.sources.r1.channels</span> = c1</span><br><span class="line"><span class="attr">agent.sources.r1.type</span> = avro</span><br><span class="line"><span class="attr">agent.sources.r1.bind</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">agent.sources.r1.port</span> = <span class="number">44444</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Describe/configuration the source</span></span><br><span class="line"><span class="attr">agent.sinks.k1.type</span> = hdfs</span><br><span class="line"><span class="attr">agent.sinks.k1.channel</span> = c1</span><br><span class="line"><span class="attr">agent.sinks.k1.hdfs.path</span> = hdfs://master:<span class="number">9000</span>/flume_data_pool</span><br><span class="line"><span class="attr">agent.sinks.k1.hdfs.filePrefix</span> = events-</span><br><span class="line"><span class="attr">agent.sinks.k1.hdfs.fileType</span> = DataStream</span><br><span class="line"><span class="attr">agent.sinks.k1.hdfs.writeFormat</span> = Text</span><br><span class="line"><span class="attr">agent.sinks.k1.hdfs.rollSize</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">agent.sinks.k1.hdfs.rollCount</span>= <span class="number">600000</span></span><br><span class="line"><span class="attr">agent.sinks.k1.hdfs.rollInterval</span> = <span class="number">600</span></span><br><span class="line"></span><br><span class="line"><span class="attr">agent.channels</span> = c1</span><br><span class="line"><span class="attr">agent.sources</span> = r1</span><br><span class="line"><span class="attr">agent.sinks</span> = k1</span><br></pre></td></tr></tbody></table></figure>
 <h1 id="验证">验证</h1>
 <p><strong>NetCat：</strong></p>
 <p># 服务端</p>
