@@ -1,1 +1,71 @@
-window.NexT||(window.NexT={}),function(){const e={};let t={};const n=n=>{const o=document.querySelector(`.next-config[data-name="${n}"]`);if(!o)return;const r=(e=>{const t=(new DOMParser).parseFromString(e,"text/html").documentElement.textContent;return JSON.parse(t||"{}")})(o.text);"main"===n?Object.assign(e,r):t[n]=r};n("main"),window.CONFIG=new Proxy({},{get(o,r){let c;if(r in e?c=e[r]:(r in t||n(r),c=t[r]),r in o||"object"!=typeof c||(o[r]={}),r in o){const e=o[r];return"object"==typeof e&&"object"==typeof c?new Proxy({...c,...e},{set:(t,n,o)=>(t[n]=o,e[n]=o,!0)}):e}return c}}),document.addEventListener("pjax:success",()=>{t={}})}();
+if (!window.NexT) window.NexT = {};
+
+(function() {
+  const className = 'next-config';
+
+  const staticConfig = {};
+  let variableConfig = {};
+
+  const parse = text => {
+    const jsonString = new DOMParser()
+      .parseFromString(text, 'text/html').documentElement
+      .textContent;
+    return JSON.parse(jsonString || '{}');
+  };
+
+  const update = name => {
+    const targetEle = document.querySelector(`.${className}[data-name="${name}"]`);
+    if (!targetEle) return;
+    const parsedConfig = parse(targetEle.text);
+    if (name === 'main') {
+      Object.assign(staticConfig, parsedConfig);
+    } else {
+      variableConfig[name] = parsedConfig;
+    }
+  };
+
+  update('main');
+
+  window.CONFIG = new Proxy({}, {
+    get(overrideConfig, name) {
+      let existing;
+      if (name in staticConfig) {
+        existing = staticConfig[name];
+      } else {
+        if (!(name in variableConfig)) update(name);
+        existing = variableConfig[name];
+      }
+
+      // For unset override and mixable existing
+      if (!(name in overrideConfig) && typeof existing === 'object') {
+        // Get ready to mix.
+        overrideConfig[name] = {};
+      }
+
+      if (name in overrideConfig) {
+        const override = overrideConfig[name];
+
+        // When mixable
+        if (typeof override === 'object' && typeof existing === 'object') {
+          // Mix, proxy changes to the override.
+          return new Proxy({ ...existing, ...override }, {
+            set(target, prop, value) {
+              target[prop] = value;
+              override[prop] = value;
+              return true;
+            }
+          });
+        }
+
+        return override;
+      }
+
+      // Only when not mixable and override hasn't been set.
+      return existing;
+    }
+  });
+
+  document.addEventListener('pjax:success', () => {
+    variableConfig = {};
+  });
+})();
