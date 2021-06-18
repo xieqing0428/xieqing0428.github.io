@@ -2203,6 +2203,85 @@ Hadoop：我好了你们再上
       </tags>
   </entry>
   <entry>
+    <title>Hadoop 集群搭建 (九)：Hbase</title>
+    <url>/Tech/8b5d0fe449af/</url>
+    <content><![CDATA[<p class="description">
+Hbase：我不认识 Hive…
+</p>
+<figure>
+<img data-src="https://image.alessa0.cn/063435.jpg" alt="campaign-creators-771723-unsplash"><figcaption aria-hidden="true">campaign-creators-771723-unsplash</figcaption>
+</figure>
+<span id="more"></span>
+<blockquote class="blockquote-center">
+<p>Hbase 安装配置</p>
+
+</blockquote>
+<div class="text-center">
+<a class="btn" href="https://hbase.apache.org/"><i class="fa fa-home fa-lg fa-fw"></i>Hbase</a>
+</div>
+<h1 id="安装hbase">安装 Hbase</h1>
+<ul>
+<li>cd /mnt/hgfs/Hadoop</li>
+<li>cp hbase-1.3.3-bin.tar.gz /usr/local/src/</li>
+<li>cd /usr/local/src/</li>
+<li>tar zxvf hbase-1.3.3-bin.tar.gz</li>
+<li>rm -rf hbase-1.3.3-bin.tar.gz</li>
+</ul>
+<p><strong>Hbase 环境变量：</strong></p>
+<ul>
+<li>vim ~/.bashrc</li>
+</ul>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET HBASE PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_HOME</span>=/usr/local/src/hbase-1.3.3 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_CLASSPATH</span>=<span class="variable">$HBASE_HOME</span>/conf </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_LOG_DIR</span>=<span class="variable">$HBASE_HOME</span>/logs </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$HBASE_HOME/bin </span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>source ~/.bashrc</li>
+</ul>
+<h1 id="修改hbase配置">修改 Hbase 配置</h1>
+<ul>
+<li>cd hbase-1.3.3</li>
+</ul>
+<p><strong>创建临时目录和文件目录：</strong></p>
+<ul>
+<li>mkdir logs</li>
+<li>mkdir tmp</li>
+</ul>
+<p><strong>配置文件：</strong></p>
+<ul>
+<li>cd conf</li>
+<li>vim regionservers</li>
+</ul>
+<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="attribute">slave1</span> </span><br><span class="line">slave2  </span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>vim hbase-env.sh</li>
+</ul>
+<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/src/jdk1.8.0_212 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.:$CLASSPATH:$JAVA_HOME/lib </span><br><span class="line"><span class="comment"># 禁用Hbase自带独立Zookeeper集群</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_MANAGES_ZK</span>=<span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>vim hbase-site.xml</li>
+</ul>
+<figure class="highlight dts"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta"># 添加如下信息</span></span><br><span class="line"></span><br><span class="line"><span class="params">&lt;configuration&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.tmp.dir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>hbase<span class="number">-1.3</span><span class="number">.3</span>/tmp<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.rootdir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>hdfs:<span class="comment">//master:9000/hbase&lt;/value&gt; </span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.cluster.distributed<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>true<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.zookeeper.quorum<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>master,slave1,slave2<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.zookeeper.property.dataDir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>zookeeper<span class="number">-3.4</span><span class="number">.14</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.master.info.port<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">60010</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;/configuration&gt;</span> </span><br></pre></td></tr></tbody></table></figure>
+<h1 id="启动集群">启动集群</h1>
+<p><mark class="label danger">仅在 Master</mark></p>
+<p><strong>启动 Hbase 服务：</strong></p>
+<ul>
+<li>start-hbase.sh</li>
+</ul>
+<p><strong>关闭 Hbase 服务：</strong></p>
+<ul>
+<li>stop-hbase.sh</li>
+</ul>
+<p><br></p>
+<p><meting-js id="1325898369" server="netease" type="song" preload="none"></meting-js></p>
+<hr>
+]]></content>
+      <categories>
+        <category>Tech</category>
+      </categories>
+      <tags>
+        <tag>BigData</tag>
+        <tag>环境搭建</tag>
+        <tag>HBase</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hadoop 集群搭建 (二)：语言环境</title>
     <url>/Tech/72b5795038d0/</url>
     <content><![CDATA[<p class="description">
@@ -2994,85 +3073,6 @@ ZooKeeper：你们都安分点…
         <tag>BigData</tag>
         <tag>环境搭建</tag>
         <tag>Zookeeper</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hadoop 集群搭建 (九)：Hbase</title>
-    <url>/Tech/8b5d0fe449af/</url>
-    <content><![CDATA[<p class="description">
-Hbase：我不认识 Hive…
-</p>
-<figure>
-<img data-src="https://image.alessa0.cn/063435.jpg" alt="campaign-creators-771723-unsplash"><figcaption aria-hidden="true">campaign-creators-771723-unsplash</figcaption>
-</figure>
-<span id="more"></span>
-<blockquote class="blockquote-center">
-<p>Hbase 安装配置</p>
-
-</blockquote>
-<div class="text-center">
-<a class="btn" href="https://hbase.apache.org/"><i class="fa fa-home fa-lg fa-fw"></i>Hbase</a>
-</div>
-<h1 id="安装hbase">安装 Hbase</h1>
-<ul>
-<li>cd /mnt/hgfs/Hadoop</li>
-<li>cp hbase-1.3.3-bin.tar.gz /usr/local/src/</li>
-<li>cd /usr/local/src/</li>
-<li>tar zxvf hbase-1.3.3-bin.tar.gz</li>
-<li>rm -rf hbase-1.3.3-bin.tar.gz</li>
-</ul>
-<p><strong>Hbase 环境变量：</strong></p>
-<ul>
-<li>vim ~/.bashrc</li>
-</ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET HBASE PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_HOME</span>=/usr/local/src/hbase-1.3.3 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_CLASSPATH</span>=<span class="variable">$HBASE_HOME</span>/conf </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_LOG_DIR</span>=<span class="variable">$HBASE_HOME</span>/logs </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$HBASE_HOME/bin </span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>source ~/.bashrc</li>
-</ul>
-<h1 id="修改hbase配置">修改 Hbase 配置</h1>
-<ul>
-<li>cd hbase-1.3.3</li>
-</ul>
-<p><strong>创建临时目录和文件目录：</strong></p>
-<ul>
-<li>mkdir logs</li>
-<li>mkdir tmp</li>
-</ul>
-<p><strong>配置文件：</strong></p>
-<ul>
-<li>cd conf</li>
-<li>vim regionservers</li>
-</ul>
-<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="attribute">slave1</span> </span><br><span class="line">slave2  </span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>vim hbase-env.sh</li>
-</ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/src/jdk1.8.0_212 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">CLASSPATH</span>=.:$CLASSPATH:$JAVA_HOME/lib </span><br><span class="line"><span class="comment"># 禁用Hbase自带独立Zookeeper集群</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HBASE_MANAGES_ZK</span>=<span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
-<ul>
-<li>vim hbase-site.xml</li>
-</ul>
-<figure class="highlight dts"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta"># 添加如下信息</span></span><br><span class="line"></span><br><span class="line"><span class="params">&lt;configuration&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.tmp.dir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>hbase<span class="number">-1.3</span><span class="number">.3</span>/tmp<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.rootdir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>hdfs:<span class="comment">//master:9000/hbase&lt;/value&gt; </span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.cluster.distributed<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>true<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.zookeeper.quorum<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>master,slave1,slave2<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.zookeeper.property.dataDir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>zookeeper<span class="number">-3.4</span><span class="number">.14</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hbase.master.info.port<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">60010</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;/configuration&gt;</span> </span><br></pre></td></tr></tbody></table></figure>
-<h1 id="启动集群">启动集群</h1>
-<p><mark class="label danger">仅在 Master</mark></p>
-<p><strong>启动 Hbase 服务：</strong></p>
-<ul>
-<li>start-hbase.sh</li>
-</ul>
-<p><strong>关闭 Hbase 服务：</strong></p>
-<ul>
-<li>stop-hbase.sh</li>
-</ul>
-<p><br></p>
-<p><meting-js id="1325898369" server="netease" type="song" preload="none"></meting-js></p>
-<hr>
-]]></content>
-      <categories>
-        <category>Tech</category>
-      </categories>
-      <tags>
-        <tag>BigData</tag>
-        <tag>环境搭建</tag>
-        <tag>HBase</tag>
       </tags>
   </entry>
 </search>
