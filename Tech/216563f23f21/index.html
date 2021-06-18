@@ -342,18 +342,31 @@
 <li>vim /etc/sysconfig/network-scripts/ifcfg-ens33</li>
 </ul>
 <mark class="label danger">Master</mark>
-<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.101</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span> </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight ini"><span class="comment"># 修改如下信息</span>
+<span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.101</span> 
+<span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> 
+<span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> 
+<span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span></code></pre>
 <mark class="label danger">仅在 Slave1</mark>
-<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.102</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span> </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight ini"><span class="comment"># 修改如下信息</span>
+<span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.102</span> 
+<span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> 
+<span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> 
+<span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span></code></pre>
 <mark class="label danger">仅在 Slave2</mark>
-<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.103</span> </span><br><span class="line"><span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> </span><br><span class="line"><span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> </span><br><span class="line"><span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span></span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight ini"><span class="comment"># 修改如下信息</span>
+<span class="attr">IPADDR</span>=<span class="number">192.168</span>.<span class="number">69.103</span> 
+<span class="attr">NETMASK</span>=<span class="number">255.255</span>.<span class="number">255.0</span> 
+<span class="attr">GATEWAY</span>=<span class="number">192.168</span>.<span class="number">69.2</span> 
+<span class="attr">DNS1</span>=<span class="number">119.29</span>.<span class="number">29.29</span></code></pre>
 <h1 id="关闭系统防火墙及内核防火墙">关闭系统防火墙及内核防火墙</h1>
 <p><strong>永久关闭内核防火墙：</strong></p>
 <ul>
 <li>yum -y install vim</li>
 <li>vim /etc/selinux/config</li>
 </ul>
-<figure class="highlight ini"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attr">SELINUX</span>=disabled</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight ini"><span class="comment"># 修改如下信息</span>
+<span class="attr">SELINUX</span>=disabled</code></pre>
 <p><strong>停止 firewall：</strong></p>
 <ul>
 <li>systemctl stop firewalld.service</li>
@@ -380,7 +393,12 @@
 <ul>
 <li>vim /etc/hosts</li>
 </ul>
-<figure class="highlight accesslog"><table><tbody><tr><td class="code"><pre><span class="line"># 添加如下信息</span><br><span class="line"><span class="number">192.168.69.101</span> master </span><br><span class="line"><span class="number">192.168.69.102</span> slave1 </span><br><span class="line"><span class="number">192.168.69.103</span> slave2 </span><br><span class="line"># 本地(可不加)</span><br><span class="line"><span class="number">192.168.69.1</span> client</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight accesslog"># 添加如下信息
+<span class="number">192.168.69.101</span> master 
+<span class="number">192.168.69.102</span> slave1 
+<span class="number">192.168.69.103</span> slave2 
+# 本地(可不加)
+<span class="number">192.168.69.1</span> client</code></pre>
 <h1 id="ssh互信配置">SSH 互信配置</h1>
 <p><strong>生成密钥对（公钥和私钥）-- 三次回车生成密钥：</strong></p>
 <ul>
@@ -430,7 +448,8 @@
 <ul>
 <li>vim /etc/fstab</li>
 </ul>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 末尾添加如下信息</span></span><br><span class="line">.host:<span class="regexp">/ /m</span>nt/hgfs fuse.vmhgfs-fuse allow_other <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight awk"><span class="comment"># 末尾添加如下信息</span>
+.host:<span class="regexp">/ /m</span>nt/hgfs fuse.vmhgfs-fuse allow_other <span class="number">0</span> <span class="number">0</span></code></pre>
 <p><strong>删除工具包</strong></p>
 <ul>
 <li>cd ~</li>

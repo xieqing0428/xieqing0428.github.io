@@ -343,7 +343,9 @@ Storm：我才是流处理！
 <ul>
 <li>vim ~/.bashrc</li>
 </ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># SET STORM PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">STORM_HOME</span>=/usr/local/src/apache-storm-1.2.2 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$STORM_HOME/bin</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight routeros"><span class="comment"># SET STORM PATH </span>
+<span class="builtin-name">export</span> <span class="attribute">STORM_HOME</span>=/usr/local/src/apache-storm-1.2.2 
+<span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$STORM_HOME/bin</code></pre>
 <ul>
 <li>source ~/.bashrc</li>
 </ul>
@@ -361,7 +363,22 @@ Storm：我才是流处理！
 <li>cd conf</li>
 <li>vim storm.yaml</li>
 </ul>
-<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="attr">storm.zookeeper.servers:</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="string">"master"</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="string">"slave1"</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="string">"slave2"</span> </span><br><span class="line"><span class="attr">storm.zookeeper.port:</span> <span class="number">2181</span> </span><br><span class="line"><span class="attr">storm.local.dir:</span> <span class="string">"/usr/local/storm-1.2.2/data"</span> </span><br><span class="line"><span class="attr">ui.port:</span> <span class="number">8089</span> </span><br><span class="line"><span class="attr">nimbus.seeds:</span> [<span class="string">"master"</span>] </span><br><span class="line"><span class="attr">supervisor.slots.ports:</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="number">6700</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="number">6701</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="number">6702</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="number">6703</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="number">6704</span> </span><br><span class="line"> <span class="bullet">-</span> <span class="number">6705</span> </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight yaml"><span class="comment"># 添加如下信息</span>
+<span class="attr">storm.zookeeper.servers:</span> 
+ <span class="bullet">-</span> <span class="string">"master"</span> 
+ <span class="bullet">-</span> <span class="string">"slave1"</span> 
+ <span class="bullet">-</span> <span class="string">"slave2"</span> 
+<span class="attr">storm.zookeeper.port:</span> <span class="number">2181</span> 
+<span class="attr">storm.local.dir:</span> <span class="string">"/usr/local/storm-1.2.2/data"</span> 
+<span class="attr">ui.port:</span> <span class="number">8089</span> 
+<span class="attr">nimbus.seeds:</span> [<span class="string">"master"</span>] 
+<span class="attr">supervisor.slots.ports:</span> 
+ <span class="bullet">-</span> <span class="number">6700</span> 
+ <span class="bullet">-</span> <span class="number">6701</span> 
+ <span class="bullet">-</span> <span class="number">6702</span> 
+ <span class="bullet">-</span> <span class="number">6703</span> 
+ <span class="bullet">-</span> <span class="number">6704</span> 
+ <span class="bullet">-</span> <span class="number">6705</span></code></pre>
 <h1 id="启动storm集群">启动 Storm 集群</h1>
 <p><strong>主节点启动：</strong></p>
 <ul>

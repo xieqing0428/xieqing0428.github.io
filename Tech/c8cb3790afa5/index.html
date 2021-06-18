@@ -344,7 +344,10 @@ Kafka：我不是写小说那个…
 <ul>
 <li>vim ~/.bashrc</li>
 </ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET KAFKA PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">KAFKA_HOME</span>=/usr/local/src/kafka_2.11-2.2.0 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$KAFKA_HOME/bin</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight routeros"><span class="comment"># 添加如下信息</span>
+<span class="comment"># SET KAFKA PATH </span>
+<span class="builtin-name">export</span> <span class="attribute">KAFKA_HOME</span>=/usr/local/src/kafka_2.11-2.2.0 
+<span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$KAFKA_HOME/bin</code></pre>
 <ul>
 <li>source ~/.bashrc</li>
 </ul>
@@ -361,7 +364,9 @@ Kafka：我不是写小说那个…
 <li>cd config</li>
 <li>vim server.properties</li>
 </ul>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="attribute">log</span>.dirs=/usr/local/src/kafka_<span class="number">2</span>.<span class="number">11</span>-<span class="number">2</span>.<span class="number">2</span>.<span class="number">0</span>/logs </span><br><span class="line"><span class="attribute">zookeeper</span>.connect=master:<span class="number">2181</span>,slave<span class="number">1</span>:<span class="number">2181</span>,slave<span class="number">2</span>:<span class="number">2181</span> </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight apache"><span class="comment"># 添加如下信息</span>
+<span class="attribute">log</span>.dirs=/usr/local/src/kafka_<span class="number">2</span>.<span class="number">11</span>-<span class="number">2</span>.<span class="number">2</span>.<span class="number">0</span>/logs 
+<span class="attribute">zookeeper</span>.connect=master:<span class="number">2181</span>,slave<span class="number">1</span>:<span class="number">2181</span>,slave<span class="number">2</span>:<span class="number">2181</span></code></pre>
 <mark class="label danger">仅在 Master</mark>
 <ul>
 <li>broker.id=0</li>

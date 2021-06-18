@@ -343,7 +343,10 @@ Hive：不要把我认成 Hbase
 <ul>
 <li>vim ~/.bashrc</li>
 </ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET Hive PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HIVE_HOME</span>=/usr/local/src/apache-hive-2.3.4-bin </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$HIVE_HOME/bin</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight routeros"><span class="comment"># 添加如下信息</span>
+<span class="comment"># SET Hive PATH </span>
+<span class="builtin-name">export</span> <span class="attribute">HIVE_HOME</span>=/usr/local/src/apache-hive-2.3.4-bin 
+<span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$HIVE_HOME/bin</code></pre>
 <ul>
 <li>source ~/.bashrc</li>
 </ul>
@@ -379,16 +382,52 @@ Hive：不要把我认成 Hbase
 <li>cp hive-env.sh.template hive-env.sh</li>
 <li>vim hive-env.sh</li>
 </ul>
-<figure class="highlight awk"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line">export JAVA_HOME=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>jdk1.<span class="number">8.0</span>_212 </span><br><span class="line">export HADOOP_HOME=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>hadoop-<span class="number">2.8</span>.<span class="number">5</span> </span><br><span class="line">export HIVE_HOME=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>apache-hive-<span class="number">2.3</span>.<span class="number">4</span>-bin </span><br><span class="line">export HIVE_CONF_DIR=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>apache-hive-<span class="number">2.3</span>.<span class="number">4</span>-bin/conf </span><br><span class="line">export HIVE_AUX_JARS=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>apache-hive-<span class="number">2.3</span>.<span class="number">4</span>-bin/lib </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight awk"><span class="comment"># 添加如下信息</span>
+export JAVA_HOME=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>jdk1.<span class="number">8.0</span>_212 
+export HADOOP_HOME=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>hadoop-<span class="number">2.8</span>.<span class="number">5</span> 
+export HIVE_HOME=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>apache-hive-<span class="number">2.3</span>.<span class="number">4</span>-bin 
+export HIVE_CONF_DIR=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>apache-hive-<span class="number">2.3</span>.<span class="number">4</span>-bin/conf 
+export HIVE_AUX_JARS=<span class="regexp">/usr/</span>local<span class="regexp">/src/</span>apache-hive-<span class="number">2.3</span>.<span class="number">4</span>-bin/lib</code></pre>
 <ul>
 <li>cp hive-default.xml.template hive-site.xml</li>
 <li>vim hive-site.xml</li>
 </ul>
-<figure class="highlight dts"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta"># 添加如下信息</span></span><br><span class="line"></span><br><span class="line"><span class="params">&lt;configuration&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionURL<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>jdbc:mysql:<span class="comment">//master:3306/hive?createDatabaseIfNotExist=true&amp;amp;useSSL=false&lt;/value&gt; </span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionDriverName<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>com.mysql.jdbc.Driver<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionUserName<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>alessa0<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionPassword<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>{密码}<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.metastore.warehouse.dir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>apache-hive<span class="number">-2.3</span><span class="number">.4</span>-bin<span class="meta-keyword">/data/</span>hive/warehouse<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.exec.scratchdir<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>apache-hive<span class="number">-2.3</span><span class="number">.4</span>-bin<span class="meta-keyword">/data/</span>hive/tmp<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.querylog.location<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>apache-hive<span class="number">-2.3</span><span class="number">.4</span>-bin<span class="meta-keyword">/data/</span>hive/log<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line"><span class="params">&lt;/configuration&gt;</span> </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight dts"><span class="meta"># 添加如下信息</span>
+
+<span class="params">&lt;configuration&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionURL<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>jdbc:mysql:<span class="comment">//master:3306/hive?createDatabaseIfNotExist=true&amp;amp;useSSL=false&lt;/value&gt; </span>
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionDriverName<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>com.mysql.jdbc.Driver<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionUserName<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>alessa0<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>javax.jdo.option.ConnectionPassword<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>{密码}<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.metastore.warehouse.dir<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>apache-hive<span class="number">-2.3</span><span class="number">.4</span>-bin<span class="meta-keyword">/data/</span>hive/warehouse<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.exec.scratchdir<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>apache-hive<span class="number">-2.3</span><span class="number">.4</span>-bin<span class="meta-keyword">/data/</span>hive/tmp<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.querylog.location<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span><span class="meta-keyword">/usr/</span>local<span class="meta-keyword">/src/</span>apache-hive<span class="number">-2.3</span><span class="number">.4</span>-bin<span class="meta-keyword">/data/</span>hive/log<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+<span class="params">&lt;/configuration&gt;</span></code></pre>
 <p><strong>把 {system:java.io.tmpdir} 改成 /usr/local/src/apache-hive-2.3.4-bin/data/hive/tmp：</strong></p>
-<figure class="highlight asciidoc"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">:%s/${system:java.io.tmpdir}/\/usr\/local\/src\/apache-hive-2.3.4-bin\/data\/hive\/tmp/g</span> </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight asciidoc"><span class="meta">:%s/${system:java.io.tmpdir}/\/usr\/local\/src\/apache-hive-2.3.4-bin\/data\/hive\/tmp/g</span></code></pre>
 <p><strong>把 {system:user.name} 改成 {user.name} ：</strong></p>
-<figure class="highlight elixir"><table><tbody><tr><td class="code"><pre><span class="line"><span class="symbol">:%s/</span><span class="variable">${</span><span class="symbol">system:</span>user.name}/alessa0/g</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight elixir"><span class="symbol">:%s/</span><span class="variable">${</span><span class="symbol">system:</span>user.name}/alessa0/g</code></pre>
 <h1 id="初始化hivemysql版">初始化 hive (MySQL 版)</h1>
 <ul>
 <li>schematool -dbType mysql -initSchema</li>
@@ -398,7 +437,40 @@ Hive：不要把我认成 Hbase
 <ul>
 <li>vim hive-site.xml</li>
 </ul>
-<figure class="highlight dts"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta"># 添加如下信息</span></span><br><span class="line"></span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.server2.thrift.port<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">10000</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.server2.thrift.bind.host<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>master<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.server2.enable.doAs<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>false<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.metastore.uris<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>thrift:<span class="comment">//master:9083&lt;/value&gt; </span></span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.support.concurrency<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>true<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.zookeeper.quorum<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>master:<span class="number">2181</span>,slave1:<span class="number">2181</span>,slave2:<span class="number">2181</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.server2.webui.host<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span>master<span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span> </span><br><span class="line">    <span class="params">&lt;property&gt;</span> </span><br><span class="line">        <span class="params">&lt;name&gt;</span>hive.server2.webui.port<span class="params">&lt;/name&gt;</span> </span><br><span class="line">        <span class="params">&lt;value&gt;</span><span class="number">10002</span><span class="params">&lt;/value&gt;</span> </span><br><span class="line">    <span class="params">&lt;/property&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight dts"><span class="meta"># 添加如下信息</span>
+
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.server2.thrift.port<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span><span class="number">10000</span><span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.server2.thrift.bind.host<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>master<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.server2.enable.doAs<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>false<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.metastore.uris<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>thrift:<span class="comment">//master:9083&lt;/value&gt; </span>
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.support.concurrency<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>true<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.zookeeper.quorum<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>master:<span class="number">2181</span>,slave1:<span class="number">2181</span>,slave2:<span class="number">2181</span><span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.server2.webui.host<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span>master<span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span> 
+    <span class="params">&lt;property&gt;</span> 
+        <span class="params">&lt;name&gt;</span>hive.server2.webui.port<span class="params">&lt;/name&gt;</span> 
+        <span class="params">&lt;value&gt;</span><span class="number">10002</span><span class="params">&lt;/value&gt;</span> 
+    <span class="params">&lt;/property&gt;</span></code></pre>
 <h1 id="服务端启动">服务端启动</h1>
 <p><mark class="label danger">仅在 Master</mark></p>
 <p><strong>启动 metastore 服务</strong></p>

@@ -344,7 +344,10 @@ Spark：传说中的星二代
 <ul>
 <li>vim ~/.bashrc</li>
 </ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET SPARK PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">SPARK_HOME</span>=/usr/local/src/spark-2.3.3-bin-hadoop2.7 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$SPARK_HOME/bin </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight routeros"><span class="comment"># 添加如下信息</span>
+<span class="comment"># SET SPARK PATH </span>
+<span class="builtin-name">export</span> <span class="attribute">SPARK_HOME</span>=/usr/local/src/spark-2.3.3-bin-hadoop2.7 
+<span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$SPARK_HOME/bin</code></pre>
 <ul>
 <li>source ~/.bashrc</li>
 </ul>
@@ -354,12 +357,22 @@ Spark：传说中的星二代
 <li>cp spark-env.sh.template spark-env.sh</li>
 <li>vim spark-env.sh</li>
 </ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">SCALA_HOME</span>=/usr/local/src/scala-2.11.12 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/src/jdk1.8.0_212 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HADOOP_HOME</span>=/usr/local/src/hadoop-2.8.5 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">HADOOP_CONF_DIR</span>=<span class="variable">$HADOOP_HOME</span>/etc/hadoop </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">SPARK_DAEMON_JAVA_OPTS</span>=<span class="string">"-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=master:2181,slave1:2181,slave2:2181"</span> </span><br><span class="line"><span class="attribute">SPARK_MASTER_IP</span>=master </span><br><span class="line"><span class="attribute">SPARK_LOCAL_DIRS</span>=/usr/local/src/spark-2.3.3-bin-hadoop2.7 </span><br><span class="line"><span class="attribute">SPARK_DRIVER_MEMORY</span>=1G</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight routeros"><span class="comment"># 添加如下信息</span>
+<span class="builtin-name">export</span> <span class="attribute">SCALA_HOME</span>=/usr/local/src/scala-2.11.12 
+<span class="builtin-name">export</span> <span class="attribute">JAVA_HOME</span>=/usr/local/src/jdk1.8.0_212 
+<span class="builtin-name">export</span> <span class="attribute">HADOOP_HOME</span>=/usr/local/src/hadoop-2.8.5 
+<span class="builtin-name">export</span> <span class="attribute">HADOOP_CONF_DIR</span>=<span class="variable">$HADOOP_HOME</span>/etc/hadoop 
+<span class="builtin-name">export</span> <span class="attribute">SPARK_DAEMON_JAVA_OPTS</span>=<span class="string">"-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=master:2181,slave1:2181,slave2:2181"</span> 
+<span class="attribute">SPARK_MASTER_IP</span>=master 
+<span class="attribute">SPARK_LOCAL_DIRS</span>=/usr/local/src/spark-2.3.3-bin-hadoop2.7 
+<span class="attribute">SPARK_DRIVER_MEMORY</span>=1G</code></pre>
 <ul>
 <li>cp slaves.template slaves</li>
 <li>vim slaves</li>
 </ul>
-<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="attribute">slave1</span></span><br><span class="line">slave2</span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight nginx"><span class="comment"># 添加如下信息</span>
+<span class="attribute">slave1</span>
+slave2</code></pre>
 <h1 id="启动standalone">启动 Standalone</h1>
 <mark class="label danger">仅在 Master</mark>
 <p><strong>启动集群：</strong></p>

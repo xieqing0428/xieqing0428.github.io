@@ -344,7 +344,10 @@ Flink：Storm 你该回家了…
 <ul>
 <li>vim ~/.bashrc</li>
 </ul>
-<figure class="highlight routeros"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 添加如下信息</span></span><br><span class="line"><span class="comment"># SET FLINK PATH </span></span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">FLINK_HOME</span>=/usr/local/src/flink-1.8.0 </span><br><span class="line"><span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$FLINK_HOME/bin </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight routeros"><span class="comment"># 添加如下信息</span>
+<span class="comment"># SET FLINK PATH </span>
+<span class="builtin-name">export</span> <span class="attribute">FLINK_HOME</span>=/usr/local/src/flink-1.8.0 
+<span class="builtin-name">export</span> <span class="attribute">PATH</span>=<span class="variable">$PATH</span>:$FLINK_HOME/bin</code></pre>
 <ul>
 <li>source ~/.bashrc</li>
 </ul>
@@ -353,15 +356,18 @@ Flink：Storm 你该回家了…
 <li>cd flink-1.8.0/conf</li>
 <li>vim flink-conf.yaml</li>
 </ul>
-<figure class="highlight crmsh"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line">jobmanager.rpc.address: <span class="keyword">master</span> <span class="title"></span></span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight crmsh"><span class="comment"># 修改如下信息</span>
+jobmanager.rpc.address: <span class="keyword">master</span> <span class="title"></span></code></pre>
 <ul>
 <li>vim masters</li>
 </ul>
-<figure class="highlight apache"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># 修改如下信息</span></span><br><span class="line"><span class="attribute">master</span>:<span class="number">8081</span> </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight apache"><span class="comment"># 修改如下信息</span>
+<span class="attribute">master</span>:<span class="number">8081</span></code></pre>
 <ul>
 <li>vim slaves</li>
 </ul>
-<figure class="highlight nginx"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attribute">slave1</span> </span><br><span class="line">slave2 </span><br></pre></td></tr></tbody></table></figure>
+<pre><code class="highlight nginx"><span class="attribute">slave1</span> 
+slave2</code></pre>
 <h1 id="启动集群">启动集群</h1>
 <p><strong>启动服务：</strong></p>
 <ul>
