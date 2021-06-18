@@ -7,7 +7,7 @@
 数据行业常用工具及常见业务介绍
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/132845.jpg" alt="stephen-dawson-qwtCeJ5cLYs-unsplash"><figcaption aria-hidden="true">stephen-dawson-qwtCeJ5cLYs-unsplash</figcaption>
+<img src="https://image.alessa0.cn/132845.jpg" alt="stephen-dawson-qwtCeJ5cLYs-unsplash"><figcaption aria-hidden="true">stephen-dawson-qwtCeJ5cLYs-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -28,7 +28,7 @@
 <li><strong>算法</strong></li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/145112.png" alt="系统架构"><figcaption aria-hidden="true">系统架构</figcaption>
+<img src="https://image.alessa0.cn/145112.png" alt="系统架构"><figcaption aria-hidden="true">系统架构</figcaption>
 </figure>
 <h2 id="lambda架构">Lambda 架构</h2>
 <blockquote>
@@ -38,7 +38,7 @@
 <p>实时计算：延时低，能够对新 Item 进行处理，实时推荐</p>
 <p>Lambda 架构结合批量计算和实时处理，能够给出相对完整的推荐结果</p>
 <figure>
-<img data-src="https://image.alessa0.cn/063438.png" alt="未命名文件"><figcaption aria-hidden="true">未命名文件</figcaption>
+<img src="https://image.alessa0.cn/063438.png" alt="未命名文件"><figcaption aria-hidden="true">未命名文件</figcaption>
 </figure>
 <h2 id="数据">数据</h2>
 <p>数据来源基本来自两类：</p>
@@ -88,7 +88,7 @@
 </ol>
 </blockquote>
 <figure>
-<img data-src="https://image.alessa0.cn/082726.png" alt="推荐流程"><figcaption aria-hidden="true">推荐流程</figcaption>
+<img src="https://image.alessa0.cn/082726.png" alt="推荐流程"><figcaption aria-hidden="true">推荐流程</figcaption>
 </figure>
 <h2 id="场景2搜索引擎">场景 2：搜索引擎</h2>
 <p>常用搜索场景：人与内容（PC 时代） -&gt; <strong>人与服务</strong>（移动时代）</p>
@@ -108,7 +108,7 @@
 <li>结果分析 Merge 合并</li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/140821.png" alt="搜索引擎三段式结构"><figcaption aria-hidden="true">搜索引擎三段式结构</figcaption>
+<img src="https://image.alessa0.cn/140821.png" alt="搜索引擎三段式结构"><figcaption aria-hidden="true">搜索引擎三段式结构</figcaption>
 </figure>
 <h2 id="场景3广告系统">场景 3：广告系统</h2>
 <blockquote>
@@ -142,7 +142,7 @@
 </ol>
 <h1 id="项目结构demo">项目结构 Demo</h1>
 <figure>
-<img data-src="https://image.alessa0.cn/142106.png" alt="项目结构Demo"><figcaption aria-hidden="true">项目结构 Demo</figcaption>
+<img src="https://image.alessa0.cn/142106.png" alt="项目结构Demo"><figcaption aria-hidden="true">项目结构 Demo</figcaption>
 </figure>
 <p><br></p>
 <p><meting-js id="30431364" server="netease" type="song" preload="none"></meting-js></p>
@@ -164,7 +164,7 @@
 HDFS1.0 与 MapReduce
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/124000.jpg" alt="troy-t-9sQgt_cR50c-unsplash"><figcaption aria-hidden="true">troy-t-9sQgt_cR50c-unsplash</figcaption>
+<img src="https://image.alessa0.cn/124000.jpg" alt="troy-t-9sQgt_cR50c-unsplash"><figcaption aria-hidden="true">troy-t-9sQgt_cR50c-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -235,7 +235,7 @@ HDFS1.0 与 MapReduce
 </ul></li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/150046.png" alt="一致性Hash"><figcaption aria-hidden="true"> 一致性 Hash</figcaption>
+<img src="https://image.alessa0.cn/150046.png" alt="一致性Hash"><figcaption aria-hidden="true"> 一致性 Hash</figcaption>
 </figure>
 <h1 id="mapreduce">MapReduce</h1>
 <blockquote>
@@ -249,7 +249,7 @@ HDFS1.0 与 MapReduce
 <li>Client</li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/062837.png" alt="GFS存储"><figcaption aria-hidden="true">GFS 存储</figcaption>
+<img src="https://image.alessa0.cn/062837.png" alt="GFS存储"><figcaption aria-hidden="true">GFS 存储</figcaption>
 </figure>
 <h2 id="mapreduce基本思想">MapReduce 基本思想</h2>
 <blockquote>
@@ -432,7 +432,7 @@ HDFS1.0 与 MapReduce
 </ul></li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/071824.png" alt="MapReduce"><figcaption aria-hidden="true"> MapReduce</figcaption>
+<img src="https://image.alessa0.cn/071824.png" alt="MapReduce"><figcaption aria-hidden="true"> MapReduce</figcaption>
 </figure>
 <h2 id="mapreduce重要进程hdfs1.0">MapReduce 重要进程（HDFS1.0）</h2>
 <ul>
@@ -634,7 +634,7 @@ HDFS1.0 与 MapReduce
 </ul></li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/141922.png" alt="SecondaryNameNode"><figcaption aria-hidden="true"> SecondaryNameNode</figcaption>
+<img src="https://image.alessa0.cn/141922.png" alt="SecondaryNameNode"><figcaption aria-hidden="true"> SecondaryNameNode</figcaption>
 </figure>
 <h2 id="机架感知策略">机架感知策略</h2>
 <blockquote>
@@ -893,7 +893,7 @@ HDFS1.0 与 MapReduce
 TF-IDF, LCS, HMM
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/122942.jpg" alt="ole-witt-vp7gEXuon08-unsplash"><figcaption aria-hidden="true">ole-witt-vp7gEXuon08-unsplash</figcaption>
+<img src="https://image.alessa0.cn/122942.jpg" alt="ole-witt-vp7gEXuon08-unsplash"><figcaption aria-hidden="true">ole-witt-vp7gEXuon08-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -1204,7 +1204,7 @@ TF-IDF, LCS, HMM
 <p>例：广州本田雅阁汽车</p>
 <p>【DAG】：{0: [0, 1, 3], 1: [1], 2: [2, 3, 5], 3: [3], 4: [4, 5], 5: [5], 6: [6, 7], 7: [7]}</p>
 <figure>
-<img data-src="https://image.alessa0.cn/123359.png" alt="DAG"><figcaption aria-hidden="true">DAG</figcaption>
+<img src="https://image.alessa0.cn/123359.png" alt="DAG"><figcaption aria-hidden="true">DAG</figcaption>
 </figure>
 <h2 id="概率语言模型">概率语言模型</h2>
 <blockquote>
@@ -1298,7 +1298,7 @@ TF-IDF, LCS, HMM
 </ol>
 <figure class="highlight python"><table><tbody><tr><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">源码地址：</span></span><br><span class="line"><span class="string">https://github.com/ustcdane/annotated_jieba/blob/master/jieba/__init__.py</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># jieba分词的主函数,返回结果是一个可迭代的 generator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">cut</span>(<span class="params">self, sentence, cut_all=<span class="literal">False</span>, HMM=<span class="literal">True</span></span>):</span></span><br><span class="line">        <span class="string">'''</span></span><br><span class="line"><span class="string">        The main function that segments an entire sentence that contains</span></span><br><span class="line"><span class="string">        Chinese characters into seperated words.</span></span><br><span class="line"><span class="string">        Parameter:</span></span><br><span class="line"><span class="string">            - sentence: The str(unicode) to be segmented.</span></span><br><span class="line"><span class="string">            - cut_all: Model type. True for full pattern, False for accurate pattern.</span></span><br><span class="line"><span class="string">            - HMM: Whether to use the Hidden Markov Model.</span></span><br><span class="line"><span class="string">        '''</span></span><br><span class="line">        sentence = strdecode(sentence) <span class="comment"># 解码为unicode</span></span><br><span class="line">        <span class="comment"># 不同模式下的正则</span></span><br><span class="line">        <span class="keyword">if</span> cut_all:</span><br><span class="line">            re_han = re_han_cut_all</span><br><span class="line">            re_skip = re_skip_cut_all</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            re_han = re_han_default</span><br><span class="line">            re_skip = re_skip_default</span><br><span class="line"></span><br><span class="line">         <span class="comment"># 设置不同模式下的cut_block分词方法</span></span><br><span class="line">        <span class="keyword">if</span> cut_all:</span><br><span class="line">            cut_block = self.__cut_all</span><br><span class="line">        <span class="keyword">elif</span> HMM:</span><br><span class="line">            cut_block = self.__cut_DAG</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            cut_block = self.__cut_DAG_NO_HMM</span><br><span class="line">        <span class="comment"># 先用正则对句子进行切分</span></span><br><span class="line">        blocks = re_han.split(sentence)</span><br><span class="line">        <span class="keyword">for</span> blk <span class="keyword">in</span> blocks:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> blk:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">if</span> re_han.match(blk): <span class="comment"># re_han匹配的串</span></span><br><span class="line">                <span class="keyword">for</span> word <span class="keyword">in</span> cut_block(blk):<span class="comment"># 根据不同模式的方法进行分词</span></span><br><span class="line">                    <span class="keyword">yield</span> word</span><br><span class="line">            <span class="keyword">else</span>:<span class="comment"># 按照re_skip正则表对blk进行重新切分</span></span><br><span class="line">                tmp = re_skip.split(blk)<span class="comment"># 返回list</span></span><br><span class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> tmp:</span><br><span class="line">                    <span class="keyword">if</span> re_skip.match(x):</span><br><span class="line">                        <span class="keyword">yield</span> x</span><br><span class="line">                    <span class="keyword">elif</span> <span class="keyword">not</span> cut_all: <span class="comment"># 精准模式下逐个字符输出</span></span><br><span class="line">                        <span class="keyword">for</span> xx <span class="keyword">in</span> x:</span><br><span class="line">                            <span class="keyword">yield</span> xx</span><br><span class="line">                    <span class="keyword">else</span>: </span><br><span class="line">                        <span class="keyword">yield</span> x</span><br></pre></td></tr></tbody></table></figure>
 <figure>
-<img data-src="https://image.alessa0.cn/140354.png" alt="jieba"><figcaption aria-hidden="true">jieba</figcaption>
+<img src="https://image.alessa0.cn/140354.png" alt="jieba"><figcaption aria-hidden="true">jieba</figcaption>
 </figure>
 <h4 id="前缀词典">前缀词典</h4>
 <blockquote>
@@ -1327,7 +1327,7 @@ TF-IDF, LCS, HMM
 </ul>
 <figure class="highlight apache"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attribute">Route</span>: {<span class="number">0</span>: (-<span class="number">33</span>.<span class="number">271126717488308</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="attribute">1</span>: (-<span class="number">32</span>.<span class="number">231489259807965</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="attribute">2</span>: (-<span class="number">23</span>.<span class="number">899234625632083</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">3</span>: (-<span class="number">31</span>.<span class="number">523246813843940</span>, <span class="number">3</span>),</span><br><span class="line">        <span class="attribute">4</span>: (-<span class="number">22</span>.<span class="number">214895405024865</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">5</span>: (-<span class="number">19</span>.<span class="number">008467873683230</span>, <span class="number">5</span>),</span><br><span class="line">        <span class="attribute">6</span>: (-<span class="number">8</span>.<span class="number">7800749471799175</span>, <span class="number">7</span>),</span><br><span class="line">        <span class="attribute">7</span>: (-<span class="number">8</span>.<span class="number">8000692190498415</span>, <span class="number">7</span>),</span><br><span class="line">        <span class="attribute">8</span>: (<span class="number">0</span>.<span class="number">0</span>, '')}</span><br></pre></td></tr></tbody></table></figure>
 <figure>
-<img data-src="https://image.alessa0.cn/143320.png" alt="route"><figcaption aria-hidden="true">route</figcaption>
+<img src="https://image.alessa0.cn/143320.png" alt="route"><figcaption aria-hidden="true">route</figcaption>
 </figure>
 <h3 id="隐马尔可夫模型hmm">隐马尔可夫模型 HMM</h3>
 <h4 id="马尔可夫链">马尔可夫链</h4>
@@ -1343,7 +1343,7 @@ TF-IDF, LCS, HMM
 </ul></li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/011258.png" alt="马尔可夫"><figcaption aria-hidden="true">马尔可夫</figcaption>
+<img src="https://image.alessa0.cn/011258.png" alt="马尔可夫"><figcaption aria-hidden="true">马尔可夫</figcaption>
 </figure>
 <ul>
 <li>例子：<strong>天气</strong>
@@ -1387,7 +1387,7 @@ TF-IDF, LCS, HMM
 </ul></li>
 </ul>
 <figure>
-<img data-src="https://image.alessa0.cn/135221.png" alt="HMM"><figcaption aria-hidden="true"> HMM</figcaption>
+<img src="https://image.alessa0.cn/135221.png" alt="HMM"><figcaption aria-hidden="true"> HMM</figcaption>
 </figure>
 <h5 id="hmm解决三类问题">HMM 解决三类问题</h5>
 <ul>
@@ -1487,7 +1487,7 @@ TF-IDF, LCS, HMM
 推荐系统
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/120137.jpg" alt="kari-shea-Pe97ltx47Lw-unsplash"><figcaption aria-hidden="true">kari-shea-Pe97ltx47Lw-unsplash</figcaption>
+<img src="https://image.alessa0.cn/120137.jpg" alt="kari-shea-Pe97ltx47Lw-unsplash"><figcaption aria-hidden="true">kari-shea-Pe97ltx47Lw-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -1709,7 +1709,7 @@ TF-IDF, LCS, HMM
 虚拟机节点配置
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/131223.jpg" alt="arian-darvishi-1210156-unsplash"><figcaption aria-hidden="true">arian-darvishi-1210156-unsplash</figcaption>
+<img src="https://image.alessa0.cn/131223.jpg" alt="arian-darvishi-1210156-unsplash"><figcaption aria-hidden="true">arian-darvishi-1210156-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -1971,7 +1971,7 @@ TF-IDF, LCS, HMM
     <content><![CDATA[<p class="description">
 Hive：不要把我认成 Hbase
 </p>
-<p><img data-src="https://image.alessa0.cn/035137.jpg" alt="mounzer-awad-348688-unsplash"><span id="more"></span></p>
+<p><img src="https://image.alessa0.cn/035137.jpg" alt="mounzer-awad-348688-unsplash"><span id="more"></span></p>
 <blockquote class="blockquote-center">
 <p>Hive 安装配置</p>
 
@@ -2093,7 +2093,7 @@ Hive：不要把我认成 Hbase
 Hadoop：我好了你们再上
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/163232.jpeg" alt="664px-Hadoop_logo.svg"><figcaption aria-hidden="true">664px-Hadoop_logo.svg</figcaption>
+<img src="https://image.alessa0.cn/163232.jpeg" alt="664px-Hadoop_logo.svg"><figcaption aria-hidden="true">664px-Hadoop_logo.svg</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2209,7 +2209,7 @@ Hadoop：我好了你们再上
 Hbase：我不认识 Hive…
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/063435.jpg" alt="campaign-creators-771723-unsplash"><figcaption aria-hidden="true">campaign-creators-771723-unsplash</figcaption>
+<img src="https://image.alessa0.cn/063435.jpg" alt="campaign-creators-771723-unsplash"><figcaption aria-hidden="true">campaign-creators-771723-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2288,7 +2288,7 @@ Hbase：我不认识 Hive…
 Java, Python, Scala
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/143320.jpg" alt="maximilian-weisbecker-544039-unsplash"><figcaption aria-hidden="true">maximilian-weisbecker-544039-unsplash</figcaption>
+<img src="https://image.alessa0.cn/143320.jpg" alt="maximilian-weisbecker-544039-unsplash"><figcaption aria-hidden="true">maximilian-weisbecker-544039-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2372,7 +2372,7 @@ Java, Python, Scala
 Redis：就是这么快！
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/163221.jpg" alt="shiro-hatori-258976-unsplash"><figcaption aria-hidden="true">shiro-hatori-258976-unsplash</figcaption>
+<img src="https://image.alessa0.cn/163221.jpg" alt="shiro-hatori-258976-unsplash"><figcaption aria-hidden="true">shiro-hatori-258976-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2411,7 +2411,7 @@ Redis：就是这么快！
 Spark：传说中的星二代
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/052725.jpg" alt="aziz-acharki-370112-unsplash"><figcaption aria-hidden="true">aziz-acharki-370112-unsplash</figcaption>
+<img src="https://image.alessa0.cn/052725.jpg" alt="aziz-acharki-370112-unsplash"><figcaption aria-hidden="true">aziz-acharki-370112-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2496,7 +2496,7 @@ Spark：传说中的星二代
 MySQL：我就是个工具人…
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/024045.jpg" alt="kevin-ku-364843-unsplash"><figcaption aria-hidden="true">kevin-ku-364843-unsplash</figcaption>
+<img src="https://image.alessa0.cn/024045.jpg" alt="kevin-ku-364843-unsplash"><figcaption aria-hidden="true">kevin-ku-364843-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2574,7 +2574,7 @@ MySQL：我就是个工具人…
     <content><![CDATA[<p class="description">
 Thrift：行李少的可以从我这儿走…
 </p>
-<p><img data-src="https://image.alessa0.cn/035105.jpg" alt="alejandro-escamilla-10-unsplash"><span id="more"></span></p>
+<p><img src="https://image.alessa0.cn/035105.jpg" alt="alejandro-escamilla-10-unsplash"><span id="more"></span></p>
 <blockquote class="blockquote-center">
 <p>Thrift 安装配置</p>
 
@@ -2636,7 +2636,7 @@ Thrift：行李少的可以从我这儿走…
 Flume：xx 托我给您带个话…
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/072006.jpg" alt="clark-young-160446-unsplash"><figcaption aria-hidden="true">clark-young-160446-unsplash</figcaption>
+<img src="https://image.alessa0.cn/072006.jpg" alt="clark-young-160446-unsplash"><figcaption aria-hidden="true">clark-young-160446-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2730,7 +2730,7 @@ Flume：xx 托我给您带个话…
 Storm：我才是流处理！
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/084537.jpg" alt="johannes-plenio-247177-unsplash"><figcaption aria-hidden="true">johannes-plenio-247177-unsplash</figcaption>
+<img src="https://image.alessa0.cn/084537.jpg" alt="johannes-plenio-247177-unsplash"><figcaption aria-hidden="true">johannes-plenio-247177-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2810,7 +2810,7 @@ Storm：我才是流处理！
 Kafka：我不是写小说那个…
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/082116.jpg" alt="title-page"><figcaption aria-hidden="true">title-page</figcaption>
+<img src="https://image.alessa0.cn/082116.jpg" alt="title-page"><figcaption aria-hidden="true">title-page</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2891,7 +2891,7 @@ Kafka：我不是写小说那个…
 Flink：Storm 你该回家了…
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/090827.jpg" alt="shane-young-769905-unsplash"><figcaption aria-hidden="true">shane-young-769905-unsplash</figcaption>
+<img src="https://image.alessa0.cn/090827.jpg" alt="shane-young-769905-unsplash"><figcaption aria-hidden="true">shane-young-769905-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2962,7 +2962,7 @@ Flink：Storm 你该回家了…
 Storm-on-Yarn：跟着老大哥有肉吃…
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/090019.jpg" alt="max-delsid-479103-unsplash"><figcaption aria-hidden="true">max-delsid-479103-unsplash</figcaption>
+<img src="https://image.alessa0.cn/090019.jpg" alt="max-delsid-479103-unsplash"><figcaption aria-hidden="true">max-delsid-479103-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
@@ -2993,7 +2993,7 @@ Storm-on-Yarn：跟着老大哥有肉吃…
 ZooKeeper：你们都安分点…
 </p>
 <figure>
-<img data-src="https://image.alessa0.cn/051510.jpg" alt="daiga-ellaby-354470-unsplash"><figcaption aria-hidden="true">daiga-ellaby-354470-unsplash</figcaption>
+<img src="https://image.alessa0.cn/051510.jpg" alt="daiga-ellaby-354470-unsplash"><figcaption aria-hidden="true">daiga-ellaby-354470-unsplash</figcaption>
 </figure>
 <span id="more"></span>
 <blockquote class="blockquote-center">
