@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>BigData 复习笔记 00：系统架构与常见业务</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B000:%E5%B8%B8%E8%A7%81%E4%B8%9A%E5%8A%A1/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/2df212192030/</url>
     <content><![CDATA[<p class="description">
 数据行业常用工具及常见业务介绍
 </p>
@@ -161,7 +161,7 @@
   </entry>
   <entry>
     <title>BigData 复习笔记 01：HDFS1.0 与 MapReduce</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B001:HDFS1.0%E4%B8%8EMapReduce/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/b2bff451d8c5/</url>
     <content><![CDATA[<p class="description">
 HDFS1.0 与 MapReduce
 </p>
@@ -892,7 +892,7 @@ HDFS1.0 与 MapReduce
   </entry>
   <entry>
     <title>BigData 复习笔记 02：TFIDF, LCS 与中文分词</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B002:TFIDF,LCS%E4%B8%8E%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8D/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/998c29cc79e2/</url>
     <content><![CDATA[<p class="description">
 TF-IDF, LCS, HMM
 </p>
@@ -1488,7 +1488,7 @@ TF-IDF, LCS, HMM
   </entry>
   <entry>
     <title>BigData 复习笔记 03：推荐算法</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B003:%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/0ddda61dedcf/</url>
     <content><![CDATA[<p class="description">
 推荐系统
 </p>
@@ -1712,7 +1712,7 @@ TF-IDF, LCS, HMM
   </entry>
   <entry>
     <title>Flink 电商团购项目（一）</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%80%EF%BC%89/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/1f073d62e93a/</url>
     <content><![CDATA[<p class="description">
 Flink 项目环境搭建
 </p>
@@ -1856,7 +1856,7 @@ Flink 项目环境搭建
   </entry>
   <entry>
     <title>Flink 电商团购项目（零）：环境搭建</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E9%9B%B6%EF%BC%89/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/59559452b8a4/</url>
     <content><![CDATA[<p class="description">
 Flink 项目环境搭建
 </p>
@@ -2293,7 +2293,7 @@ Flink 项目环境搭建
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (一)：节点配置</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/CentOS-7/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E4%B8%80/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/CentOS-7/216563f23f21/</url>
     <content><![CDATA[<p class="description">
 虚拟机节点配置
 </p>
@@ -2559,7 +2559,7 @@ Flink 项目环境搭建
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (七)：Hive</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Hive/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E4%B8%83/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Hive/ae49f152f74a/</url>
     <content><![CDATA[<p class="description">
 Hive：不要把我认成 Hbase
 </p>
@@ -2683,7 +2683,7 @@ Hive：不要把我认成 Hbase
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (三)：Hadoop</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Hadoop/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E4%B8%89/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Hadoop/f6f0c87d809b/</url>
     <content><![CDATA[<p class="description">
 Hadoop：我好了你们再上
 </p>
@@ -2802,7 +2802,7 @@ Hadoop：我好了你们再上
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (九)：Hbase</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/HBase/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E4%B9%9D/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/HBase/8b5d0fe449af/</url>
     <content><![CDATA[<p class="description">
 Hbase：我不认识 Hive…
 </p>
@@ -2884,7 +2884,7 @@ Hbase：我不认识 Hive…
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (二)：语言环境</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E8%AF%AD%E8%A8%80/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E4%BA%8C/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/%E8%AF%AD%E8%A8%80/72b5795038d0/</url>
     <content><![CDATA[<p class="description">
 Java, Python, Scala
 </p>
@@ -2971,7 +2971,7 @@ Java, Python, Scala
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (五)：Redis</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Redis/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E4%BA%94/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Redis/02a03aab4958/</url>
     <content><![CDATA[<p class="description">
 Redis：就是这么快！
 </p>
@@ -3013,7 +3013,7 @@ Redis：就是这么快！
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (八)：Spark</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Spark/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%85%AB/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Spark/e6961dbeedd5/</url>
     <content><![CDATA[<p class="description">
 Spark：传说中的星二代
 </p>
@@ -3101,7 +3101,7 @@ Spark：传说中的星二代
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (六)：MySQL</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/MySQL/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%85%AD/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/MySQL/f0c090e61ac8/</url>
     <content><![CDATA[<p class="description">
 MySQL：我就是个工具人…
 </p>
@@ -3183,7 +3183,7 @@ MySQL：我就是个工具人…
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (十)：Thrift</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Thrift/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%8D%81/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Thrift/3bf7ea46a959/</url>
     <content><![CDATA[<p class="description">
 Thrift：行李少的可以从我这儿走…
 </p>
@@ -3247,7 +3247,7 @@ Thrift：行李少的可以从我这儿走…
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (十一)：Flume</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Flume/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%8D%81%E4%B8%80/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Flume/f5fa7e41641a/</url>
     <content><![CDATA[<p class="description">
 Flume：xx 托我给您带个话…
 </p>
@@ -3344,7 +3344,7 @@ Flume：xx 托我给您带个话…
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (十三)：Storm</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Storm/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%8D%81%E4%B8%89/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Storm/4d687c2e8e7c/</url>
     <content><![CDATA[<p class="description">
 Storm：我才是流处理！
 </p>
@@ -3427,7 +3427,7 @@ Storm：我才是流处理！
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (十二)：Kafka</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Kafka/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%8D%81%E4%BA%8C/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Kafka/c8cb3790afa5/</url>
     <content><![CDATA[<p class="description">
 Kafka：我不是写小说那个…
 </p>
@@ -3511,7 +3511,7 @@ Kafka：我不是写小说那个…
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (十五)：Flink</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Flink/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%8D%81%E4%BA%94/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Flink/4706bca13060/</url>
     <content><![CDATA[<p class="description">
 Flink：Storm 你该回家了…
 </p>
@@ -3585,7 +3585,7 @@ Flink：Storm 你该回家了…
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (十四)：Storm on Yarn</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Storm-on-Yarn/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%8D%81%E5%9B%9B/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Storm-on-Yarn/eded10c6d9e4/</url>
     <content><![CDATA[<p class="description">
 Storm-on-Yarn：跟着老大哥有肉吃…
 </p>
@@ -3619,7 +3619,7 @@ Storm-on-Yarn：跟着老大哥有肉吃…
   </entry>
   <entry>
     <title>Hadoop 集群搭建 (四)：ZooKeeper</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Zookeeper/Hadoop-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA-%E5%9B%9B/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/Zookeeper/698dda32d549/</url>
     <content><![CDATA[<p class="description">
 ZooKeeper：你们都安分点…
 </p>
@@ -3711,7 +3711,7 @@ ZooKeeper：你们都安分点…
   </entry>
   <entry>
     <title>傻瓜式 CDH 集群部署指南</title>
-    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/CDH/%E5%82%BB%E7%93%9C%E5%BC%8FCDH%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2%E6%8C%87%E5%8D%97/</url>
+    <url>/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/CDH/e8de8c76ba4e/</url>
     <content><![CDATA[<p class="description">
 CDH 环境配置
 </p>
