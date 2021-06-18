@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/heart.svg" color="#222">
+  <meta name="google-site-verification" content="G1zxL8_uEau107sKvFuMkecN7hNlJeQdhTqIaBuwQOI">
+  <meta name="msvalidate.01" content="G1zxL8_uEau107sKvFuMkecN7hNlJeQdhTqIaBuwQOI">
+  <meta name="baidu-site-verification" content="thkJPSuv5DFAoiiq">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic%7CHanziPenSC-W5:300,300italic,400,400italic,700,700italic%7Cglyph-correction:300,300italic,400,400italic,700,700italic%7C"Cinzel+Decorative":300,300italic,400,400italic,700,700italic%7CAmstelvar:300,300italic,400,400italic,700,700italic%7C"Noto+Serif+SC":300,300italic,400,400italic,700,700italic%7Cserif:300,300italic,400,400italic,700,700italic%7CJetBrains+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css" integrity="sha256-2H3fkXt6FEmrReK448mDVGKb3WW2ZZw35gI7vqHOE4Y=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" integrity="sha256-no0c5ccDODBwp+9hSmV5VvPpKwHCpbVzXHexIkupM6U=" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js" integrity="sha256-a5YRB27CcBwBFcT5EF/f3E4vzIqyHrSR878nseNYw64=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;alessa0.cn&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.5.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;right&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:true,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:true,&quot;lazyload&quot;:true,&quot;pangu&quot;:true,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:&quot;gitalk&quot;,&quot;storage&quot;:true,&quot;lazyload&quot;:true,&quot;nav&quot;:null,&quot;activeClass&quot;:&quot;gitalk&quot;},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;搜索...&quot;,&quot;empty&quot;:&quot;没有找到任何搜索结果：${query}&quot;,&quot;hits_time&quot;:&quot;找到 ${hits} 个搜索结果（用时 ${time} 毫秒）&quot;,&quot;hits&quot;:&quot;找到 ${hits} 个搜索结果&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:5,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script><script src="/js/config.js"></script>
+<meta name="description" content="数据行业常用工具及常见业务介绍   stephen-dawson-qwtCeJ5cLYs-unsplash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BigData 复习笔记 00：系统架构与常见业务">
+<meta property="og:url" content="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B000:%E5%B8%B8%E8%A7%81%E4%B8%9A%E5%8A%A1/">
+<meta property="og:site_name" content="听泉.ღ">
+<meta property="og:description" content="数据行业常用工具及常见业务介绍   stephen-dawson-qwtCeJ5cLYs-unsplash">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://image.alessa0.cn/132845.jpg">
+<meta property="og:image" content="https://image.alessa0.cn/145112.png">
+<meta property="og:image" content="https://image.alessa0.cn/063438.png">
+<meta property="og:image" content="https://image.alessa0.cn/082726.png">
+<meta property="og:image" content="https://image.alessa0.cn/140821.png">
+<meta property="og:image" content="https://image.alessa0.cn/142106.png">
+<meta property="article:published_time" content="2019-07-17T08:10:55.000Z">
+<meta property="article:modified_time" content="2021-06-18T00:42:38.941Z">
+<meta property="article:author" content="XIE QING">
+<meta property="article:tag" content="BigData">
+<meta property="article:tag" content="业务">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://image.alessa0.cn/132845.jpg">
+
+
+<link rel="canonical" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B000:%E5%B8%B8%E8%A7%81%E4%B8%9A%E5%8A%A1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;zh-CN&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;alessa0.cn&#x2F;%E6%8A%80%E6%9C%AF&#x2F;%E5%A4%A7%E6%95%B0%E6%8D%AE&#x2F;%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0&#x2F;BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B000:%E5%B8%B8%E8%A7%81%E4%B8%9A%E5%8A%A1&#x2F;&quot;,&quot;path&quot;:&quot;技术&#x2F;大数据&#x2F;复习笔记&#x2F;BigData复习笔记00:常见业务&#x2F;&quot;,&quot;title&quot;:&quot;BigData 复习笔记 00：系统架构与常见业务&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>BigData 复习笔记 00：系统架构与常见业务 | 听泉.ღ</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-125031312-1"></script>
+  <script class="next-config" data-name="google_analytics" type="application/json">{&quot;tracking_id&quot;:&quot;UA-125031312-1&quot;,&quot;only_pageview&quot;:false}</script>
+  <script src="/js/third-party/analytics/google-analytics.js"></script>
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?e3a5e194c5c7cb7bbd97a2d5f0f44f33"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">听泉.ღ</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">— 听泉小窝 —</p>
+      <img class="custom-logo-image" src="/images/logo.png" alt="听泉.ღ">
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">系统架构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7"><span class="nav-number">1.1.</span> <span class="nav-text">系统工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lambda%E6%9E%B6%E6%9E%84"><span class="nav-number">1.2.</span> <span class="nav-text">Lambda 架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">1.3.</span> <span class="nav-text">数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E5%9C%BA%E6%99%AF"><span class="nav-number">2.</span> <span class="nav-text">业务场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF1%E6%8E%A8%E8%8D%90%E6%B5%81%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">场景 1：推荐流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E6%98%93%E7%89%88"><span class="nav-number">2.1.1.</span> <span class="nav-text">简易版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%89%88"><span class="nav-number">2.1.2.</span> <span class="nav-text">进阶版</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF2%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E"><span class="nav-number">2.2.</span> <span class="nav-text">场景 2：搜索引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF3%E5%B9%BF%E5%91%8A%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.3.</span> <span class="nav-text">场景 3：广告系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84demo"><span class="nav-number">3.</span> <span class="nav-text">项目结构 Demo</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-overview">
+            <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="XIE QING"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">XIE QING</p>
+  <div class="site-description" itemprop="description">怜我世人, 焚我残躯。</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="sidebar-button site-overview-item animated">
+    <button onclick="Chatra('openChat', true);"><i class="fa fa-messages"></i>
+    Chat
+  </button>
+  </div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/xieqing0428" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;xieqing0428" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:xieqing0428@gmail.com" title="E-Mail → mailto:xieqing0428@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/xieqing001" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;xieqing001" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.facebook.com/xieqing0428" title="FB Page → https:&#x2F;&#x2F;www.facebook.com&#x2F;xieqing0428" rel="noopener" target="_blank"><i class="fab fa-facebook fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+          </div>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B000:%E5%B8%B8%E8%A7%81%E4%B8%9A%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="XIE QING">
+      <meta itemprop="description" content="怜我世人, 焚我残躯。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="听泉.ღ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BigData 复习笔记 00：系统架构与常见业务
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-07-17 16:10:55" itemprop="dateCreated datePublished" datetime="2019-07-17T16:10:55+08:00">2019-07-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-06-18 08:42:38" itemprop="dateModified" datetime="2021-06-18T08:42:38+08:00">2021-06-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/" itemprop="url" rel="index"><span itemprop="name">大数据</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">复习笔记</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B000:%E5%B8%B8%E8%A7%81%E4%B8%9A%E5%8A%A1/" class="post-meta-item leancloud_visitors" data-flag-title="BigData 复习笔记 00：系统架构与常见业务" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p class="description">
+数据行业常用工具及常见业务介绍
+</p>
+<figure>
+<img data-src="https://image.alessa0.cn/132845.jpg" alt="stephen-dawson-qwtCeJ5cLYs-unsplash"><figcaption aria-hidden="true">stephen-dawson-qwtCeJ5cLYs-unsplash</figcaption>
+</figure>
+<span id="more"></span>
+<blockquote class="blockquote-center">
+<p>Chapter00. 软件架构与业务场景</p>
+
+</blockquote>
+<div class="text-center">
+<a class="btn" target="_blank" rel="noopener" href="http://data.stats.gov.cn/"><i class="fa fa-home fa-lg fa-fw"></i>国家数据</a>
+</div>
+<h1 id="系统架构">系统架构</h1>
+<h2 id="系统工具">系统工具</h2>
+<ul>
+<li>底层架构：分布式文件系统</li>
+<li>存储：分布式数据库</li>
+<li>计算框架：离线批量 / 在线实时</li>
+<li>工具：SQL 封装查询 / 机器学习</li>
+<li>调度：分布式锁</li>
+<li><strong>算法</strong></li>
+</ul>
+<figure>
+<img data-src="https://image.alessa0.cn/145112.png" alt="系统架构"><figcaption aria-hidden="true">系统架构</figcaption>
+</figure>
+<h2 id="lambda架构">Lambda 架构</h2>
+<blockquote>
+<p>离线批量 + 实时处理</p>
+</blockquote>
+<p>批量计算：延时高，可使用复杂算法多次处理，结果相对精确</p>
+<p>实时计算：延时低，能够对新 Item 进行处理，实时推荐</p>
+<p>Lambda 架构结合批量计算和实时处理，能够给出相对完整的推荐结果</p>
+<figure>
+<img data-src="https://image.alessa0.cn/063438.png" alt="未命名文件"><figcaption aria-hidden="true">未命名文件</figcaption>
+</figure>
+<h2 id="数据">数据</h2>
+<p>数据来源基本来自两类：</p>
+<blockquote>
+<p>PGC：专业机构</p>
+<p>UGC：用户</p>
+</blockquote>
+<p>物品 (<strong>item</strong>) 数据拥有不同属性（名称 / 描述 /…），统称为<strong>元数据 (metadata)</strong></p>
+<p>用户 (<strong>user</strong>) 数据拥有不同行为（点击 / 收藏 / 支付…）</p>
+<h1 id="业务场景">业务场景</h1>
+<h2 id="场景1推荐流程">场景 1：推荐流程</h2>
+<p>第一阶段（<strong>召回</strong>）：用 Token 检索 Item / 用 Item 检索 Item，本质是找候选的过程【<strong>粗排</strong>】</p>
+<p>第二阶段（<strong>过滤</strong>）：把候选集合中劣质的 Item 过滤掉</p>
+<p>第三阶段（<strong>排序</strong>）：把好的 Item 排在前面【<strong>精排</strong>】</p>
+<p>第四阶段（<strong>截断</strong>）：取 Top-N (和产品形态有关)</p>
+<h3 id="简易版">简易版</h3>
+<blockquote>
+<ol type="1">
+<li><p>用户 <strong>User</strong> 点击物品 <strong>ItemA</strong>，触发埋点</p></li>
+<li><p>推荐系统引擎接收到埋点信息，发出请求，在<strong>索引</strong>数据库寻找<strong>与 ItemA 相关的</strong> ItemB、ItemC、ItemD…，并将结果<strong>取 Top-N</strong> 返回推荐给 User</p></li>
+<li><p> 索引数据库 (NoSQL) 日常维护</p>
+<ol type="1">
+<li><p>使用分词技术，将物品库中 Item 划分出各个特征，构建出<strong>正排表</strong> Item -&gt; TokenA, TokenB, TokenC…</p></li>
+<li><p> 根据正排表特征，构建出<strong>倒排表</strong> Token -&gt; ItemA, ItemB, ItermC…</p>
+<blockquote>
+<p>方式 1：将倒排表写入索引库（搜索引擎搜索时根据分词 token 实时计算得出相关 Item）</p>
+<p>方式 2：根据正排表与倒排表，构建出 ItemA -&gt; ItemB, ItemC, ItermD… 写入索引库（索引库维护时根据 Item 分词 token 离线计算得出相关 Item）</p>
+</blockquote></li>
+</ol></li>
+</ol>
+</blockquote>
+<h3 id="进阶版">进阶版</h3>
+<blockquote>
+<ol type="1">
+<li><p>用户 User 点击物品 ItemA，触发埋点</p></li>
+<li><p>推荐系统引擎接收到埋点信息，发出请求，在<strong>索引数据库 A</strong> 寻找与 ItemA 相关的 ItemB、ItemC、ItemD… <strong>以算法 1 打分排序取 Top-N1</strong>，在<strong>索引数据库 B</strong> 寻找与 ItemA 相关的 Item1、Item2、Item3… <strong>以算法 2 打分排序取 Top-N2</strong>，在<strong>索引数据库 C</strong> 寻找与 ItemA 相关的 Item-I、Item-II、Item-III…</p></li>
+<li><p> 将不同索引库所得结果 Item <strong>去除分数</strong>放入<strong>打分模型</strong>，按打分高低<strong>取出 Top-N</strong> 结果返回推荐给 User</p></li>
+<li><p><strong> 每个</strong>索引数据库 (NoSQL) 日常维护</p>
+<ol type="1">
+<li><p>使用分词技术，将物品库中 Item 划分出各个特征，<strong>按打分高低排序</strong>，构建出正排表 Item -&gt; <strong>TokenA: ScoreA</strong>, <strong>TokenB: ScoreB</strong>, <strong>TokenC: ScoreC</strong>…</p></li>
+<li><p> 根据正排表特征，<strong>按打分高低排序</strong>，构建出倒排表 Token -&gt; <strong>ItemA: Score1</strong>, <strong>ItemB: Score2</strong>, <strong>ItermC: Score3</strong>…</p>
+<blockquote>
+<p>方式 1：将倒排表写入索引库（搜索引擎搜索时根据分词 token 实时计算得出相关 Item）</p>
+<p>方式 2：根据正排表与倒排表，构建出 ItemA -&gt; <strong>ItemB: Score-I</strong>, <strong>ItemC: Score-II</strong>, <strong>ItermD: Score-III</strong>… 写入索引库（索引库维护时根据 Item 分词 token 离线计算得出相关 Item）</p>
+</blockquote></li>
+</ol></li>
+</ol>
+</blockquote>
+<figure>
+<img data-src="https://image.alessa0.cn/082726.png" alt="推荐流程"><figcaption aria-hidden="true">推荐流程</figcaption>
+</figure>
+<h2 id="场景2搜索引擎">场景 2：搜索引擎</h2>
+<p>常用搜索场景：人与内容（PC 时代） -&gt; <strong>人与服务</strong>（移动时代）</p>
+<blockquote>
+<p>各大门户网站利用平台优势聚合大量信息，为用户提供桥梁，<strong>“有求必应”</strong></p>
+<p>连接用户与内容，连接用户与服务</p>
+</blockquote>
+<p><strong>搜索引擎解决方案 Demo</strong>：使用的基于 MapReduce 的建库系统 (建库流)</p>
+<ul>
+<li>目的：构建供检索使用的索引和摘要</li>
+<li>输入：网页</li>
+<li>输出：索引和摘要</li>
+<li>处理方法：多轮 Map-Reduce</li>
+<li> 页面解析并处理</li>
+<li>页面属性输出正排表</li>
+<li>分析构建倒排表</li>
+<li>结果分析 Merge 合并</li>
+</ul>
+<figure>
+<img data-src="https://image.alessa0.cn/140821.png" alt="搜索引擎三段式结构"><figcaption aria-hidden="true">搜索引擎三段式结构</figcaption>
+</figure>
+<h2 id="场景3广告系统">场景 3：广告系统</h2>
+<blockquote>
+<ul>
+<li>参与者：网民 / 广告主 / 平台</li>
+<li>广告触发：Keyword Targeting
+<ul>
+<li>广告主 / 网民通过关键字表达需求</li>
+<li>网民输入 query 与广告主购买的 Keyword 进行匹配</li>
+</ul></li>
+<li> CTR 点击率预估：机器学习
+<ul>
+<li>点击率用于广告排序</li>
+<li>提升搜索引擎收益</li>
+<li>保护网民利益</li>
+</ul></li>
+<li>广告排序：关键词广告拍卖
+<ul>
+<li>每次动态广告展现都是一次动态的拍卖</li>
+<li>排序函数</li>
+</ul></li>
+</ul>
+</blockquote>
+<p>基本流程：</p>
+<ol type="1">
+<li>产品发布，广告主向平台购买相对应关键词 Token</li>
+<li> 平台将产品加入广告库，同时更新广告索引库</li>
+<li>索引库维护，更新倒排表中产品排序</li>
+<li>平台根据索引库产品排序，在平台展现产品广告给网民</li>
+<li>网民主动点击广告，或根据网民搜索输入的 query 与广告库索引进行匹配检索，展现给网民</li>
+</ol>
+<h1 id="项目结构demo">项目结构 Demo</h1>
+<figure>
+<img data-src="https://image.alessa0.cn/142106.png" alt="项目结构Demo"><figcaption aria-hidden="true">项目结构 Demo</figcaption>
+</figure>
+<p><br></p>
+<p><meting-js id="30431364" server="netease" type="song" preload="none"></meting-js></p>
+<hr>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>感谢您的关注</div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.JPG" alt="XIE QING 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.JPG" alt="XIE QING 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>XIE QING
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://alessa0.cn/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B000:%E5%B8%B8%E8%A7%81%E4%B8%9A%E5%8A%A1/" title="BigData 复习笔记 00：系统架构与常见业务">https://alessa0.cn/技术/大数据/复习笔记/BigData复习笔记00:常见业务/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+        <a target="_blank" class="social-link" href="/images/wechat_channel.JPG">
+          <span class="icon">
+            <i class="fab fa-weixin"></i>
+          </span>
+
+          <span class="label">WeChat</span>
+        </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/BigData/" rel="tag"># BigData</a>
+              <a href="/tags/%E4%B8%9A%E5%8A%A1/" rel="tag"># 业务</a>
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+  <div class="post-widgets">
+    <div class="wp_rating">
+      <div id="wpac-rating"></div>
+    </div>
+  </div>
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD/01-%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/Flink%E7%94%B5%E5%95%86%E5%9B%A2%E8%B4%AD%E9%A1%B9%E7%9B%AE%EF%BC%88%E4%B8%80%EF%BC%89/" rel="prev" title="Flink 电商团购项目（一）">
+                  <i class="fa fa-chevron-left"></i> Flink 电商团购项目（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/%E6%8A%80%E6%9C%AF/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0/BigData%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B001:HDFS1.0%E4%B8%8EMapReduce/" rel="next" title="BigData 复习笔记 01：HDFS1.0 与 MapReduce">
+                  BigData 复习笔记 01：HDFS1.0 与 MapReduce <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">闽ICP备18014770号-1 </a>
+      <img src="/images/gongan.png" alt="">
+  </div>
+
+<div class="copyright">
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XIE QING</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">117k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">1:46</span>
+  </span>
+</div>
+  <div class="addthis_inline_share_toolbox">
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b8aaa8388d1df01" async="async"></script>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lozad@1.16.0/dist/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+  <script src="https://embed.widgetpack.com/widget.js" async></script>
+  <script class="next-config" data-name="rating" type="application/json">{&quot;enable&quot;:true,&quot;id&quot;:13631,&quot;color&quot;:&quot;#fc6423&quot;}</script>
+  <script src="/js/third-party/rating.js"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+<script class="next-config" data-name="chatra" type="application/json">{&quot;enable&quot;:true,&quot;async&quot;:true,&quot;id&quot;:&quot;ziEfeGJkwovPFGxWg&quot;}</script>
+<script src="/js/third-party/chat/chatra.js"></script>
+<script async src="https://call.chatra.io/chatra.js"></script>
+
+  <script class="next-config" data-name="pdf" type="application/json">{&quot;object_url&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;pdfobject@2.2.5&#x2F;pdfobject.min.js&quot;,&quot;integrity&quot;:&quot;sha256-YuNlP9i6s&#x2F;WH7EaU2kErloo9Vc85C3WVqhoMDgsEVpY&#x3D;&quot;},&quot;url&quot;:&quot;&#x2F;lib&#x2F;pdf&#x2F;web&#x2F;viewer&quot;}</script>
+  <script src="/js/third-party/tags/pdf.js"></script>
+
+
+  <script class="next-config" data-name="nprogress" type="application/json">{&quot;enable&quot;:true,&quot;spinner&quot;:true}</script>
+  <script src="/js/third-party/nprogress.js"></script>
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;spj45BlAacJErU9iVkUjBdMe-9Nh9j0Va&quot;,&quot;app_key&quot;:&quot;QxYREXarU2IotL8LwfVAPS0H&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;lean.alessa0.cn&quot;,&quot;security&quot;:false}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;,&quot;integrity&quot;:&quot;sha256-ncNI9OXOS5Ek4tzVYiOMmN&#x2F;KKCPZ6V0Cpv2P&#x2F;zHntiA&#x3D;&quot;}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{&quot;enable&quot;:true,&quot;github_id&quot;:&quot;xieqing0428&quot;,&quot;repo&quot;:&quot;gitalk&quot;,&quot;client_id&quot;:&quot;ebff00f2118b2ecb19a1&quot;,&quot;client_secret&quot;:&quot;8ec8654b13829e1c459512086f65a6a31e67476e&quot;,&quot;admin_user&quot;:&quot;xieqing0428&quot;,&quot;distraction_free_mode&quot;:true,&quot;proxy&quot;:&quot;https:&#x2F;&#x2F;cors-anywhere.azm.workers.dev&#x2F;https:&#x2F;&#x2F;github.com&#x2F;login&#x2F;oauth&#x2F;access_token&quot;,&quot;language&quot;:&quot;zh-CN&quot;,&quot;js&quot;:{&quot;url&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;gitalk@1.7.2&#x2F;dist&#x2F;gitalk.min.js&quot;,&quot;integrity&quot;:&quot;sha256-Pmj85ojLaPOWwRtlMJwmezB&#x2F;Qg8BzvJp5eTzvXaYAfA&#x3D;&quot;},&quot;path_md5&quot;:&quot;92988822a5602d288dd1d9d7238c59dd&quot;}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
