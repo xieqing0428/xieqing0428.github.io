@@ -2809,9 +2809,7 @@ Storm：我才是流处理！
     <content><![CDATA[<p class="description">
 Kafka：我不是写小说那个…
 </p>
-<figure>
-<img src="https://image.alessa0.cn/082116.jpg" alt="title-page"><figcaption aria-hidden="true">title-page</figcaption>
-</figure>
+<p><img src="https://image.alessa0.cn/082116.jpg"></p>
 <span id="more"></span>
 <blockquote class="blockquote-center">
 <p>Kafka 安装配置</p>
